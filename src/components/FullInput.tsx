@@ -4,15 +4,16 @@ import s from "../Todolist.module.css";
 
 type FullInputPropsType={
     title:string,
+    id: string,
     setTitle: (title:string) => void,
-    addTask: (title: string) => void,
+    addTask: (title: string,toDoListId: string) => void,
 }
 
 export const FullInput = (props:FullInputPropsType) =>{
     const [error, setError] = useState('')
     const addTask = () => {
         if (props.title.trim() !== '') {
-            props.addTask(props.title.trim())
+            props.addTask(props.title.trim(), props.id)
             props.setTitle('')
         } else {
             setError('Title is required')

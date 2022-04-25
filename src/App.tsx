@@ -8,12 +8,6 @@ type ToDOListType = {
     title: string
 }
 export const App = () => {
-    /*  const [task, setTask] = useState([
-          {id: v1(), title: "HTML&CSS", isDone: false},
-          {id: v1(), title: "JS", isDone: false},
-          {id: v1(), title: "ReactJS", isDone: false},
-          {id: v1(), title: "Redux", isDone: false},
-      ])*/
     let toDoListID1 = v1();
     let toDoListID2 = v1();
 
@@ -21,7 +15,6 @@ export const App = () => {
         {id: toDoListID1, title: 'What to learn'},
         {id: toDoListID2, title: 'What to buy'},
     ])
-
     let [taskObj, setTask] = useState({
         [toDoListID1]: [
             {id: v1(), title: "HTML&CSS", isDone: false},
@@ -34,27 +27,23 @@ export const App = () => {
             {id: v1(), title: "Beer", isDone: false},
         ],
     })
-
-    const addTask = (newTitle: string) => {
+    const addTask = (newTitle: string, toDoListId: string) => {
         let newTask = {id: v1(), title: newTitle, isDone: false}
-        setTask([newTask, ...task])
+        let task = taskObj[toDoListId]
+        taskObj[toDoListId] = [newTask, ...task]
+        setTask({...taskObj})
     }
 
     const removeTask = (id: string, toDoListId: string) => {
         let task = taskObj[toDoListId]
-        let filteredTask = task.filter(el => el.id !== id);
-        taskObj[toDoListId] = filteredTask;
+        taskObj[toDoListId] = task.filter(el => el.id !== id);
         setTask({...taskObj})
     }
-
     const statusTask = (newIsDone: boolean, id: string, toDoListId: string) => {
         let task = taskObj[toDoListId]
-        let newStatusTask = task.map(e => e.id === id ? {...e, isDone: newIsDone} : e);
-        taskObj[toDoListId] = newStatusTask;
+        taskObj[toDoListId] = task.map(e => e.id === id ? {...e, isDone: newIsDone} : e);
         setTask({...taskObj})
     }
-
-
     return (
         <div className='app'>
             {
@@ -69,18 +58,6 @@ export const App = () => {
                         statusTask={statusTask}
                     />
                 })}
-            {/* <TodoList
-                task={task[toDoListID1]}
-                removeTask={removeTask}
-                addTask={addTask}
-                statusTask={statusTask}
-            />
-            <TodoList
-                task={task[toDoListID2]}
-                removeTask={removeTask}
-                addTask={addTask}
-                statusTask={statusTask}*/}
-            />
         </div>
     )
 }

@@ -6,9 +6,9 @@ import {Button} from "./components/Button";
 
 type TodoListPropsType = {
     task: Array<TaskType>,
-    removeTask: (id: string,toDoListId : string) => void,
-    addTask: (title: string) => void,
-    statusTask: (isDone: boolean, id: string,toDoListId: string ) => void,
+    removeTask: (id: string, toDoListId: string) => void,
+    addTask: (title: string, toDoListId: string) => void,
+    statusTask: (isDone: boolean, id: string, toDoListId: string) => void,
     title: string,
     id: string,
 }
@@ -40,18 +40,18 @@ export const TodoList = (props: TodoListPropsType) => {
         setFilter('complete')
     }
 
-    const removeTaskHandler = (newId: string, toDoListId : string) => {
+    const removeTaskHandler = (newId: string, toDoListId: string) => {
         props.removeTask(newId, toDoListId)
     }
-    const onChangeIsDoneHandler = (newIsDone: boolean, newId: string,toDoListId: string) => {
-        props.statusTask(newIsDone, newId,toDoListId)
+    const onChangeIsDoneHandler = (newIsDone: boolean, newId: string, toDoListId: string) => {
+        props.statusTask(newIsDone, newId, toDoListId)
     }
 
     const all = filter === 'all' ? s.activeFilter : '';
     const active = filter === 'active' ? s.activeFilter : '';
     const complete = filter === 'complete' ? s.activeFilter : '';
     // Для Input и Button
-    const [error, setError] = useState('')
+    /*const [error, setError] = useState('')
     const addTask = () => {
         if (title.trim() !== '') {
             props.addTask(title.trim())
@@ -59,15 +59,16 @@ export const TodoList = (props: TodoListPropsType) => {
         } else {
             setError('Title is required')
         }
-    }
+    }*/
     return (
         <div>
             <h2>{props.title}</h2>
             <FullInput title={title}
+                       id={props.id}
                        setTitle={setTitle}
                        addTask={props.addTask}
-                />
-          {/*  <div className={s.fullInput}>
+            />
+            {/*  <div className={s.fullInput}>
                 <Input title={title}
                       setTitle={setTitle}
                       addTask={addTask}
@@ -82,14 +83,14 @@ export const TodoList = (props: TodoListPropsType) => {
                     return (
                         <li key={el.id} className={el.isDone ? s.isDone : ''}>
                             <input type='checkbox' checked={el.isDone}
-                                   onChange={(e) => onChangeIsDoneHandler(e.currentTarget.checked, el.id,props.id)}/>
+                                   onChange={(e) => onChangeIsDoneHandler(e.currentTarget.checked, el.id, props.id)}/>
                             <span>{el.title} </span>
                             <button onClick={() => removeTaskHandler(el.id, props.id)}>x</button>
                         </li>
                     )
                 })}
             </ul>
-            <button className={all} onClick={ changeFilterAllHandler}>All</button>
+            <button className={all} onClick={changeFilterAllHandler}>All</button>
             <button className={active} onClick={changeFilterActiveHandler}>Active</button>
             <button className={complete} onClick={changeFilterCompleteHandler}>Complete</button>
         </div>
