@@ -61,11 +61,11 @@ export const TodoList = (props: TodoListPropsType) => {
     return (
         <div>
             <h2>To Do list</h2>
-            {/*<FullInput title={title}
+            <FullInput title={title}
                        setTitle={setTitle}
                        addTask={props.addTask}
-                />*/}
-            <div className={s.fullInput}>
+                />
+          {/*  <div className={s.fullInput}>
                 <Input title={title}
                       setTitle={setTitle}
                       addTask={addTask}
@@ -74,7 +74,7 @@ export const TodoList = (props: TodoListPropsType) => {
             />
                 <Button name='+' callBack={addTask}/>
                 {error && <div className={s.errorMessage}>{error}</div>}
-            </div>
+            </div>*/}
             <ul className={s.ul}>
                 {tasks.map(el => {
                     return (
