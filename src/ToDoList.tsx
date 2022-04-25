@@ -76,8 +76,9 @@ export const TodoList = (props: TodoListPropsType) => {
                       setError={setError}
             />
                 <Button name='+' callBack={addTask}/>
+              </div>
                 {error && <div className={s.errorMessage}>{error}</div>}
-            </div>
+
             <ul className={s.ul}>
                 {tasks.map(el => {
                     return (

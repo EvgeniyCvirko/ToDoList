@@ -2,14 +2,14 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import s from "../Todolist.module.css";
 
 
-type FullInputPropsType={
-    title:string,
+type FullInputPropsType = {
+    title: string,
     id: string,
-    setTitle: (title:string) => void,
-    addTask: (title: string,toDoListId: string) => void,
+    setTitle: (title: string) => void,
+    addTask: (title: string, toDoListId: string) => void,
 }
 
-export const FullInput = (props:FullInputPropsType) =>{
+export const FullInput = (props: FullInputPropsType) => {
     const [error, setError] = useState('')
     const addTask = () => {
         if (props.title.trim() !== '') {
@@ -29,10 +29,14 @@ export const FullInput = (props:FullInputPropsType) =>{
         props.setTitle(e.currentTarget.value)
     }
 
-    return(<div className={s.fullInput}>
-            <input className={error ? s.error : ''} value={props.title} onKeyPress={onKeyHandler}
-                   onChange={onChangeTitleHandler}/>
-            <button onClick={addTask}>+</button>
+    return (<div>
+            <div className={s.fullInput}>
+                <input className={error ? s.error : ''}
+                       value={props.title}
+                       onKeyPress={onKeyHandler}
+                       onChange={onChangeTitleHandler}/>
+                <button onClick={addTask}>+</button>
+            </div>
             {error && <div className={s.errorMessage}>{error}</div>}
         </div>
     )
