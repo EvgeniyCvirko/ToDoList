@@ -13,3 +13,10 @@
 .isDone {
     opacity: 0.5;
 }
+.fullInput{
+    display: flex;
+    margin-right: 15px;
+}
+.ul{
+    padding: 0;
+}

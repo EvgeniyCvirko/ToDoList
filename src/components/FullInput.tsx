@@ -28,7 +28,7 @@ export const FullInput = (props:FullInputPropsType) =>{
         props.setTitle(e.currentTarget.value)
     }
 
-    return(<div>
+    return(<div className={s.fullInput}>
             <input className={error ? s.error : ''} value={props.title} onKeyPress={onKeyHandler}
                    onChange={onChangeTitleHandler}/>
             <button onClick={addTask}>+</button>

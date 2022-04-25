@@ -13,7 +13,7 @@ export const Button = (props:ButtonPropsType) =>{
    }
 
     return(<div>
-            <button onClick={onClickHandler}>{props.name}</button>
+            <button  onClick={onClickHandler}>{props.name}</button>
         </div>
     )
 }

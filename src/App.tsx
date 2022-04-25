@@ -32,6 +32,12 @@ export const App = () => {
                 addTask={addTask}
                 statusTask={statusTask}
             />
+            <TodoList
+                task={task}
+                removeTask={removeTask}
+                addTask={addTask}
+                statusTask={statusTask}
+            />
         </div>
     )
 }
