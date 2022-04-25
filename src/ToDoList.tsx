@@ -51,24 +51,24 @@ export const TodoList = (props: TodoListPropsType) => {
     const active = filter === 'active' ? s.activeFilter : '';
     const complete = filter === 'complete' ? s.activeFilter : '';
     // Для Input и Button
-    /*const [error, setError] = useState('')
+    const [error, setError] = useState('')
     const addTask = () => {
         if (title.trim() !== '') {
-            props.addTask(title.trim())
+            props.addTask(title.trim(), props.id)
             setTitle('')
         } else {
             setError('Title is required')
         }
-    }*/
+    }
     return (
         <div>
             <h2>{props.title}</h2>
-            <FullInput title={title}
+           {/* <FullInput title={title}
                        id={props.id}
                        setTitle={setTitle}
                        addTask={props.addTask}
-            />
-            {/*  <div className={s.fullInput}>
+            />*/}
+              <div className={s.fullInput}>
                 <Input title={title}
                       setTitle={setTitle}
                       addTask={addTask}
@@ -77,7 +77,7 @@ export const TodoList = (props: TodoListPropsType) => {
             />
                 <Button name='+' callBack={addTask}/>
                 {error && <div className={s.errorMessage}>{error}</div>}
-            </div>*/}
+            </div>
             <ul className={s.ul}>
                 {tasks.map(el => {
                     return (
