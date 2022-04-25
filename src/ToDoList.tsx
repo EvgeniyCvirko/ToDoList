@@ -6,9 +6,11 @@ import {Button} from "./components/Button";
 
 type TodoListPropsType = {
     task: Array<TaskType>,
-    removeTask: (id: string) => void,
+    removeTask: (id: string,toDoListId : string) => void,
     addTask: (title: string) => void,
-    statusTask: (isDone: boolean, id: string) => void,
+    statusTask: (isDone: boolean, id: string,toDoListId: string ) => void,
+    title: string,
+    id: string,
 }
 
 type TaskType = {
@@ -38,11 +40,11 @@ export const TodoList = (props: TodoListPropsType) => {
         setFilter('complete')
     }
 
-    const removeTaskHandler = (newId: string) => {
-        props.removeTask(newId)
+    const removeTaskHandler = (newId: string, toDoListId : string) => {
+        props.removeTask(newId, toDoListId)
     }
-    const onChangeIsDoneHandler = (newIsDone: boolean, newId: string) => {
-        props.statusTask(newIsDone, newId)
+    const onChangeIsDoneHandler = (newIsDone: boolean, newId: string,toDoListId: string) => {
+        props.statusTask(newIsDone, newId,toDoListId)
     }
 
     const all = filter === 'all' ? s.activeFilter : '';
@@ -60,7 +62,7 @@ export const TodoList = (props: TodoListPropsType) => {
     }
     return (
         <div>
-            <h2>To Do list</h2>
+            <h2>{props.title}</h2>
             <FullInput title={title}
                        setTitle={setTitle}
                        addTask={props.addTask}
@@ -80,9 +82,9 @@ export const TodoList = (props: TodoListPropsType) => {
                     return (
                         <li key={el.id} className={el.isDone ? s.isDone : ''}>
                             <input type='checkbox' checked={el.isDone}
-                                   onChange={(e) => onChangeIsDoneHandler(e.currentTarget.checked, el.id)}/>
+                                   onChange={(e) => onChangeIsDoneHandler(e.currentTarget.checked, el.id,props.id)}/>
                             <span>{el.title} </span>
-                            <button onClick={() => removeTaskHandler(el.id)}>x</button>
+                            <button onClick={() => removeTaskHandler(el.id, props.id)}>x</button>
                         </li>
                     )
                 })}
