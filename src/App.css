@@ -1,10 +1,11 @@
 .app {
-  width: 350px;
   margin: 100px auto;
   display: flex;
 }
 li{
   margin-left: 15px;
 }
-
+ h2{
+   margin: 0;
+ }
 
