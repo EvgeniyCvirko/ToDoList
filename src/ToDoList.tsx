@@ -1,8 +1,5 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {useState} from 'react';
 import s from './Todolist.module.css'
-import {FullInput} from "./components/FullInput";
-import {Input} from "./components/Input";
-import {Button} from "./components/Button";
 import {TaskType} from "./App";
 import {EditableSpan} from "./components/EditableSpan";
 import {AddItem} from "./components/AddItem";
@@ -18,7 +15,6 @@ type TodoListPropsType = {
 }
 
 export const TodoList = (props: TodoListPropsType) => {
-    const [title, setTitle] = useState('')
     const [filter, setFilter] = useState<string>('all')
 
     let tasks = props.task;
