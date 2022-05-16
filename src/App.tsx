@@ -3,6 +3,8 @@ import './App.css';
 import {TodoList} from "./ToDoList";
 import {v1} from "uuid";
 import {AddItem} from "./components/AddItem";
+import {AppBar, Button, IconButton, Toolbar, Typography, Container, Grid, Paper} from "@material-ui/core";
+import {Menu} from "@material-ui/icons";
 
 type ToDOListType = {
     id: string
@@ -83,26 +85,44 @@ export const App = () => {
         if (tl.filter === 'complete') {
             tasksForRender = taskObj[tl.id].filter(tl => tl.isDone)
         }
-        return <TodoList
-            key={tl.id}
-            id={tl.id}
-            title={tl.title}
-            task={tasksForRender}
-            filter={tl.filter}
-            removeTask={removeTask}
-            removeTodoList={removeTodoList}
-            addTask={addTask}
-            statusTask={statusTask}
-            changeTitleTasks={changeTitleTask}
-            changeTitleTodoList={changeTitleTodoList}
-            changeFilter={changeFilter}
-        />
+        return <Grid item>
+            <Paper style={{padding: "10px"}}>
+                <TodoList
+                    key={tl.id}
+                    id={tl.id}
+                    title={tl.title}
+                    task={tasksForRender}
+                    filter={tl.filter}
+                    removeTask={removeTask}
+                    removeTodoList={removeTodoList}
+                    addTask={addTask}
+                    statusTask={statusTask}
+                    changeTitleTasks={changeTitleTask}
+                    changeTitleTodoList={changeTitleTodoList}
+                    changeFilter={changeFilter}
+                />
+            </Paper>
+        </Grid>
     })
     return (
         <div className='app'>
-            <AddItem
-                addItem={addTodoList} />
-            {todoListForRender}
+            <AppBar position='static'>
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" arial-lable="menu">
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant='h6'>News
+                    </Typography>
+                    <Button color = 'inherit'>Login</Button>
+                </Toolbar>
+            </AppBar>
+            <Container fixed>
+                <Grid container style={{padding: "20px"}}>
+                    <AddItem
+                    addItem={addTodoList}/>
+                </Grid>
+                <Grid container spacing={3}>{todoListForRender}</Grid>
+            </Container>
         </div>
     )
 }

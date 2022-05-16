@@ -57,7 +57,7 @@ export const TodoList = (props: TodoListPropsType) => {
             }
             return (
 
-                <li key={el.id} className={el.isDone ? s.isDone : ''}>
+                <div key={el.id} className={el.isDone ? s.isDone : ''}>
                     <Checkbox checked={el.isDone}
                               onChange={(e) => onChangeIsDoneHandler(e.currentTarget.checked, el.id, props.id)} />
 
@@ -65,7 +65,7 @@ export const TodoList = (props: TodoListPropsType) => {
                                   isDone={el.isDone}
                                   changeTitle={changeTitleTask}/>
                     <IconButton onClick={() => removeTaskHandler(el.id, props.id)}><Delete/></IconButton>
-                </li>
+                </div>
             )
         })
         : <span>{'Нет в списке задач'}</span>
