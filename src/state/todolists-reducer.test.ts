@@ -1,4 +1,4 @@
-import {todolistsReducer} from './todolists-reducer';
+import {addToDoAC, changeFilterAC, changeTitleAC, removeToDoAC, todolistsReducer} from './todolists-reducer';
 import {v1} from 'uuid';
 import {ToDOListType} from '../App';
 
@@ -11,7 +11,7 @@ test('correct todolist should be changed filter', () => {
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
-    const endState = todolistsReducer(startState, {type:"CHANGE-FILTER", id: TodoList_ID, filter: newFilter })
+    const endState = todolistsReducer(startState, changeFilterAC(TodoList_ID, newFilter))
 
     expect(endState[0].filter).toBe("Yo")
     expect(endState[1].filter).toBe("all")
@@ -26,7 +26,7 @@ test( 'correct todolist should be removed', ()=>{
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
-    const endState = todolistsReducer(startState, {type:"REMOVE-TODOLIST", id: todolistId1 })
+    const endState = todolistsReducer(startState, removeToDoAC(todolistId1))
 
     expect(endState.length).toBe(1)
     expect(endState[0].id).toBe(todolistId2)
@@ -40,7 +40,7 @@ test( 'correct todolist should be changed title', ()=>{
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
-    const endState = todolistsReducer(startState, {type:"CHANGE-TITLE", id: todolistId1, title:newTitle })
+    const endState = todolistsReducer(startState, changeTitleAC(todolistId1, newTitle))
 
     expect(endState.length).toBe(2)
     expect(endState[0].title).toBe("What to read")
@@ -55,7 +55,7 @@ test( 'correct todolist should be add', ()=>{
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
-    const endState = todolistsReducer(startState, {type:"ADD-TODOLIST", todolist: newTodolist })
+    const endState = todolistsReducer(startState, addToDoAC(newTodolist) )
 
     expect(endState.length).toBe(3)
     expect(endState[0].title).toBe("What to read")
