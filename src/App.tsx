@@ -6,7 +6,7 @@ import {AddItem} from "./components/AddItem";
 import {AppBar, Button, IconButton, Toolbar, Typography, Container, Grid, Paper} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 
-type ToDOListType = {
+export type ToDOListType = {
     id: string
     title: string
     filter: string
