@@ -17,7 +17,7 @@ export type TaskType = {
     isDone: boolean,
 }
 export type taskObjType={
-    [toDoListID: string]: TaskType[]
+    [key: string]: TaskType[]
 }
 
 
