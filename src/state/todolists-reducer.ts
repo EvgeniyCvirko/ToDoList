@@ -1,4 +1,5 @@
 import {ToDOListType} from "../App";
+import {v1} from "uuid";
 
 
 type ActionType = ChangeFilterActionType | RemoveToDoActionType | ChangeTitleActionType | AddToDoActionType
@@ -19,7 +20,8 @@ export type ChangeTitleActionType = {
 }
 export type AddToDoActionType = {
     type: "ADD-TODOLIST"
-    todolist:ToDOListType
+    todolistId: string
+    title:string
 }
 
 
@@ -33,7 +35,7 @@ export const todolistsReducer = (state: Array<ToDOListType>, action: ActionType)
         case "CHANGE-TITLE":
             return     [...state.map(t=> t.id===action.id ? {...t, title: action.title} : t)]
         case "ADD-TODOLIST":
-            return     [action.todolist,...state]
+            return [{id: action.todolistId, title: action.title, filter : 'all'},...state]
 
         default:
             throw new Error("I don't understand this type")
@@ -49,6 +51,6 @@ export const removeToDoAC = ( todolistId1: string ):RemoveToDoActionType =>{
 export const changeTitleAC = (todolistId1: string, newTitle: string ):ChangeTitleActionType =>{
     return {type:"CHANGE-TITLE", id: todolistId1, title: newTitle }
 }
-export const addToDoAC = (newTodolist: ToDOListType ):AddToDoActionType =>{
-    return {type:"ADD-TODOLIST", todolist: newTodolist }
+export const addToDoAC = (title: string ):AddToDoActionType =>{
+    return {type:"ADD-TODOLIST", title, todolistId: v1()  }
 }
