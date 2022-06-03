@@ -102,8 +102,7 @@ test( 'correct tasks should be add when add Todolist', ()=>{
             {id: '3', title: "Fish", isDone: false},
         ],
     }
-    const newTaskTodolist = {id: 'toDoListID3', title: 'What to learn', filter:'all'}
-    const action = addToDoAC( newTaskTodolist )
+    const action = addToDoAC( 'What to learn' )
     const endState = tasksReducer(startState, action)
     const key = Object.keys(endState)
     const newKey = key.find(k => k !== 'toDoListID2' && k !== 'toDoListID1' )
@@ -111,7 +110,6 @@ test( 'correct tasks should be add when add Todolist', ()=>{
           throw Error("Error: key is not find ")
     }
     expect( key.length).toBe(3);
-    expect(endState['toDoListID3'].length).toBe(0);
     expect(endState[newKey]).toEqual([]);
 
 })

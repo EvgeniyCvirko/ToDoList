@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from 'react';
+import React, {useReducer} from 'react';
 import './App.css';
 import {TodoList} from "./ToDoList";
 import {v1} from "uuid";
@@ -57,6 +57,7 @@ export const AppWithReducer = () => {
     }
 
     const addTodoList = (titleTodoList: string) => {
+
         const action = addToDoAC(titleTodoList)
         dispatchToDoLists(action)
         dispatchToTask(action)
@@ -68,7 +69,6 @@ export const AppWithReducer = () => {
     const removeTask = (id: string, toDoListId: string) => {
         dispatchToTask(removeTasksAC(toDoListId,id))
     }
-
     const statusTask = (newIsDone: boolean, id: string, toDoListId: string) => {
         dispatchToTask(changeStatusTasksAC(id,newIsDone,toDoListId))
     }

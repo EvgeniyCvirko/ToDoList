@@ -22,10 +22,12 @@ type EditableSpanType = {
 
 
 export const EditableSpan = (props: EditableSpanType) => {
+
     const [title, setTitle] = useState<string>(props.title)
     const [editMode, setEditMode] = useState<boolean>(false)
     const onEditMode = () => setEditMode(true)
     const offEditMode = () => {
+
         props.changeTitle(title)
         setEditMode(false)
     }
