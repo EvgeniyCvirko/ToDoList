@@ -18,10 +18,6 @@ export type TaskType = {
     title: string,
     isDone: boolean,
 }
-export type taskObjType={
-    [key: string]: TaskType[]
-}
-
 
 export const AppWithReducer = () => {
     let toDoListID1 = v1();
@@ -84,8 +80,8 @@ export const AppWithReducer = () => {
         if (tl.filter === 'complete') {
             tasksForRender = taskObj[tl.id].filter(tl => tl.isDone)
         }
-        return <Grid item>
-            <Paper style={{padding: "10px"}}>
+        return <Grid key={tl.id} item>
+            <Paper  style={{padding: "10px"}}>
                 <TodoList
                     key={tl.id}
                     id={tl.id}

@@ -85,7 +85,7 @@ export const App = () => {
         if (tl.filter === 'complete') {
             tasksForRender = taskObj[tl.id].filter(tl => tl.isDone)
         }
-        return <Grid item>
+        return <Grid key={tl.id} item>
             <Paper style={{padding: "10px"}}>
                 <TodoList
                     key={tl.id}

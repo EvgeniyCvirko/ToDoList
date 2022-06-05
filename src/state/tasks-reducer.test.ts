@@ -86,7 +86,6 @@ test( 'correct tasks should be add', ()=>{
     expect(endState['toDoListID1'][0].title).toBe('Car')
     expect(endState['toDoListID1'][0].isDone).toBe(false)
     expect(endState["toDoListID1"][0].id).toBeDefined();
-    expect(endState["toDoListID1"][0].id).toBe('10');
 })
 test( 'correct tasks should be add when add Todolist', ()=>{
     const startState: taskObjType = {
