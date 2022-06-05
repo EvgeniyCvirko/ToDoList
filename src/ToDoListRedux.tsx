@@ -19,11 +19,9 @@ export type TaskType = {
     title: string,
     isDone: boolean,
 }
-type TasksType={
-    [key: string]: TaskType[]
-}
+
 export const TodoListWithRedux = (props: TodoListPropsType) => {
-    const tasks = useSelector<AppRootStateType, TasksType>(state => state.task)
+    const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.task[props.id] )
     const dispatch = useDispatch()
 
     const changeFilterAllHandler = () => {
@@ -55,12 +53,12 @@ export const TodoListWithRedux = (props: TodoListPropsType) => {
         dispatch(addTasksAC(titleTask, props.id))
     }
 
-    let tasksForRender = tasks[props.id];
+    let tasksForRender = tasks;
     if (props.toDoLists.filter === 'active') {
-        tasksForRender = tasks[props.id].filter(tl => !tl.isDone)
+        tasksForRender = tasks.filter(tl => !tl.isDone)
     }
     if (props.toDoLists.filter === 'complete') {
-        tasksForRender = tasks[props.id].filter(tl => tl.isDone)
+        tasksForRender = tasks.filter(tl => tl.isDone)
     }
     const ulList = tasksForRender.length
         ? tasksForRender.map(el => {
