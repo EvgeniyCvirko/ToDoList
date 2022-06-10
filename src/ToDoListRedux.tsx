@@ -2,13 +2,14 @@ import React, {useCallback} from 'react';
 import s from './Todolist.module.css'
 import {EditableSpan} from "./components/EditableSpan";
 import {AddItem} from "./components/AddItem";
-import {Button, Checkbox, IconButton} from "@material-ui/core";
-import { Delete} from "@material-ui/icons";
-import {addTasksAC, changeStatusTasksAC, changeTitleTasksAC, removeTasksAC} from "./state/tasks-reducer";
+import {Button, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
+import {addTasksAC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {ToDOListType} from "./AppWithRedux";
-import { changeFilterAC, changeTitleAC, removeToDoAC} from "./state/todolists-reducer";
+import {changeFilterAC, changeTitleAC, removeToDoAC} from "./state/todolists-reducer";
+import {TasksForRender} from "./TasksForRender";
 
 type TodoListPropsType = {
     id: string,
@@ -37,15 +38,11 @@ export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
     const changeTitleTodoList = useCallback((title: string) => {
         dispatch(changeTitleAC(props.id,title))
     },[])
-    const removeTaskHandler = useCallback((newId: string, toDoListId: string) => {
-        dispatch(removeTasksAC(toDoListId,newId))
-    },[])
+
     const removeTodoListHandler = useCallback( () => {
         dispatch(removeToDoAC(props.id))
     },[])
-    const onChangeIsDoneHandler = useCallback((newIsDone: boolean, newId: string, toDoListId: string) => {
-        dispatch(changeStatusTasksAC(newId,newIsDone,toDoListId))
-    },[])
+
     const all = props.toDoLists.filter === 'all' ? s.activeFilter : '';
     const active = props.toDoLists.filter === 'active' ? s.activeFilter : '';
     const complete = props.toDoLists.filter === 'complete' ? s.activeFilter : '';
@@ -62,8 +59,13 @@ export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
         tasksForRender = tasks.filter(tl => tl.isDone)
     }
     const ulList = tasksForRender.length
-        ? tasksForRender.map(el => {
-            const changeTitleTask = (title: string) => {
+        ? tasksForRender.map(el =>
+            <TasksForRender id={el.id}
+                            title={el.title}
+                            isDone={el.isDone}
+                            key={el.id}
+                            todolistId={props.id}/>
+            /*const changeTitleTask = (title: string) => {
                 dispatch(changeTitleTasksAC(props.id,el.id,title))
             }
             return (
@@ -75,8 +77,8 @@ export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
                                   changeTitle={changeTitleTask}/>
                     <IconButton onClick={() => removeTaskHandler(el.id, props.id)}><Delete/></IconButton>
                 </div>
-            )
-        })
+           )*/
+        )
         : <span>{'Нет в списке задач'}</span>
     return (
         <div>
