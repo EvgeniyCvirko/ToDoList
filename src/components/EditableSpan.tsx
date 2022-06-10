@@ -1,16 +1,4 @@
-/*
 import React from 'react';
-
-type EditableSpanType = {
-    title: string
-}
-
-export const EditableSpan = (props: EditableSpanType) => {
-
-
-    return (<span> {props.title} </span>
-    )
-}*/
 import b from "./../Todolist.module.css";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 
@@ -21,13 +9,13 @@ type EditableSpanType = {
 }
 
 
-export const EditableSpan = (props: EditableSpanType) => {
-
+export const EditableSpan = React.memo((props: EditableSpanType) => {
+    console.log('Editable span')
     const [title, setTitle] = useState<string>(props.title)
     const [editMode, setEditMode] = useState<boolean>(false)
     const onEditMode = () => setEditMode(true)
-    const offEditMode = () => {
 
+    const offEditMode = () => {
         props.changeTitle(title)
         setEditMode(false)
     }
@@ -45,4 +33,4 @@ export const EditableSpan = (props: EditableSpanType) => {
             />
             : <span onDoubleClick={onEditMode} className={props.isDone ? b.isDone : ''}>{props.title}</span>
     )
-}
+})

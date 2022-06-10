@@ -24,16 +24,16 @@ export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
 
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.task[props.id] )
     const dispatch = useDispatch()
-    console.log('todolistRedux is called' + props.id)
+    console.log('todolistRedux is called')
     const changeFilterAllHandler = useCallback(() => {
         dispatch(changeFilterAC(props.id, 'all'))
-    },[])
+    },[props.id])
     const changeFilterActiveHandler = useCallback(() => {
         dispatch(changeFilterAC(props.id, 'active'))
-    },[])
+    },[props.id])
     const changeFilterCompleteHandler = useCallback(() => {
         dispatch(changeFilterAC(props.id, 'complete'))
-    },[])
+    },[props.id])
     const changeTitleTodoList = useCallback((title: string) => {
         dispatch(changeTitleAC(props.id,title))
     },[])
@@ -53,6 +53,7 @@ export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
     const addTask = useCallback((titleTask: string) => {
         dispatch(addTasksAC(titleTask, props.id))
     }, [])
+
     let tasksForRender = tasks;
     if (props.toDoLists.filter === 'active') {
         tasksForRender = tasks.filter(tl => !tl.isDone)
