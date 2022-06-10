@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import s from './Todolist.module.css'
 import {EditableSpan} from "./components/EditableSpan";
 import {AddItem} from "./components/AddItem";
@@ -20,39 +20,39 @@ export type TaskType = {
     isDone: boolean,
 }
 
-export const TodoListWithRedux = (props: TodoListPropsType) => {
+export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
+
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.task[props.id] )
     const dispatch = useDispatch()
-
-    const changeFilterAllHandler = () => {
+    console.log('todolistRedux is called' + props.id)
+    const changeFilterAllHandler = useCallback(() => {
         dispatch(changeFilterAC(props.id, 'all'))
-    }
-    const changeFilterActiveHandler = () => {
+    },[])
+    const changeFilterActiveHandler = useCallback(() => {
         dispatch(changeFilterAC(props.id, 'active'))
-    }
-    const changeFilterCompleteHandler = () => {
+    },[])
+    const changeFilterCompleteHandler = useCallback(() => {
         dispatch(changeFilterAC(props.id, 'complete'))
-    }
-    const changeTitleTodoList = (title: string) => {
+    },[])
+    const changeTitleTodoList = useCallback((title: string) => {
         dispatch(changeTitleAC(props.id,title))
-    }
-    const removeTaskHandler = (newId: string, toDoListId: string) => {
+    },[])
+    const removeTaskHandler = useCallback((newId: string, toDoListId: string) => {
         dispatch(removeTasksAC(toDoListId,newId))
-    }
-    const removeTodoListHandler = () => {
+    },[])
+    const removeTodoListHandler = useCallback( () => {
         dispatch(removeToDoAC(props.id))
-    }
-    const onChangeIsDoneHandler = (newIsDone: boolean, newId: string, toDoListId: string) => {
+    },[])
+    const onChangeIsDoneHandler = useCallback((newIsDone: boolean, newId: string, toDoListId: string) => {
         dispatch(changeStatusTasksAC(newId,newIsDone,toDoListId))
-    }
+    },[])
     const all = props.toDoLists.filter === 'all' ? s.activeFilter : '';
     const active = props.toDoLists.filter === 'active' ? s.activeFilter : '';
     const complete = props.toDoLists.filter === 'complete' ? s.activeFilter : '';
     // Для Input и Button
-    const addTask = (titleTask: string) => {
+    const addTask = useCallback((titleTask: string) => {
         dispatch(addTasksAC(titleTask, props.id))
-    }
-
+    }, [])
     let tasksForRender = tasks;
     if (props.toDoLists.filter === 'active') {
         tasksForRender = tasks.filter(tl => !tl.isDone)
@@ -96,4 +96,5 @@ export const TodoListWithRedux = (props: TodoListPropsType) => {
                     color='secondary'>Complete</Button>
         </div>
     )
-}
+})
+

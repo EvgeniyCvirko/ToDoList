@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {AddItem} from "./components/AddItem";
 import {AppBar, Button, IconButton, Toolbar, Typography, Container, Grid, Paper} from "@material-ui/core";
@@ -17,14 +17,14 @@ export type ToDOListType = {
 
 
 export const AppWithRedux = () => {
-
+    console.log('App Redux')
     const dispatch = useDispatch()
    const toDoLists = useSelector<AppRootStateType, Array<ToDOListType>>(state => state.todolist)
 
-    const addTodoList = (titleTodoList: string) => {
+    const addTodoList = useCallback((titleTodoList: string) => {
         const action = addToDoAC(titleTodoList)
         dispatch(action)
-    }
+    },[])
 
     const todoListForRender = toDoLists.map(tl => {
         return <Grid key={tl.id} item>

@@ -1,4 +1,4 @@
-import React, {ChangeEvent,KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import s from "../Todolist.module.css";
 import {Button, IconButton, TextField} from "@material-ui/core";
 import {AddBox} from "@material-ui/icons";
@@ -7,9 +7,21 @@ type AddItemType = {
     addItem: (title: string)=> void
 }
 
-export const AddItem = (props: AddItemType) => {
+export const AddItem =React.memo((props: AddItemType) => {
+    console.log("AddItemForm")
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
+
+    const addItem = useCallback(() =>{
+        if (title.trim() !== '') {
+            props.addItem(title.trim())
+            setTitle('')
+        } else {
+            setError(true)
+        }
+    },[title])
+
+
     const onKeyHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
         addItem()
@@ -19,14 +31,7 @@ export const AddItem = (props: AddItemType) => {
         setTitle(e.currentTarget.value)
         if(error) setError(false)
     }
-    const addItem = () => {
-        if (title.trim() !== '') {
-            props.addItem(title.trim())
-            setTitle('')
-        } else {
-            setError(true)
-        }
-    }
+
    // const inputError = error ? s.error : ''
     return (<>
             <TextField variant='outlined'
@@ -40,4 +45,4 @@ export const AddItem = (props: AddItemType) => {
             {error && <div className={s.errorMessage}>{'Title is required'}</div>}
         </>
     )
-}
+})
