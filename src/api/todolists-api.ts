@@ -33,6 +33,15 @@ type TaskType = {
     order: number
     addedDate: Date
 }
+type ModelTaskUpdateType = {
+    title: string
+    description: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: Date
+    deadline: Date
+}
 
 const instance = axios.create({
         withCredentials: true,
@@ -66,5 +75,8 @@ export const tasksApi = {
     },
     createTask(todolistId: string, title: string){
         return instance.post<ResponseType<TaskType>>(`/todo-lists/${todolistId}/tasks`,{title})
+    },
+    updateTask(todolistId: string, taskId: string, model: ModelTaskUpdateType){
+        return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, {model})
     }
 }
