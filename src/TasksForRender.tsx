@@ -14,9 +14,9 @@ type TasksForRenderType = {
 }
 export const TasksForRender = React.memo((props: TasksForRenderType) => {
     const dispatch = useDispatch()
-    const changeTitleTask = (title: string) => {
+    const changeTitleTask = useCallback((title: string) => {
         dispatch(changeTitleTasksAC(props.todolistId, props.id, title))
-    }
+    },[])
     const onChangeIsDoneHandler = useCallback((newIsDone: boolean, newId: string, toDoListId: string) => {
         dispatch(changeStatusTasksAC(newId, newIsDone, toDoListId))
     }, [])

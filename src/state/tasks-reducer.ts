@@ -18,7 +18,7 @@ export type ChangeStatusTasksActionType = {
 export type RemoveTasksActionType = {
     type: "REMOVE-TASKS"
     todolistId: string
-    id: string
+     id: string
 }
 export type ChangeTitleTasksActionType = {
     type: "CHANGE-TITLE-TASKS"
