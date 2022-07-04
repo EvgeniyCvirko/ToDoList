@@ -1,57 +1,100 @@
 import React, {useEffect, useState} from 'react'
-import axios from "axios";
+import {tasksApi, toDoListsApi} from "../api/todolists-api";
 
 export default {
     title: 'API'
-
-}
-
-const settings = {
-    withCredentials: true,
-    headers: {
-        "API-KEY": '64057af6-0e83-4806-9023-16837f4ae3e0',
-    }
 }
 
 export const GetTodolists = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        // здесь мы будем делать запрос и ответ закидывать в стейт.
-        // который в виде строки будем отображать в div-ке
-        axios.get("https://social-network.samuraijs.com/api/1.1/todo-lists", settings).then((res) => {
-                        setState(res.data)
-        })
-
+       toDoListsApi.getTodolists().then((res) => {
+           setState(res.data)
+       })
     }, [])
     return <div>{JSON.stringify(state)}</div>
 }
+
 export const CreateTodolist = () => {
     const [state, setState] = useState<any>(null)
+    const title = "new Name"
     useEffect(() => {
-        axios.post("https://social-network.samuraijs.com/api/1.1/todo-lists", {title: 'the 6th'}, settings).then((res) => {
-           if(res.data.resultCode ===0 ) {
-               setState(res.data)
-           }})
+        toDoListsApi.createTodolist(title).then((res) =>{
+            setState(res.data)
+        })
     }, [])
 
     return <div>{JSON.stringify(state)}</div>
 }
+
 export const DeleteTodolist = () => {
     const [state, setState] = useState<any>(null)
+    const [todolistId, setTodolistId] = useState<string>('')
+    const deleteTodolistHandler = () =>{
+        toDoListsApi.deleteTodolist(todolistId).then((res) => {
+            setState(res.data)
+        })
+    }
+
+    return <div>
+        {JSON.stringify(state)}
+        <div>
+            <input placeholder='todolistId' onChange={(e)=>{setTodolistId(e.currentTarget.value)}} value={todolistId} />
+        </div>
+        <div>
+            <button onClick={deleteTodolistHandler}>deletTodolist</button>
+        </div>
+    </div>
+}
+
+export const UpdateTodolistTitle = () => {
+    const [state, setState] = useState<any>(null)
+    const todolistId = '8192acc9-219f-4161-b33d-b2f6c7997f37';
+    const title = 'new Title 123';
     useEffect(() => {
-        axios.delete(`https://social-network.samuraijs.com/api/1.1/todo-lists/9504381b-608f-4979-9c3e-3fcef569678b`, settings).then((res) => {
-            setState(res.data)   })
+        toDoListsApi.updateTodolist(todolistId, title).then((res) => {
+            setState(res.data)
+        })
     }, [])
 
     return <div>{JSON.stringify(state)}</div>
 }
-export const UpdateTodolistTitle = () => {
-    const [state, setState] = useState<any>(null)
-    const todolistId = '9300ffd3-3f51-4ba7-98f3-a2a9c5c2353b'
-    useEffect(() => {
-        axios.put(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}`,{title: 'the 8th'}, settings).then((res) => {
-            setState(res.data)   })
-    }, [])
 
-    return <div>{JSON.stringify(state)}</div>
+export const GetTasks = () => {
+    const [state, setState] = useState<any>(null)
+    const [todolistId, setTodolistId] = useState<string>('')
+    const getTaskHandler = () => {
+        tasksApi.getTask(todolistId).then((res) => {
+            setState(res.data.items)
+        })
+    }
+
+    return <div>
+        {JSON.stringify(state)}
+        <div>
+            <input placeholder='todolistId' onChange={(e)=>{setTodolistId(e.currentTarget.value)}} value={todolistId} />
+        </div>
+        <div>
+            <button onClick={getTaskHandler}>get Task</button>
+        </div>
+    </div>
+}
+
+export const DeleteTask = () => {
+    const [state, setState] = useState<any>(null)
+    const [taskId, setTaskId] = useState<string>('')
+    const [todolistId, setTodolistId] = useState<string>('')
+    const deleteTaskHandler = () =>{
+        tasksApi.deleteTasks (todolistId, taskId).then((res) => {
+            setState(res.data)
+        })
+    }
+    return <div>
+        {JSON.stringify(state)}
+        <div><input placeholder='todolistId' onChange={(e)=>{setTodolistId(e.currentTarget.value)}} value={todolistId}/></div>
+        <div><input placeholder='taskId' onChange={(e)=>{setTaskId(e.currentTarget.value)}} value={taskId}/></div>
+        <div>
+            <button onClick={deleteTaskHandler}>delete Task</button>
+        </div>
+    </div>
 }
