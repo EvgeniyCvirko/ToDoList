@@ -77,6 +77,6 @@ export const tasksApi = {
         return instance.post<ResponseType<TaskType>>(`/todo-lists/${todolistId}/tasks`,{title})
     },
     updateTask(todolistId: string, taskId: string, model: ModelTaskUpdateType){
-        return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, {model})
+        return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, {...model})
     }
 }

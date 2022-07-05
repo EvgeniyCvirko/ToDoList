@@ -147,16 +147,11 @@ export const UpdateTask = () => {
     const [status, setStatus] = useState<number>(0)
     const [priority, setPriority] = useState<number>(0)
 
-    const model ={
-        title: title,
-        description: description,
-        completed: completed,
-        status: status,
-        priority: priority,
+    const model ={title,description,completed,status, priority,
         startDate: new Date,
         deadline: new Date,
     }
-    const deleteTaskHandler = () =>{
+    const updateTaskHandler = () =>{
         tasksApi.updateTask(todolistId, taskId, model ).then((res) => {
             setState(res.data)
         })
@@ -171,7 +166,7 @@ export const UpdateTask = () => {
         <div><input placeholder='priority' onChange={(e)=>{setPriority(+e.currentTarget.value)}} value={priority}/></div>
         <div><input placeholder='taskId' onChange={(e)=>{setTaskId(e.currentTarget.value)}} value={taskId}/></div>
         <div>
-            <button onClick={deleteTaskHandler}>updateTask</button>
+            <button onClick={updateTaskHandler}>updateTask</button>
         </div>
     </div>
 }
