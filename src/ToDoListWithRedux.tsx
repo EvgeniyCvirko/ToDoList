@@ -4,28 +4,21 @@ import {EditableSpan} from "./components/EditableSpan";
 import {AddItem} from "./components/AddItem";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {addTasksAC} from "./state/tasks-reducer";
+import {addTasksAC, TaskStatues, TaskType} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {ToDOListType} from "./AppWithRedux";
-import {changeFilterAC, changeTitleAC, removeToDoAC} from "./state/todolists-reducer";
+import {changeFilterAC, changeTitleAC, removeToDoAC, ToDOListDomainType} from "./state/todolists-reducer";
 import {TasksForRender} from "./TasksForRender";
 
 type TodoListPropsType = {
     id: string,
-    toDoLists: ToDOListType,
-}
-export type TaskType = {
-    id: string,
-    title: string,
-    isDone: boolean,
+    toDoLists: ToDOListDomainType,
 }
 
 export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
 
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.task[props.id] )
     const dispatch = useDispatch()
-    console.log('todolistRedux is called')
     const changeFilterAllHandler = useCallback(() => {
         dispatch(changeFilterAC(props.id, 'all'))
     },[props.id])
@@ -53,16 +46,16 @@ export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
 
     let tasksForRender = tasks;
     if (props.toDoLists.filter === 'active') {
-        tasksForRender = tasks.filter(tl => !tl.isDone)
+        tasksForRender = tasks.filter(tl => tl.status === TaskStatues.New)
     }
     if (props.toDoLists.filter === 'complete') {
-        tasksForRender = tasks.filter(tl => tl.isDone)
+        tasksForRender = tasks.filter(tl => tl.status === TaskStatues.Completed)
     }
     const ulList = tasksForRender.length
         ? tasksForRender.map(el =>
             <TasksForRender id={el.id}
                             title={el.title}
-                            isDone={el.isDone}
+                            status={el.status}
                             key={el.id}
                             todolistId={props.id}/>
             /*const changeTitleTask = (title: string) => {

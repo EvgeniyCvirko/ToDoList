@@ -1,15 +1,12 @@
 import axios from "axios";
-import {CreateTodolist} from "../stories/todolists-api.stories";
+import {TodoListType} from "../state/todolists-reducer";
+import {TaskType} from "../state/tasks-reducer";
 
-type TodoListType = {
-    id: string,
-    title: string,
-    addedDate: Date,
-    order: number,
-}
+
 type CreateTodolistDataType = {
     item: TodoListType
 }
+
 type ResponseType<D = {}> = {
     resultCode: number,
     messages: Array<string>,
@@ -20,19 +17,7 @@ type GetTaskType = {
     totalCount: number
     error: string
 }
-type TaskType = {
-    description: string
-    title: string
-    completed: boolean
-    status: number
-    priority: number
-    startDate: Date
-    deadline: Date
-    id: string
-    todoListId: string
-    order: number
-    addedDate: Date
-}
+
 type ModelTaskUpdateType = {
     title: string
     description: string

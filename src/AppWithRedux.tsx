@@ -3,10 +3,10 @@ import './App.css';
 import {AddItem} from "./components/AddItem";
 import {AppBar, Button, IconButton, Toolbar, Typography, Container, Grid, Paper} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {addToDoAC, } from "./state/todolists-reducer";
+import {addToDoAC, ToDOListDomainType,} from "./state/todolists-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {TodoListWithRedux} from "./ToDoListRedux";
+import {TodoListWithRedux} from "./ToDoListWithRedux";
 
 
 export type ToDOListType = {
@@ -17,9 +17,8 @@ export type ToDOListType = {
 
 
 export const AppWithRedux = () => {
-    console.log('App Redux')
     const dispatch = useDispatch()
-   const toDoLists = useSelector<AppRootStateType, Array<ToDOListType>>(state => state.todolist)
+    const toDoLists = useSelector<AppRootStateType, Array<ToDOListDomainType>>(state => state.todolist)
 
     const addTodoList = useCallback((titleTodoList: string) => {
         const action = addToDoAC(titleTodoList)

@@ -1,16 +1,16 @@
 import React from 'react';
 import b from "./../Todolist.module.css";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {TaskStatues} from "../state/tasks-reducer";
 
 type EditableSpanType = {
     title: string
-    isDone?: boolean
+    status?: TaskStatues
     changeTitle: (title: string) => void
 }
 
 
 export const EditableSpan = React.memo((props: EditableSpanType) => {
-    console.log('Editable span')
     const [title, setTitle] = useState<string>(props.title)
     const [editMode, setEditMode] = useState<boolean>(false)
     const onEditMode = () => setEditMode(true)
@@ -31,6 +31,6 @@ export const EditableSpan = React.memo((props: EditableSpanType) => {
                    onChange={onChangeHandler}
                    onKeyPress={onKeyPressHandler}
             />
-            : <span onDoubleClick={onEditMode} className={props.isDone ? b.isDone : ''}>{props.title}</span>
+            : <span onDoubleClick={onEditMode} className={props.status === TaskStatues.Completed ? b.isDone : ''}>{props.title}</span>
     )
 })

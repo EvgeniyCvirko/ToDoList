@@ -1,21 +1,22 @@
 import React from 'react';
 import s from './Todolist.module.css'
-import {TaskType} from "./App";
 import {EditableSpan} from "./components/EditableSpan";
 import {AddItem} from "./components/AddItem";
 import {Button, Checkbox, IconButton} from "@material-ui/core";
 import { Delete} from "@material-ui/icons";
+import {TaskStatues, TaskType} from "./state/tasks-reducer";
+import {FilterType} from "./state/todolists-reducer";
 
 type TodoListPropsType = {
     title: string,
-    filter: string
+    filter: FilterType
     id: string,
     task: Array<TaskType>,
     addTask: (title: string, toDoListId: string) => void,
     removeTask: (id: string, toDoListId: string) => void,
     removeTodoList: (toDoListId: string) => void,
-    statusTask: (isDone: boolean, id: string, toDoListId: string) => void,
-    changeFilter: (TodoList_ID: string, filter: string) => void
+    statusTask: (status: TaskStatues, id: string, toDoListId: string) => void,
+    changeFilter: (TodoList_ID: string, filter: FilterType) => void
     changeTitleTodoList: (TodoList_ID: string, title: string) => void
     changeTitleTasks: (TodoList_ID: string, id: string, title: string) => void
 }
@@ -40,7 +41,8 @@ export const TodoList = (props: TodoListPropsType) => {
         props.removeTodoList(props.id)
     }
     const onChangeIsDoneHandler = (newIsDone: boolean, newId: string, toDoListId: string) => {
-        props.statusTask(newIsDone, newId, toDoListId)
+
+        props.statusTask(newIsDone ? TaskStatues.Completed : TaskStatues.New, newId, toDoListId)
     }
     const all = props.filter === 'all' ? s.activeFilter : '';
     const active = props.filter === 'active' ? s.activeFilter : '';
@@ -56,12 +58,12 @@ export const TodoList = (props: TodoListPropsType) => {
             }
             return (
 
-                <div key={el.id} className={el.isDone ? s.isDone : ''}>
-                    <Checkbox checked={el.isDone}
+                <div key={el.id} className={el.status === TaskStatues.Completed ? s.isDone : ''}>
+                    <Checkbox checked={el.status === TaskStatues.Completed}
                               onChange={(e) => onChangeIsDoneHandler(e.currentTarget.checked, el.id, props.id)} />
 
                     <EditableSpan title={el.title}
-                                  isDone={el.isDone}
+                                  status={el.status}
                                   changeTitle={changeTitleTask}/>
                     <IconButton onClick={() => removeTaskHandler(el.id, props.id)}><Delete/></IconButton>
                 </div>
