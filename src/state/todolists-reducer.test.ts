@@ -2,7 +2,7 @@ import {
     addToDoAC,
     changeFilterAC,
     changeTitleAC,
-    removeToDoAC,
+    removeToDoAC, setTodolistsAC,
     ToDOListDomainType,
     todolistsReducer
 } from './todolists-reducer';
@@ -50,3 +50,11 @@ test( 'correct todolist should be add', ()=>{
     expect(endState[1].id).toBe('toDoListID1')
     expect(endState[2].title).toBe("What to buy")
 })
+
+test('correct todolists should be set', () => {
+
+    const endState = todolistsReducer([], setTodolistsAC(startState))
+
+    expect(endState.length).toBe(2)
+
+});

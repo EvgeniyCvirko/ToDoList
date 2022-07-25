@@ -1,4 +1,4 @@
-import {addToDoAC, removeToDoAC, } from './todolists-reducer';
+import {addToDoAC, removeToDoAC, setTodolistsAC,} from './todolists-reducer';
 import {
     addTasksAC,
     changeStatusTasksAC,
@@ -82,4 +82,19 @@ test( 'correct tasks should be remove when add Todolist', ()=>{
     const endState = tasksReducer(startState, action)
     expect( Object.keys(endState).length).toBe(1);
     expect(endState['toDoListID1'].length).toBe(4);
+})
+
+test( 'empty array should be after we set todolists', ()=>{
+
+    const action = setTodolistsAC([
+        {id: "1", title: 'title1',  addedDate: new Date(), order:0},
+        {id: "2", title: 'title2', addedDate: new Date(), order:0},
+    ])
+    const endState = tasksReducer({}, action)
+    const key = Object.keys(endState)
+
+    expect( key.length).toBe(2);
+    expect(endState['1']).toEqual([]);
+    expect(endState['2']).toEqual([]);
+
 })
