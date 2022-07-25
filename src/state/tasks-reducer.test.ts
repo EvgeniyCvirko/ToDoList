@@ -3,7 +3,7 @@ import {
     addTasksAC,
     changeStatusTasksAC,
     changeTitleTasksAC,
-    removeTasksAC,
+    removeTasksAC, SetTasksAC,
     taskObjType, TaskPriority,
     tasksReducer, TaskStatues
 } from "./tasks-reducer";
@@ -97,4 +97,17 @@ test( 'empty array should be after we set todolists', ()=>{
     expect(endState['1']).toEqual([]);
     expect(endState['2']).toEqual([]);
 
+})
+
+test( 'correct tasks should be set', ()=>{
+
+    const action = SetTasksAC( 'toDoListID1',startState['toDoListID1'] )
+    const endState = tasksReducer({
+        'toDoListID1': [],
+        'toDoListID2': [],
+    }, action)
+    expect(endState['toDoListID1'].length).toBe(4)
+    expect(endState['toDoListID2'].length).toBe(0)
+    expect(endState['toDoListID1'][0].title).toBe('HTML&CSS')
+    expect(endState["toDoListID1"][0].id).toBeDefined();
 })

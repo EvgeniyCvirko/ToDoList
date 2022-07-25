@@ -1,4 +1,6 @@
 import {v1} from "uuid";
+import {toDoListsApi} from "../api/todolists-api";
+import {Dispatch} from "redux";
 
 
 type ActionType = ChangeFilterActionType
@@ -79,4 +81,13 @@ export const addToDoAC = (title: string ):AddToDoActionType =>{
 }
 export const setTodolistsAC = (todolists: Array<TodoListType> ):SetToDoListsActionType =>{
     return {type:"SET-TODOLISTS", todolists}
+}
+
+export const fetchTodolistsTC = () => {
+    return (dispatch:Dispatch<ReturnType<typeof setTodolistsAC>>) =>{
+    toDoListsApi.getTodolists()
+        .then((res) => {
+            dispatch(setTodolistsAC(res.data))
+        })
+    }
 }

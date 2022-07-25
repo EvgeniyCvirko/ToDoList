@@ -1,10 +1,10 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import s from './Todolist.module.css'
 import {EditableSpan} from "./components/EditableSpan";
 import {AddItem} from "./components/AddItem";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {addTasksAC, TaskStatues, TaskType} from "./state/tasks-reducer";
+import {addTasksAC, setTasksTC, TaskStatues, TaskType} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {changeFilterAC, changeTitleAC, removeToDoAC, ToDOListDomainType} from "./state/todolists-reducer";
@@ -19,6 +19,10 @@ export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
 
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.task[props.id] )
     const dispatch = useDispatch()
+    useEffect(() =>{
+        // @ts-ignore
+        dispatch(setTasksTC(props.id))
+    },[])
     const changeFilterAllHandler = useCallback(() => {
         dispatch(changeFilterAC(props.id, 'all'))
     },[props.id])
