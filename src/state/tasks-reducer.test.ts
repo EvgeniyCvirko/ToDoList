@@ -63,7 +63,7 @@ test( 'correct tasks should be add', ()=>{
 test( 'correct tasks should be add when add Todolist', ()=>{
 
     const action = addToDoAC( {
-        id: "toDoListID1", title: 'What to learn', addedDate: new Date(), order:0
+        id: "toDoListID3", title: 'What to learn', addedDate: new Date(), order:0
     } )
     const endState = tasksReducer(startState, action)
     const key = Object.keys(endState)
