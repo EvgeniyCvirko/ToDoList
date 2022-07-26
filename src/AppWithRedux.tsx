@@ -3,10 +3,9 @@ import './App.css';
 import {AddItem} from "./components/AddItem";
 import {AppBar, Button, IconButton, Toolbar, Typography, Container, Grid, Paper} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {addToDoAC, fetchTodolistsTC,  ToDOListDomainType,} from "./state/todolists-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
+import {addToDoAC, addTodolistsTC, fetchTodolistsTC} from "./state/todolists-reducer";
 import {TodoListWithRedux} from "./ToDoListWithRedux";
+import {useAppDispatch, useAppSelector} from "./state/hooks";
 
 
 export type ToDOListType = {
@@ -17,16 +16,15 @@ export type ToDOListType = {
 
 
 export const AppWithRedux = () => {
-    const dispatch = useDispatch()
-    const toDoLists = useSelector<AppRootStateType, Array<ToDOListDomainType>>(state => state.todolist)
+    const dispatch = useAppDispatch()
+    const toDoLists = useAppSelector(state => state.todolist)
 
     const addTodoList = useCallback((titleTodoList: string) => {
-        const action = addToDoAC(titleTodoList)
+        const action = addTodolistsTC(titleTodoList)
         dispatch(action)
     },[])
 
     useEffect(()=>{
-        // @ts-ignore
         dispatch(fetchTodolistsTC());
     },[])
 
