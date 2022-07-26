@@ -1,6 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import s from "../Todolist.module.css";
-import {Button, IconButton, TextField} from "@material-ui/core";
+import { IconButton, TextField} from "@material-ui/core";
 import {AddBox} from "@material-ui/icons";
 
 type AddItemType = {
@@ -8,7 +8,6 @@ type AddItemType = {
 }
 
 export const AddItem =React.memo((props: AddItemType) => {
-    console.log("AddItemForm")
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 

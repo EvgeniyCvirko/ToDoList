@@ -6,14 +6,12 @@ import {AddItem} from "./components/AddItem";
 import {AppBar, Button, IconButton, Toolbar, Typography, Container, Grid, Paper} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
-    addToDoAC,
     changeFilterAC,
     changeTitleAC, FilterType,
     removeToDoAC,
     todolistsReducer
 } from "./state/todolists-reducer";
 import {
-    addTasksAC,
     changeStatusTasksAC,
     changeTitleTasksAC,
     removeTasksAC, TaskPriority,
@@ -62,12 +60,12 @@ export const AppWithReducer = () => {
 
     const addTodoList = (titleTodoList: string) => {
 
-        const action = addToDoAC(titleTodoList)
-        dispatchToDoLists(action)
-        dispatchToTask(action)
+        // const action = addToDoAC(titleTodoList)
+        // dispatchToDoLists(action)
+        // dispatchToTask(action)
     }
     const addTask = (newTitle: string, toDoListId: string) => {
-        dispatchToTask(addTasksAC(newTitle, toDoListId))
+        // dispatchToTask(addTasksAC(newTitle, toDoListId))
     }
 
     const removeTask = (id: string, toDoListId: string) => {

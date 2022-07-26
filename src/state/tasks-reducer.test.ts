@@ -55,17 +55,16 @@ test( 'correct tasks should be changed title', ()=>{
 })
 test( 'correct tasks should be add', ()=>{
 
-    const action = addTasksAC( 'Car','toDoListID1', )
+    const action = addTasksAC( startState['toDoListID1'][0],'toDoListID1', )
     const endState = tasksReducer(startState, action)
     expect(endState['toDoListID1'].length).toBe(5)
-    expect(endState['toDoListID2'].length).toBe(3)
-    expect(endState['toDoListID1'][0].title).toBe('Car')
-    expect(endState['toDoListID1'][0].status).toBe(TaskStatues.New)
     expect(endState["toDoListID1"][0].id).toBeDefined();
 })
 test( 'correct tasks should be add when add Todolist', ()=>{
 
-    const action = addToDoAC( 'What to learn' )
+    const action = addToDoAC( {
+        id: "toDoListID1", title: 'What to learn', addedDate: new Date(), order:0
+    } )
     const endState = tasksReducer(startState, action)
     const key = Object.keys(endState)
     const newKey = key.find(k => k !== 'toDoListID2' && k !== 'toDoListID1' )
@@ -85,14 +84,12 @@ test( 'correct tasks should be remove when add Todolist', ()=>{
 })
 
 test( 'empty array should be after we set todolists', ()=>{
-
     const action = setTodolistsAC([
         {id: "1", title: 'title1',  addedDate: new Date(), order:0},
         {id: "2", title: 'title2', addedDate: new Date(), order:0},
     ])
     const endState = tasksReducer({}, action)
     const key = Object.keys(endState)
-
     expect( key.length).toBe(2);
     expect(endState['1']).toEqual([]);
     expect(endState['2']).toEqual([]);
@@ -100,7 +97,6 @@ test( 'empty array should be after we set todolists', ()=>{
 })
 
 test( 'correct tasks should be set', ()=>{
-
     const action = SetTasksAC( 'toDoListID1',startState['toDoListID1'] )
     const endState = tasksReducer({
         'toDoListID1': [],

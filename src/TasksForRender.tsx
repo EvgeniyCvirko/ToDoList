@@ -1,10 +1,15 @@
 import React, {useCallback} from "react";
-import {useDispatch} from "react-redux";
-import {changeStatusTasksAC, changeTitleTasksAC, removeTasksAC, TaskStatues} from "./state/tasks-reducer";
+import {
+    changeStatusTasksAC,
+    changeTitleTasksAC,
+    removeTasksTC,
+    TaskStatues
+} from "./state/tasks-reducer";
 import s from "./Todolist.module.css";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "./components/EditableSpan";
 import {Delete} from "@material-ui/icons";
+import {useAppDispatch} from "./state/hooks";
 
 type TasksForRenderType = {
     todolistId: string
@@ -13,7 +18,7 @@ type TasksForRenderType = {
     status: TaskStatues,
 }
 export const TasksForRender = React.memo((props: TasksForRenderType) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const changeTitleTask = useCallback((title: string) => {
         dispatch(changeTitleTasksAC(props.todolistId, props.id, title))
     },[])
@@ -22,7 +27,7 @@ export const TasksForRender = React.memo((props: TasksForRenderType) => {
         dispatch(changeStatusTasksAC(newId, newIsDone ? TaskStatues.Completed : TaskStatues.New, toDoListId))
     }, [])
     const removeTaskHandler = useCallback((newId: string, toDoListId: string) => {
-        dispatch(removeTasksAC(toDoListId, newId))
+        dispatch(removeTasksTC(toDoListId, newId))
     }, [])
     return (
         <div key={props.id} className={props.status === TaskStatues.Completed  ? s.isDone : ''}>
