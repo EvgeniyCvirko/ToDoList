@@ -1,11 +1,11 @@
 import React from 'react';
 import s from './Todolist.module.css'
-import {EditableSpan} from "./components/EditableSpan";
-import {AddItem} from "./components/AddItem";
+import {EditableSpan} from "../components/EditableSpan";
+import {AddItem} from "../components/AddItem";
 import {Button, Checkbox, IconButton} from "@material-ui/core";
 import { Delete} from "@material-ui/icons";
-import {TaskStatues, TaskType} from "./state/tasks-reducer";
-import {FilterType} from "./state/todolists-reducer";
+import {TaskStatues, TaskType} from "../state/tasks-reducer";
+import {FilterType} from "../state/todolists-reducer";
 
 type TodoListPropsType = {
     title: string,

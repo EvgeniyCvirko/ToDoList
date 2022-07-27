@@ -1,5 +1,5 @@
 import React from 'react';
-import b from "./../Todolist.module.css";
+import b from "../todolists/Todolist.module.css";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 import {TaskStatues} from "../state/tasks-reducer";
 

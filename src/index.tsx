@@ -1,22 +1,12 @@
-import React, {useState} from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import './index.css';
-import {App} from './App';
 
 import reportWebVitals from './reportWebVitals';
-import {AppWithReducer} from "./AppWithReducer";
-import {AppWithRedux} from "./AppWithRedux";
+import {AppWithRedux} from "./app/AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./state/store";
 // @ts-ignore
 import {createRoot} from "react-dom/client";
-
-/*ReactDOM.render(
-  <Provider store={store}>
-    <AppWithRedux />
-  </Provider>,
-  document.getElementById('root')
-);*/
 
 const container = document.getElementById('root');
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript

@@ -1,6 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import s from "../Todolist.module.css";
-
+import React from 'react';
 
 type ButtonPropsType={
     name: string,

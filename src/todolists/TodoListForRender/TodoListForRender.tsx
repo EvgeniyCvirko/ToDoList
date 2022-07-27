@@ -1,24 +1,24 @@
 import React, {useCallback, useEffect} from 'react';
-import s from './Todolist.module.css'
-import {EditableSpan} from "./components/EditableSpan";
-import {AddItem} from "./components/AddItem";
+import s from '../Todolist.module.css'
+import {EditableSpan} from "../../components/EditableSpan";
+import {AddItem} from "../../components/AddItem";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import { addTasksTC, setTasksTC, TaskStatues} from "./state/tasks-reducer";
+import { addTasksTC, setTasksTC, TaskStatues} from "../../state/tasks-reducer";
 import {
     changeFilterAC,
     removeTodolistsTC,
     ToDOListDomainType, updateTodolistTitleTC
-} from "./state/todolists-reducer";
-import {TasksForRender} from "./TasksForRender";
-import {useAppDispatch, useAppSelector} from "./state/hooks";
+} from "../../state/todolists-reducer";
+import {Tasks} from "./Tasks/Tasks";
+import {useAppDispatch, useAppSelector} from "../../state/hooks";
 
 type TodoListPropsType = {
     id: string,
     toDoLists: ToDOListDomainType,
 }
 
-export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
+export const TodoListForRender =React.memo((props: TodoListPropsType) => {
 
     const tasks = useAppSelector(state => state.task[props.id] )
     const dispatch = useAppDispatch()
@@ -61,7 +61,7 @@ export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
     }
     const ulList = tasksForRender.length
         ? tasksForRender.map(el =>
-            <TasksForRender id={el.id}
+            <Tasks id={el.id}
                             title={el.title}
                             status={el.status}
                             key={el.id}

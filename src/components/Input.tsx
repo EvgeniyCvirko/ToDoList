@@ -1,5 +1,5 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import s from "../Todolist.module.css";
+import React, {ChangeEvent, KeyboardEvent} from 'react';
+import s from "../todolists/Todolist.module.css";
 
 
 type InputPropsType = {

@@ -2,20 +2,20 @@ import React, {useCallback} from "react";
 import {
     removeTasksTC,
     TaskStatues, updateTaskTC
-} from "./state/tasks-reducer";
-import s from "./Todolist.module.css";
+} from "../../../state/tasks-reducer";
+import s from "../../Todolist.module.css";
 import {Checkbox, IconButton} from "@material-ui/core";
-import {EditableSpan} from "./components/EditableSpan";
+import {EditableSpan} from "../../../components/EditableSpan";
 import {Delete} from "@material-ui/icons";
-import {useAppDispatch} from "./state/hooks";
+import {useAppDispatch} from "../../../state/hooks";
 
-type TasksForRenderType = {
+type TasksType = {
     todolistId: string
     id: string,
     title: string,
     status: TaskStatues,
 }
-export const TasksForRender = React.memo((props: TasksForRenderType) => {
+export const Tasks = React.memo((props: TasksType) => {
     const dispatch = useAppDispatch()
     const changeTitleTask = useCallback((title: string) => {
         dispatch(updateTaskTC(props.todolistId, props.id, {title} ))
