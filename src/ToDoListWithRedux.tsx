@@ -34,6 +34,7 @@ export const TodoListWithRedux =React.memo((props: TodoListPropsType) => {
     const changeFilterCompleteHandler = useCallback(() => {
         dispatch(changeFilterAC(props.id, 'complete'))
     },[props.id])
+
     const changeTitleTodoList = useCallback((title: string) => {
         dispatch(updateTodolistTitleTC(props.id,title))
     },[])
