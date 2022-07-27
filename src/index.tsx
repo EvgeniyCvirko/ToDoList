@@ -1,6 +1,5 @@
 import React from 'react';
 import './index.css';
-
 import reportWebVitals from './reportWebVitals';
 import {AppWithRedux} from "./app/AppWithRedux";
 import {Provider} from "react-redux";
