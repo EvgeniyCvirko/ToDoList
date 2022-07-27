@@ -18,7 +18,7 @@ type GetTaskType = {
     error: string
 }
 
-type ModelTaskUpdateType = {
+export type ModelTaskUpdateType = {
     title: string
     description: string
     completed: boolean
@@ -62,6 +62,6 @@ export const tasksApi = {
         return instance.post<ResponseType<{ item: TaskType }>>(`/todo-lists/${todolistId}/tasks`,{title})
     },
     updateTask(todolistId: string, taskId: string, model: ModelTaskUpdateType){
-        return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, {...model})
+        return instance.put<ResponseType<{item:TaskType }>>(`/todo-lists/${todolistId}/tasks/${taskId}`, {...model})
     }
 }

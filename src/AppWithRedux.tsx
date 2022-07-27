@@ -3,7 +3,7 @@ import './App.css';
 import {AddItem} from "./components/AddItem";
 import {AppBar, Button, IconButton, Toolbar, Typography, Container, Grid, Paper} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {addToDoAC, addTodolistsTC, fetchTodolistsTC} from "./state/todolists-reducer";
+import { addTodolistsTC, fetchTodolistsTC} from "./state/todolists-reducer";
 import {TodoListWithRedux} from "./ToDoListWithRedux";
 import {useAppDispatch, useAppSelector} from "./state/hooks";
 

@@ -101,7 +101,6 @@ export const removeTodolistsTC = (todolistId: string) => {
             })
     }
 }
-
 export const addTodolistsTC = (title: string) => {
     return (dispatch:Dispatch<ReturnType<typeof addToDoAC>>) =>{
         toDoListsApi.createTodolist(title)
@@ -110,7 +109,6 @@ export const addTodolistsTC = (title: string) => {
             })
     }
 }
-
 export const updateTodolistTitleTC = (todolistId: string, title: string ) => {
     return (dispatch:Dispatch<ReturnType<typeof changeTitleAC>>) =>{
         toDoListsApi.updateTodolist(todolistId,title)

@@ -12,8 +12,6 @@ import {
     todolistsReducer
 } from "./state/todolists-reducer";
 import {
-    changeStatusTasksAC,
-    changeTitleTasksAC,
     removeTasksAC, TaskPriority,
     tasksReducer,
     TaskStatues
@@ -72,10 +70,10 @@ export const AppWithReducer = () => {
         dispatchToTask(removeTasksAC(toDoListId,id))
     }
     const statusTask = (status: TaskStatues, id: string, toDoListId: string) => {
-        dispatchToTask(changeStatusTasksAC(id,status,toDoListId))
+        // dispatchToTask(changeStatusTasksAC(id,status,toDoListId))
     }
     const changeTitleTask = (TodoList_ID: string, id: string, title: string) => {
-        dispatchToTask(changeTitleTasksAC(TodoList_ID,id,title))
+        // dispatchToTask(changeTitleTasksAC(TodoList_ID,id,title))
     }
 
     const todoListForRender = toDoLists.map(tl => {

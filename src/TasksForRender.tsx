@@ -1,9 +1,7 @@
 import React, {useCallback} from "react";
 import {
-    changeStatusTasksAC,
-    changeTitleTasksAC,
     removeTasksTC,
-    TaskStatues
+    TaskStatues, updateTaskTC
 } from "./state/tasks-reducer";
 import s from "./Todolist.module.css";
 import {Checkbox, IconButton} from "@material-ui/core";
@@ -20,15 +18,21 @@ type TasksForRenderType = {
 export const TasksForRender = React.memo((props: TasksForRenderType) => {
     const dispatch = useAppDispatch()
     const changeTitleTask = useCallback((title: string) => {
-        dispatch(changeTitleTasksAC(props.todolistId, props.id, title))
+        dispatch(updateTaskTC(props.todolistId, props.id, {title} ))
     },[])
-    const onChangeIsDoneHandler = useCallback((newIsDone: boolean, newId: string, toDoListId: string) => {
 
-        dispatch(changeStatusTasksAC(newId, newIsDone ? TaskStatues.Completed : TaskStatues.New, toDoListId))
+    const onChangeIsDoneHandler = useCallback((isDone: boolean, newId: string, toDoListId: string) => {
+        let status
+        isDone ? status = 2 : status = 0;
+        dispatch(updateTaskTC(toDoListId, newId, {status} ))
     }, [])
+
     const removeTaskHandler = useCallback((newId: string, toDoListId: string) => {
         dispatch(removeTasksTC(toDoListId, newId))
     }, [])
+
+    console.log('currentStatus', props.status)
+
     return (
         <div key={props.id} className={props.status === TaskStatues.Completed  ? s.isDone : ''}>
             <Checkbox checked={props.status === TaskStatues.Completed}
