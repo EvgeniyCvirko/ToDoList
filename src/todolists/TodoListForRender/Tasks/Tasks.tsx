@@ -1,7 +1,5 @@
 import React, {useCallback} from "react";
 import {
-    changeStatusTasksAC,
-    changeTitleTasksAC,
     removeTasksTC,
     TaskStatues, updateTaskTC
 } from "../../../state/tasks-reducer";
