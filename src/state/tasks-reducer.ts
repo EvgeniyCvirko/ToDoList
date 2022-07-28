@@ -2,6 +2,7 @@ import {AddToDoActionType, RemoveToDoActionType, SetToDoListsActionType} from ".
 import {ModelTaskUpdateType, tasksApi} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
+import {appSetErrorAC, AppSetErrorType, appSetStatusAC, AppSetStatusType} from "./App-reducer";
 //type
 export type taskObjType = {
     [key: string]: TaskType[]
@@ -19,12 +20,14 @@ export type TaskType = {
     order: number
     addedDate: Date
 }
+
 export enum TaskStatues {
     New = 0,
     InProgress = 1,
     Completed = 2,
     Draft = 3,
 }
+
 export enum TaskPriority {
     Low = 0,
     Middle = 1,
@@ -32,6 +35,7 @@ export enum TaskPriority {
     Urgently = 3,
     Later = 4,
 }
+
 type ActionTasksType =
     | AddToDoActionType
     | RemoveToDoActionType
@@ -64,8 +68,9 @@ export const tasksReducer = (state: taskObjType = initialState, action: ActionTa
                 [action.todolistId]: state[action.todolistId].filter(t => t.id !== action.id)
             }
         case "ADD-TASKS": {
-            return {...state,
-            [action.todolistId] : [action.task,...state[action.todolistId]]
+            return {
+                ...state,
+                [action.todolistId]: [action.task, ...state[action.todolistId]]
             }
         }
         case "ADD-TODOLIST":
@@ -104,18 +109,26 @@ export const SetTasksAC = (todolistId: string, tasks: Array<TaskType>) =>
     ({type: "SET-TASKS", todolistId, tasks} as const)
 //thunk
 export const setTasksTC = (todolistId: string) => {
-    return (dispatch: Dispatch<ReturnType<typeof SetTasksAC>>) => {
+    return (dispatch: Dispatch<ReturnType<typeof SetTasksAC> | AppSetStatusType>) => {
+        dispatch(appSetStatusAC('loading'))
         tasksApi.getTask(todolistId)
             .then(res => {
                 dispatch(SetTasksAC(todolistId, res.data.items))
+                dispatch(appSetStatusAC('succeeded'))
             })
     }
 }
 export const addTasksTC = (newTitle: string, todolistId: string) => {
-    return (dispatch: Dispatch<ReturnType<typeof addTasksAC>>) => {
+    return (dispatch: Dispatch<ReturnType<typeof addTasksAC> | AppSetErrorType | AppSetStatusType>) => {
+        dispatch(appSetStatusAC('loading'))
         tasksApi.createTask(newTitle, todolistId)
             .then(res => {
-                dispatch(addTasksAC(res.data.data.item, todolistId))
+                if (res.data.resultCode === 0) {
+                    dispatch(addTasksAC(res.data.data.item, todolistId))
+                    dispatch(appSetStatusAC('succeeded'))
+                } else if (res.data.resultCode) {
+                    dispatch(appSetErrorAC(res.data.messages[0]))
+                }
             })
     }
 }
@@ -129,7 +142,6 @@ export const removeTasksTC = (todolistId: string, taskId: string) => {
             })
     }
 }
-
 export const updateTaskTC = (todolistId: string, taskId: string, model: ModelDomainTaskType) => {
     return (dispatch: Dispatch<ReturnType<typeof updateTasksAC>>, getState: () => AppRootStateType) => {
         const state = getState()

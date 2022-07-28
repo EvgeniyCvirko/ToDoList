@@ -1,5 +1,6 @@
 import {toDoListsApi} from "../api/todolists-api";
 import {Dispatch} from "redux";
+import {appSetStatusAC, AppSetStatusType} from "./App-reducer";
 //types
 export type SetToDoListsActionType = ReturnType<typeof setTodolistsAC>
 export type AddToDoActionType = ReturnType<typeof addToDoAC>
@@ -46,10 +47,12 @@ export const addToDoAC = (todolist: TodoListType ) => ({type:"ADD-TODOLIST", tod
 export const setTodolistsAC = (todolists: Array<TodoListType> ) => ({type:"SET-TODOLISTS", todolists} as const)
 //thunk
 export const fetchTodolistsTC = () => {
-    return (dispatch:Dispatch<ReturnType<typeof setTodolistsAC>>) =>{
+    return (dispatch:Dispatch<ReturnType<typeof setTodolistsAC> | AppSetStatusType >) =>{
+        dispatch(appSetStatusAC('loading'))
     toDoListsApi.getTodolists()
         .then((res) => {
             dispatch(setTodolistsAC(res.data))
+            dispatch(appSetStatusAC('succeeded'))
         })
     }
 }
@@ -64,10 +67,12 @@ export const removeTodolistsTC = (todolistId: string) => {
     }
 }
 export const addTodolistsTC = (title: string) => {
-    return (dispatch:Dispatch<ReturnType<typeof addToDoAC>>) =>{
+    return (dispatch:Dispatch<ReturnType<typeof addToDoAC> | AppSetStatusType >) =>{
+        dispatch(appSetStatusAC('loading'))
         toDoListsApi.createTodolist(title)
             .then((res) => {
                 dispatch(addToDoAC(res.data.data.item))
+                dispatch(appSetStatusAC('succeeded'))
             })
     }
 }
