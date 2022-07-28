@@ -20,9 +20,8 @@ export type TodoListType = {
     addedDate: Date,
     order: number,
 }
-
+//state
 const initialState: ToDOListDomainType[] =[]
-
 export const todolistsReducer = (state: Array<ToDOListDomainType>=initialState, action: ActionType):  ToDOListDomainType[] => {
     switch (action.type) {
         case "CHANGE-FILTER":
