@@ -3,7 +3,7 @@ import {
     changeStatusTasksAC,
     changeTitleTasksAC,
     removeTasksTC,
-    TaskStatues
+    TaskStatues, updateTaskTC
 } from "../../../state/tasks-reducer";
 import s from "../../Todolist.module.css";
 import {Checkbox, IconButton} from "@material-ui/core";
@@ -20,11 +20,12 @@ type TasksForRenderType = {
 export const Tasks = React.memo((props: TasksForRenderType) => {
     const dispatch = useAppDispatch()
     const changeTitleTask = useCallback((title: string) => {
-        dispatch(changeTitleTasksAC(props.todolistId, props.id, title))
+        dispatch(updateTaskTC(props.todolistId, props.id, {title}))
     },[])
     const onChangeIsDoneHandler = useCallback((newIsDone: boolean, newId: string, toDoListId: string) => {
-
-        dispatch(changeStatusTasksAC(newId, newIsDone ? TaskStatues.Completed : TaskStatues.New, toDoListId))
+        let status
+        newIsDone ? status = 2 : status = 0
+        dispatch(updateTaskTC(toDoListId, newId, {status} ))
     }, [])
     const removeTaskHandler = useCallback((newId: string, toDoListId: string) => {
         dispatch(removeTasksTC(toDoListId, newId))

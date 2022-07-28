@@ -18,7 +18,7 @@ type GetTaskType = {
     error: string
 }
 
-type ModelTaskUpdateType = {
+export type ModelTaskUpdateType = {
     title: string
     description: string
     completed: boolean
