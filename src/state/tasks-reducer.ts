@@ -126,9 +126,17 @@ export const addTasksTC = (newTitle: string, todolistId: string) => {
                 if (res.data.resultCode === 0) {
                     dispatch(addTasksAC(res.data.data.item, todolistId))
                     dispatch(appSetStatusAC('succeeded'))
-                } else if (res.data.resultCode) {
-                    dispatch(appSetErrorAC(res.data.messages[0]))
+                } else {
+                    if (res.data.resultCode){
+                        dispatch(appSetErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(appSetErrorAC("Some error"))
+                    }
                 }
+            })
+            .catch(error => {
+                dispatch(appSetErrorAC(error.message))
+                dispatch(appSetStatusAC("failed"))
             })
     }
 }
@@ -143,7 +151,7 @@ export const removeTasksTC = (todolistId: string, taskId: string) => {
     }
 }
 export const updateTaskTC = (todolistId: string, taskId: string, model: ModelDomainTaskType) => {
-    return (dispatch: Dispatch<ReturnType<typeof updateTasksAC>>, getState: () => AppRootStateType) => {
+    return (dispatch: Dispatch<ReturnType<typeof updateTasksAC> | AppSetErrorType | AppSetStatusType>, getState: () => AppRootStateType) => {
         const state = getState()
         const task = state.task[todolistId].find(t => t.id === taskId)
         if (!task) {
@@ -162,7 +170,20 @@ export const updateTaskTC = (todolistId: string, taskId: string, model: ModelDom
         }
         tasksApi.updateTask(todolistId, taskId, apiModel)
             .then(res => {
-                dispatch(updateTasksAC(todolistId, taskId, model))
+                if(res.data.resultCode === 0) {
+                    dispatch(updateTasksAC(todolistId, taskId, model))
+                } else{
+                    if(res.data.messages.length){
+                        dispatch(appSetErrorAC(res.data.messages[0]))
+                    }else {
+                        dispatch(appSetErrorAC('some error occured'))
+                    }
+                    dispatch(appSetStatusAC("failed"))
+                }
+            })
+            .catch((error) =>{
+                dispatch(appSetErrorAC(error.message))
+                dispatch(appSetStatusAC("failed"))
             })
     }
 }
