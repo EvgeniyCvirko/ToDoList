@@ -1,6 +1,7 @@
 import {toDoListsApi} from "../api/todolists-api";
 import {Dispatch} from "redux";
-import {appSetStatusAC, AppSetStatusType} from "./App-reducer";
+import {AppSetErrorType, appSetStatusAC, AppSetStatusType} from "./App-reducer";
+import {handelServerAppError, handelServerNetworkError} from "../utils/error-utils";
 //types
 export type SetToDoListsActionType = ReturnType<typeof setTodolistsAC>
 export type AddToDoActionType = ReturnType<typeof addToDoAC>
@@ -21,6 +22,13 @@ export type TodoListType = {
     addedDate: Date,
     order: number,
 }
+export type TodolistThunkType =
+    | ReturnType<typeof setTodolistsAC>
+    |ReturnType<typeof addToDoAC>
+    |ReturnType<typeof removeToDoAC>
+    |ReturnType<typeof changeTitleAC>
+    | AppSetErrorType
+    | AppSetStatusType
 //state
 const initialState: ToDOListDomainType[] =[]
 export const todolistsReducer = (state: Array<ToDOListDomainType>=initialState, action: ActionType):  ToDOListDomainType[] => {
@@ -47,40 +55,57 @@ export const addToDoAC = (todolist: TodoListType ) => ({type:"ADD-TODOLIST", tod
 export const setTodolistsAC = (todolists: Array<TodoListType> ) => ({type:"SET-TODOLISTS", todolists} as const)
 //thunk
 export const fetchTodolistsTC = () => {
-    return (dispatch:Dispatch<ReturnType<typeof setTodolistsAC> | AppSetStatusType >) =>{
+    return (dispatch:Dispatch<TodolistThunkType>) =>{
         dispatch(appSetStatusAC('loading'))
     toDoListsApi.getTodolists()
         .then((res) => {
             dispatch(setTodolistsAC(res.data))
             dispatch(appSetStatusAC('succeeded'))
         })
+        .catch((error) =>{
+            handelServerNetworkError(error,dispatch)
+        })
     }
 }
 export const removeTodolistsTC = (todolistId: string) => {
-    return (dispatch:Dispatch<ReturnType<typeof removeToDoAC>>) =>{
+    return (dispatch:Dispatch<TodolistThunkType>) =>{
         toDoListsApi.deleteTodolist(todolistId)
             .then((res) => {
                 if(res.data.resultCode === 0) {
                     dispatch(removeToDoAC(todolistId))
+                }else{
+                    handelServerAppError(res.data, dispatch )
                 }
+            })
+            .catch((error) =>{
+                handelServerNetworkError(error,dispatch)
             })
     }
 }
 export const addTodolistsTC = (title: string) => {
-    return (dispatch:Dispatch<ReturnType<typeof addToDoAC> | AppSetStatusType >) =>{
+    return (dispatch:Dispatch<TodolistThunkType >) =>{
         dispatch(appSetStatusAC('loading'))
         toDoListsApi.createTodolist(title)
             .then((res) => {
-                dispatch(addToDoAC(res.data.data.item))
-                dispatch(appSetStatusAC('succeeded'))
+                if(res.data.resultCode === 0) {
+                    dispatch(addToDoAC(res.data.data.item))
+                }else{
+                    handelServerAppError(res.data, dispatch )
+                }
+            })
+            .catch((error) =>{
+                handelServerNetworkError(error,dispatch)
             })
     }
 }
 export const updateTodolistTitleTC = (todolistId: string, title: string ) => {
-    return (dispatch:Dispatch<ReturnType<typeof changeTitleAC>>) =>{
+    return (dispatch:Dispatch<TodolistThunkType>) =>{
         toDoListsApi.updateTodolist(todolistId,title)
             .then((res) => {
                 dispatch(changeTitleAC(todolistId, title))
+            })
+            .catch((error) =>{
+                handelServerNetworkError(error,dispatch)
             })
     }
 }
