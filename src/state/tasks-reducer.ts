@@ -1,8 +1,9 @@
 import {AddToDoActionType, RemoveToDoActionType, SetToDoListsActionType} from "./todolists-reducer";
-import {ModelTaskUpdateType, tasksApi} from "../api/todolists-api";
+import {ModelTaskUpdateType, ResponseType, tasksApi} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
 import {appSetErrorAC, AppSetErrorType, appSetStatusAC, AppSetStatusType} from "./App-reducer";
+import {handelServerAppError, handelServerNetworkError} from "../utils/error-utils";
 //type
 export type taskObjType = {
     [key: string]: TaskType[]
@@ -53,6 +54,13 @@ export type ModelDomainTaskType = {
     startDate?: Date
     deadline?: Date
 }
+export type TaskThunkType =
+    | ReturnType<typeof SetTasksAC>
+|ReturnType<typeof addTasksAC>
+|ReturnType<typeof removeTasksAC>
+|ReturnType<typeof updateTasksAC>
+    | AppSetErrorType
+    | AppSetStatusType
 //state
 const initialState: taskObjType = {}
 export const tasksReducer = (state: taskObjType = initialState, action: ActionTasksType): taskObjType => {
@@ -109,7 +117,7 @@ export const SetTasksAC = (todolistId: string, tasks: Array<TaskType>) =>
     ({type: "SET-TASKS", todolistId, tasks} as const)
 //thunk
 export const setTasksTC = (todolistId: string) => {
-    return (dispatch: Dispatch<ReturnType<typeof SetTasksAC> | AppSetStatusType>) => {
+    return (dispatch: Dispatch<TaskThunkType>) => {
         dispatch(appSetStatusAC('loading'))
         tasksApi.getTask(todolistId)
             .then(res => {
@@ -119,7 +127,7 @@ export const setTasksTC = (todolistId: string) => {
     }
 }
 export const addTasksTC = (newTitle: string, todolistId: string) => {
-    return (dispatch: Dispatch<ReturnType<typeof addTasksAC> | AppSetErrorType | AppSetStatusType>) => {
+    return (dispatch: Dispatch<TaskThunkType> ) => {
         dispatch(appSetStatusAC('loading'))
         tasksApi.createTask(newTitle, todolistId)
             .then(res => {
@@ -127,31 +135,31 @@ export const addTasksTC = (newTitle: string, todolistId: string) => {
                     dispatch(addTasksAC(res.data.data.item, todolistId))
                     dispatch(appSetStatusAC('succeeded'))
                 } else {
-                    if (res.data.resultCode){
-                        dispatch(appSetErrorAC(res.data.messages[0]))
-                    } else {
-                        dispatch(appSetErrorAC("Some error"))
+                    handelServerAppError(res.data, dispatch )
                     }
-                }
             })
             .catch(error => {
-                dispatch(appSetErrorAC(error.message))
-                dispatch(appSetStatusAC("failed"))
+                handelServerNetworkError(error,dispatch)
             })
     }
 }
 export const removeTasksTC = (todolistId: string, taskId: string) => {
-    return (dispatch: Dispatch<ReturnType<typeof removeTasksAC>>) => {
+    return (dispatch: Dispatch<TaskThunkType>) => {
         tasksApi.deleteTasks(todolistId, taskId)
             .then(res => {
                 if (res.data.resultCode === 0) {
                     dispatch(removeTasksAC(todolistId, taskId))
+                }else {
+                    handelServerAppError(res.data, dispatch )
                 }
+            })
+            .catch(error => {
+                handelServerNetworkError(error,dispatch)
             })
     }
 }
 export const updateTaskTC = (todolistId: string, taskId: string, model: ModelDomainTaskType) => {
-    return (dispatch: Dispatch<ReturnType<typeof updateTasksAC> | AppSetErrorType | AppSetStatusType>, getState: () => AppRootStateType) => {
+    return (dispatch: Dispatch<TaskThunkType>, getState: () => AppRootStateType) => {
         const state = getState()
         const task = state.task[todolistId].find(t => t.id === taskId)
         if (!task) {
@@ -173,17 +181,11 @@ export const updateTaskTC = (todolistId: string, taskId: string, model: ModelDom
                 if(res.data.resultCode === 0) {
                     dispatch(updateTasksAC(todolistId, taskId, model))
                 } else{
-                    if(res.data.messages.length){
-                        dispatch(appSetErrorAC(res.data.messages[0]))
-                    }else {
-                        dispatch(appSetErrorAC('some error occured'))
-                    }
-                    dispatch(appSetStatusAC("failed"))
+                    handelServerAppError(res.data, dispatch )
                 }
             })
             .catch((error) =>{
-                dispatch(appSetErrorAC(error.message))
-                dispatch(appSetStatusAC("failed"))
+                handelServerNetworkError(error,dispatch)
             })
     }
 }
