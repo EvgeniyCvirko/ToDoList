@@ -24,9 +24,9 @@ export type TodoListType = {
 }
 export type TodolistThunkType =
     | ReturnType<typeof setTodolistsAC>
-    |ReturnType<typeof addToDoAC>
-    |ReturnType<typeof removeToDoAC>
-    |ReturnType<typeof changeTitleAC>
+    | ReturnType<typeof addToDoAC>
+    | ReturnType<typeof removeToDoAC>
+    | ReturnType<typeof changeTitleAC>
     | AppSetErrorType
     | AppSetStatusType
 //state

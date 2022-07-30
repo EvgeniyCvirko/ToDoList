@@ -1,6 +1,7 @@
 import axios from "axios";
 import {TodoListType} from "../state/todolists-reducer";
 import {TaskType} from "../state/tasks-reducer";
+import {LoginStateType} from "../state/login-reducer";
 
 
 type CreateTodolistDataType = {
@@ -50,7 +51,6 @@ export const toDoListsApi = {
         return instance.put<ResponseType>(`/todo-lists/${todolistId}`, {title})
     },
 }
-
 export const tasksApi = {
     getTask(todolistId: string) {
         return instance.get<GetTaskType>(`/todo-lists/${todolistId}/tasks`,)
@@ -63,5 +63,16 @@ export const tasksApi = {
     },
     updateTask(todolistId: string, taskId: string, model: ModelTaskUpdateType){
         return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, {...model})
+    }
+}
+export const loginApi ={
+    getAuth(){
+        return instance.get('/auth/me')
+},
+    createLogin(loginState: LoginStateType){
+        return instance.post<ResponseType<{userId?: string}>>('/auth/login', loginState)
+    },
+    deleteLogin(){
+        return instance.delete<ResponseType>('/auth/login')
     }
 }

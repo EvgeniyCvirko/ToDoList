@@ -1,0 +1,21 @@
+import {loginReducer, setLoginForm} from "./login-reducer";
+
+test("loginState should be after add",()=>{
+    const startState = {
+        isAuth: false,
+        loginState : {
+            email: '',
+            password: '',
+            rememberMe: false
+        }
+    }
+    const newState = {
+        email: 'EC@mai.ru',
+        password: '123',
+        rememberMe: true
+    }
+    const endState = loginReducer(startState, setLoginForm(newState ))
+    expect(endState.loginState.email).toBe('EC@mai.ru')
+    expect(endState.loginState.password).toBe('123')
+    expect(endState.loginState.rememberMe).toBe(true)
+})
