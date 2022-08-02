@@ -1,20 +1,28 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {AppBar, Button, IconButton, Toolbar, Typography, Container, LinearProgress} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {TodolistRedux} from "../todolists/TodolistRedux";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
-import {useAppSelector} from "../state/hooks";
+import {useAppDispatch, useAppSelector} from "../state/hooks";
 import {Login} from "../components/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
+import {CircularProgress} from "@mui/material";
+import {setIsAuthTC} from "../state/App-reducer";
 
 export const AppWithRedux = () => {
+    console.log('render App')
     const status = useAppSelector(state => state.app.status)
-    const isLogin = useAppSelector<boolean>(state => state.login.isAuth)
-    /*if (!isLogin) {
-        debugger
-        return <Navigate to={'/login'}/>
-    }*/
+    const isAuth = useAppSelector<boolean>(state => state.app.isAuth)
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(setIsAuthTC())
+    }, [])
+
+    if (!isAuth) {
+
+        return <CircularProgress/>
+    }
     return (
             <div className='app'>
                 <ErrorSnackbar/>

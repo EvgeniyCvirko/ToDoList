@@ -11,24 +11,25 @@ export type LoginStateType = {
     rememberMe: boolean
 }
 export type ReducerStateType = {
-    isAuth:boolean;
+    isLogin:boolean;
     loginState:LoginStateType
 }
 
 type LoginActionType =
     | ReturnType<typeof setLoginForm>
-    | ReturnType<typeof setIsAuth>
+    | SetIsLoginType
 
+export type SetIsLoginType = ReturnType<typeof setIsLogin>
 
 export type LoginThunkType =
     | ReturnType<typeof setLoginForm>
-    | ReturnType<typeof setIsAuth>
+    | SetIsLoginType
     | AppSetErrorType
     | AppSetStatusType
 
 //state
 const initialState: ReducerStateType = {
-    isAuth: false,
+    isLogin: false,
     loginState : {
         email: '',
         password: '',
@@ -38,8 +39,8 @@ const initialState: ReducerStateType = {
 
 export const loginReducer = (state: ReducerStateType = initialState, action: LoginActionType) => {
     switch (action.type) {
-        case "SET-IS-AUTH":
-            return {...state, isAuth:action.value}
+        case "SET-IS-LOGIN":
+            return {...state, isLogin:action.value}
         case "SET-LOGIN":
             // return {...state, email: action.stateLogin.email, password: action.stateLogin.password, rememberMe:action.stateLogin.rememberMe}
             return {...state, loginState: action.stateLogin}
@@ -50,7 +51,7 @@ export const loginReducer = (state: ReducerStateType = initialState, action: Log
 }
 //action
 export const setLoginForm = (stateLogin: LoginStateType) => ({type: "SET-LOGIN", stateLogin} as const)
-export const setIsAuth = (value: boolean) => ({type: "SET-IS-AUTH", value} as const)
+export const setIsLogin = (value: boolean) => ({type: "SET-IS-LOGIN", value} as const)
 // export const setLoginForm = (email: string,  password: string,rememberMe: boolean ) => ({type: "SET-LOGIN", email, password, rememberMe} as const)
 //thunk
 export const setLoginTC = (stateLogin: LoginStateType) => {
@@ -60,7 +61,7 @@ export const setLoginTC = (stateLogin: LoginStateType) => {
         loginApi.createLogin(stateLogin)
             .then((res) => {
                     if (res.data.resultCode === 0) {
-                        dispatch(setIsAuth(true))
+                        dispatch(setIsLogin(true))
                         dispatch(setLoginForm(stateLogin))
                         dispatch(appSetStatusAC('succeeded'))
                     } else {
@@ -76,3 +77,4 @@ export const setLoginTC = (stateLogin: LoginStateType) => {
 
     }
 }
+

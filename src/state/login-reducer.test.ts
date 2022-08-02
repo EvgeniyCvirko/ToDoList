@@ -2,7 +2,7 @@ import {loginReducer, setLoginForm} from "./login-reducer";
 
 test("loginState should be after add",()=>{
     const startState = {
-        isAuth: false,
+        isLogin: false,
         loginState : {
             email: '',
             password: '',

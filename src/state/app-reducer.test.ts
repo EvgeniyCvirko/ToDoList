@@ -2,7 +2,8 @@ import {appReducer, appSetErrorAC, appSetStatusAC, InitialStateType} from "./App
 
 const startState:  InitialStateType={
     status: 'idle',
-    error: null
+    error: null,
+    isAuth: false
 }
 test('correct status should be changed status', () => {
 const newStatus = 'loading'

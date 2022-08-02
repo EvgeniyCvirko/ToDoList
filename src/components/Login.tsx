@@ -7,7 +7,7 @@ import {Navigate} from "react-router-dom";
 
 export const Login = () => {
     const dispatch = useAppDispatch()
-    const isLogin = useAppSelector<boolean>(state => state.login.isAuth)
+    const isLogin = useAppSelector<boolean>(state => state.login.isLogin)
 
         const formik = useFormik({
             validate: (values) => {
@@ -31,10 +31,11 @@ export const Login = () => {
                 dispatch(setLoginTC(formik.values))
             },
         })
-    /*if (isLogin) {
-        debugger
+    console.log('isLogin' + " " + isLogin)
+    if (isLogin) {
+        console.log('isLogin')
         return <Navigate to={'/'}/>
-    }*/
+    }
         return <Grid container justifyContent={'center'}>
             <Grid item justifyContent={'center'}>
                 <form onSubmit={formik.handleSubmit}>
