@@ -42,7 +42,6 @@ export const loginReducer = (state: ReducerStateType = initialState, action: Log
         case "SET-IS-LOGIN":
             return {...state, isLogin:action.value}
         case "SET-LOGIN":
-            // return {...state, email: action.stateLogin.email, password: action.stateLogin.password, rememberMe:action.stateLogin.rememberMe}
             return {...state, loginState: action.stateLogin}
         default :
             return state
@@ -52,7 +51,6 @@ export const loginReducer = (state: ReducerStateType = initialState, action: Log
 //action
 export const setLoginForm = (stateLogin: LoginStateType) => ({type: "SET-LOGIN", stateLogin} as const)
 export const setIsLogin = (value: boolean) => ({type: "SET-IS-LOGIN", value} as const)
-// export const setLoginForm = (email: string,  password: string,rememberMe: boolean ) => ({type: "SET-LOGIN", email, password, rememberMe} as const)
 //thunk
 export const setLoginTC = (stateLogin: LoginStateType) => {
 
@@ -65,8 +63,9 @@ export const setLoginTC = (stateLogin: LoginStateType) => {
                         dispatch(setLoginForm(stateLogin))
                         dispatch(appSetStatusAC('succeeded'))
                     } else {
-                        if (res.data.resultCode === 1) {
-                            dispatch(appSetErrorAC(' Request is invalid'))
+                        if (res.data.resultCode) {
+                            dispatch(appSetErrorAC(res.data.messages[0]))
+                            dispatch(appSetStatusAC('failed'))
                         }
                     }
                 }
@@ -78,3 +77,27 @@ export const setLoginTC = (stateLogin: LoginStateType) => {
     }
 }
 
+export const setLogoutTC = () => {
+
+    return (dispatch: Dispatch<LoginThunkType>) => {
+        dispatch(appSetStatusAC('loading'))
+        loginApi.deleteLogin()
+            .then((res) => {
+                    if (res.data.resultCode === 0) {
+                        dispatch(setIsLogin(false))
+                        dispatch(appSetStatusAC('succeeded'))
+                    } else {
+                        if (res.data.resultCode) {
+                            console.log(res.data.resultCode)
+                            dispatch(appSetErrorAC(res.data.messages[0]))
+                            dispatch(appSetStatusAC('failed'))
+                        }
+                    }
+                }
+            )
+            .catch(error => {
+                handelServerNetworkError(error, dispatch)
+            })
+
+    }
+}

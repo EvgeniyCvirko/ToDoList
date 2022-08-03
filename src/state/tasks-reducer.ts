@@ -101,6 +101,7 @@ export const tasksReducer = (state: taskObjType = initialState, action: ActionTa
             return {
                 ...state,
                 [action.todolistId]: action.tasks
+
             }
         default:
             return state

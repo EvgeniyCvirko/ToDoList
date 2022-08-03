@@ -31,9 +31,7 @@ export const Login = () => {
                 dispatch(setLoginTC(formik.values))
             },
         })
-    console.log('isLogin' + " " + isLogin)
     if (isLogin) {
-        console.log('isLogin')
         return <Navigate to={'/'}/>
     }
         return <Grid container justifyContent={'center'}>
