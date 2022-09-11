@@ -30,17 +30,17 @@ export const loginReducer = slice.reducer
 //thunk
 export const setLoginTC = (stateLogin: LoginStateType): AppThunk => {
     return dispatch => {
-        dispatch(appSetStatusAC('loading'))
+        dispatch(appSetStatusAC({status:'loading'}))
         loginApi.createLogin(stateLogin)
             .then((res) => {
                     if (res.data.resultCode === 0) {
                         dispatch(setIsLogin({isLogin:true}))
                         dispatch(setLoginForm({loginState: stateLogin}))
-                        dispatch(appSetStatusAC('succeeded'))
+                        dispatch(appSetStatusAC({status:'succeeded'}))
                     } else {
                         if (res.data.resultCode) {
-                            dispatch(appSetErrorAC(res.data.messages[0]))
-                            dispatch(appSetStatusAC('failed'))
+                            dispatch(appSetErrorAC({error: res.data.messages[0]}))
+                            dispatch(appSetStatusAC({status:'failed'}))
                         }
                     }
                 }
@@ -54,17 +54,17 @@ export const setLoginTC = (stateLogin: LoginStateType): AppThunk => {
 
 export const setLogoutTC = ():AppThunk  => {
     return dispatch => {
-        dispatch(appSetStatusAC('loading'))
+        dispatch(appSetStatusAC({status:'loading'}))
         loginApi.deleteLogin()
             .then((res) => {
                     if (res.data.resultCode === 0) {
                         dispatch(setIsLogin({isLogin:false}))
-                        dispatch(appSetStatusAC('succeeded'))
+                        dispatch(appSetStatusAC({status:'succeeded'}))
                     } else {
                         if (res.data.resultCode) {
                             console.log(res.data.resultCode)
-                            dispatch(appSetErrorAC(res.data.messages[0]))
-                            dispatch(appSetStatusAC('failed'))
+                            dispatch(appSetErrorAC({error: res.data.messages[0]}))
+                            dispatch(appSetStatusAC({status:'failed'}))
                         }
                     }
                 }
@@ -82,5 +82,3 @@ export type LoginStateType = {
     password: string,
     rememberMe: boolean
 }
-
-export type SetIsLoginType = ReturnType<typeof setIsLogin>

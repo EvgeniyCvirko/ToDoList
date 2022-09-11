@@ -56,11 +56,11 @@ export const setTodolistsAC = (todolists: Array<TodoListType> ) => ({type:"SET-T
 //thunk
 export const fetchTodolistsTC = () => {
     return (dispatch:Dispatch<TodolistThunkType>) =>{
-        dispatch(appSetStatusAC('loading'))
+        dispatch(appSetStatusAC({status:'loading'}))
     toDoListsApi.getTodolists()
         .then((res) => {
             dispatch(setTodolistsAC(res.data))
-            dispatch(appSetStatusAC('succeeded'))
+            dispatch(appSetStatusAC({status:'succeeded'}))
         })
         .catch((error) =>{
             handelServerNetworkError(error,dispatch)
@@ -84,7 +84,7 @@ export const removeTodolistsTC = (todolistId: string) => {
 }
 export const addTodolistsTC = (title: string) => {
     return (dispatch:Dispatch<TodolistThunkType >) =>{
-        dispatch(appSetStatusAC('loading'))
+        dispatch(appSetStatusAC({status:'loading'}))
         toDoListsApi.createTodolist(title)
             .then((res) => {
                 if(res.data.resultCode === 0) {
@@ -101,7 +101,7 @@ export const addTodolistsTC = (title: string) => {
 export const updateTodolistTitleTC = (todolistId: string, title: string ) => {
     return (dispatch:Dispatch<TodolistThunkType>) =>{
         toDoListsApi.updateTodolist(todolistId,title)
-            .then((res) => {
+            .then(() => {
                 dispatch(changeTitleAC(todolistId, title))
             })
             .catch((error) =>{

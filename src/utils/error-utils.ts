@@ -4,14 +4,14 @@ import {ResponseType} from "../api/todolists-api";
 
 export const handelServerNetworkError = (error: any, dispatch:  Dispatch < AppSetErrorType | AppSetStatusType>) => {
     dispatch(appSetErrorAC(error.message))
-    dispatch(appSetStatusAC("failed"))
+    dispatch(appSetStatusAC({status:"failed"}))
 }
 
 export const handelServerAppError = <D>(data: ResponseType<D> ,dispatch: Dispatch < AppSetErrorType | AppSetStatusType> ) => {
     if(data.messages.length){
-        dispatch(appSetErrorAC(data.messages[0]))
+        dispatch(appSetErrorAC({error:data.messages[0]}))
     }else {
-        dispatch(appSetErrorAC('some error occured'))
+        dispatch(appSetErrorAC({error:'some error occured'}))
     }
-    dispatch(appSetStatusAC("failed"))
+    dispatch(appSetStatusAC({status:"failed"}))
 }

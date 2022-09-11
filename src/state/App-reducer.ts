@@ -2,39 +2,31 @@ import {loginApi} from "../api/todolists-api";
 import {handelServerNetworkError} from "../utils/error-utils";
 import {setIsLogin} from "./login-reducer";
 import {AppThunk} from "./store";
-//types
-export type AppSetErrorType = ReturnType <typeof appSetErrorAC>
-export type AppSetStatusType = ReturnType <typeof appSetStatusAC>
-type ActionsType = AppSetStatusType | AppSetErrorType | ReturnType <typeof setIsAuth>
-export type StatusType= 'idle' | 'loading' | 'succeeded' | 'failed'
-type ErrorType= string | null
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-export type InitialStateType = {
-    status: StatusType
-    error: ErrorType
-    isAuth: boolean,
-}
-const initialState: InitialStateType = {
+//state
+const initialState = {
     status: 'idle',
-    error: null,
+    error: null as string | null,
     isAuth: false,
 }
-export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'APP/SET-STATUS':
-            return {...state, status: action.status}
-        case "APP/SET-ERROR":
-            return {...state, error: action.error}
-        case "SET-IS-AUTH":
-            return {...state, isAuth: action.value}
-        default:
-            return state
+const slice = createSlice({
+    name: 'app',
+    initialState:initialState,
+    reducers:{
+        appSetStatusAC(state, action: PayloadAction<{status:StatusType}>){
+            state.status = action.payload.status
+        },
+        appSetErrorAC(state, action: PayloadAction<{error:string | null}>){
+            state.error = action.payload.error
+        },
+        setIsAuth(state, action: PayloadAction<{isAuth:boolean}>){
+            state.isAuth = action.payload.isAuth
+        },
     }
-}
-//action
-export const appSetStatusAC = (status:StatusType) => ({type: "APP/SET-STATUS", status} as const)
-export const appSetErrorAC = (error:ErrorType) => ({type: "APP/SET-ERROR", error} as const)
-export const setIsAuth = (value: boolean) => ({type: "SET-IS-AUTH", value} as const)
+})
+
+export const appReducer = slice.reducer
 
 export const setIsAuthTC = (): AppThunk => {
     return dispatch => {
@@ -43,7 +35,7 @@ export const setIsAuthTC = (): AppThunk => {
                     if (res.data.resultCode === 0) {
                         dispatch(setIsLogin({isLogin:true}))
                     }
-                dispatch(setIsAuth(true))
+                dispatch(setIsAuth({isAuth:true}))
                 }
             )
             .catch(error => {
@@ -52,3 +44,8 @@ export const setIsAuthTC = (): AppThunk => {
 
     }
 }
+//types
+export const {appSetStatusAC,appSetErrorAC,setIsAuth } = slice.actions
+export type AppSetErrorType = ReturnType <typeof appSetErrorAC>
+export type AppSetStatusType = ReturnType<typeof appSetStatusAC>
+export type StatusType= 'idle' | 'loading' | 'succeeded' | 'failed'

@@ -119,11 +119,11 @@ export const SetTasksAC = (todolistId: string, tasks: Array<TaskType>) =>
 //thunk
 export const setTasksTC = (todolistId: string) => {
     return (dispatch: Dispatch<TaskThunkType>) => {
-        dispatch(appSetStatusAC('loading'))
+        dispatch(appSetStatusAC({status:'loading'}))
         tasksApi.getTask(todolistId)
             .then(res => {
                 dispatch(SetTasksAC(todolistId, res.data.items))
-                dispatch(appSetStatusAC('succeeded'))
+                dispatch(appSetStatusAC({status:'succeeded'}))
             })
             .catch((error) =>{
                 handelServerNetworkError(error,dispatch)
@@ -132,12 +132,12 @@ export const setTasksTC = (todolistId: string) => {
 }
 export const addTasksTC = (newTitle: string, todolistId: string) => {
     return (dispatch: Dispatch<TaskThunkType> ) => {
-        dispatch(appSetStatusAC('loading'))
+        dispatch(appSetStatusAC({status:'loading'}))
         tasksApi.createTask(newTitle, todolistId)
             .then(res => {
                 if (res.data.resultCode === 0) {
                     dispatch(addTasksAC(res.data.data.item, todolistId))
-                    dispatch(appSetStatusAC('succeeded'))
+                    dispatch(appSetStatusAC({status:'succeeded'}))
                 } else {
                     handelServerAppError(res.data, dispatch )
                     }
