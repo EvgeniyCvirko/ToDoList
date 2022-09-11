@@ -1,34 +1,12 @@
-//type
-
-import {Dispatch} from "redux";
 import {loginApi} from "../api/todolists-api";
-import {appSetErrorAC, AppSetErrorType, appSetStatusAC, AppSetStatusType} from "./App-reducer";
+import {appSetErrorAC, appSetStatusAC} from "./App-reducer";
 import {handelServerNetworkError} from "../utils/error-utils";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {AppThunk} from "./store";
 
-export type LoginStateType = {
-    email: string,
-    password: string,
-    rememberMe: boolean
-}
-export type ReducerStateType = {
-    isLogin:boolean;
-    loginState:LoginStateType
-}
-
-type LoginActionType =
-    | ReturnType<typeof setLoginForm>
-    | SetIsLoginType
-
-export type SetIsLoginType = ReturnType<typeof setIsLogin>
-
-export type LoginThunkType =
-    | ReturnType<typeof setLoginForm>
-    | SetIsLoginType
-    | AppSetErrorType
-    | AppSetStatusType
 
 //state
-const initialState: ReducerStateType = {
+const initialState = {
     isLogin: false,
     loginState : {
         email: '',
@@ -36,31 +14,28 @@ const initialState: ReducerStateType = {
         rememberMe: false
     }
 }
-
-export const loginReducer = (state: ReducerStateType = initialState, action: LoginActionType) => {
-    switch (action.type) {
-        case "SET-IS-LOGIN":
-            return {...state, isLogin:action.value}
-        case "SET-LOGIN":
-            return {...state, loginState: action.stateLogin}
-        default :
-            return state
+const slice = createSlice({
+    name: 'login',
+    initialState: initialState,
+    reducers: {
+        setIsLogin(state, action: PayloadAction<{isLogin:boolean}>){
+            state.isLogin = action.payload.isLogin
+        },
+        setLoginForm(state, action: PayloadAction<{loginState:LoginStateType}>){
+            state.loginState = action.payload.loginState
+        }
     }
-
-}
-//action
-export const setLoginForm = (stateLogin: LoginStateType) => ({type: "SET-LOGIN", stateLogin} as const)
-export const setIsLogin = (value: boolean) => ({type: "SET-IS-LOGIN", value} as const)
+})
+export const loginReducer = slice.reducer
 //thunk
-export const setLoginTC = (stateLogin: LoginStateType) => {
-
-    return (dispatch: Dispatch<LoginThunkType>) => {
+export const setLoginTC = (stateLogin: LoginStateType): AppThunk => {
+    return dispatch => {
         dispatch(appSetStatusAC('loading'))
         loginApi.createLogin(stateLogin)
             .then((res) => {
                     if (res.data.resultCode === 0) {
-                        dispatch(setIsLogin(true))
-                        dispatch(setLoginForm(stateLogin))
+                        dispatch(setIsLogin({isLogin:true}))
+                        dispatch(setLoginForm({loginState: stateLogin}))
                         dispatch(appSetStatusAC('succeeded'))
                     } else {
                         if (res.data.resultCode) {
@@ -77,14 +52,13 @@ export const setLoginTC = (stateLogin: LoginStateType) => {
     }
 }
 
-export const setLogoutTC = () => {
-
-    return (dispatch: Dispatch<LoginThunkType>) => {
+export const setLogoutTC = ():AppThunk  => {
+    return dispatch => {
         dispatch(appSetStatusAC('loading'))
         loginApi.deleteLogin()
             .then((res) => {
                     if (res.data.resultCode === 0) {
-                        dispatch(setIsLogin(false))
+                        dispatch(setIsLogin({isLogin:false}))
                         dispatch(appSetStatusAC('succeeded'))
                     } else {
                         if (res.data.resultCode) {
@@ -101,3 +75,12 @@ export const setLogoutTC = () => {
 
     }
 }
+//type
+export const {setIsLogin,setLoginForm} = slice.actions
+export type LoginStateType = {
+    email: string,
+    password: string,
+    rememberMe: boolean
+}
+
+export type SetIsLoginType = ReturnType<typeof setIsLogin>

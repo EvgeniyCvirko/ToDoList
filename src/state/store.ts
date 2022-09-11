@@ -4,6 +4,7 @@ import {todolistsReducer} from "./todolists-reducer";
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {appReducer} from "./App-reducer";
 import {loginReducer} from "./login-reducer";
+import {configureStore} from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
     task: tasksReducer,
@@ -12,7 +13,11 @@ const rootReducer = combineReducers({
     login: loginReducer,
 })
 
-export const store =createStore(rootReducer, applyMiddleware(thunkMiddleware))
+//export const store =createStore(rootReducer, applyMiddleware(thunkMiddleware))
+export const store = configureStore({
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware)
+})
 export type AppRootStateType = ReturnType<typeof store.getState>
 export type AppDispatch = ThunkDispatch<AppRootStateType,unknown, AnyAction>
 export type AppThunk<ReturnType = void> = ThunkAction< ReturnType,AppRootStateType,unknown, AnyAction>

@@ -1,13 +1,11 @@
-
-
-import {Dispatch} from "redux";
 import {loginApi} from "../api/todolists-api";
 import {handelServerNetworkError} from "../utils/error-utils";
-import {setIsLogin, SetIsLoginType} from "./login-reducer";
+import {setIsLogin} from "./login-reducer";
+import {AppThunk} from "./store";
 //types
 export type AppSetErrorType = ReturnType <typeof appSetErrorAC>
 export type AppSetStatusType = ReturnType <typeof appSetStatusAC>
-type ActionsType = AppSetStatusType | AppSetErrorType | ReturnType <typeof setIsAuth> | SetIsLoginType
+type ActionsType = AppSetStatusType | AppSetErrorType | ReturnType <typeof setIsAuth>
 export type StatusType= 'idle' | 'loading' | 'succeeded' | 'failed'
 type ErrorType= string | null
 
@@ -38,12 +36,12 @@ export const appSetStatusAC = (status:StatusType) => ({type: "APP/SET-STATUS", s
 export const appSetErrorAC = (error:ErrorType) => ({type: "APP/SET-ERROR", error} as const)
 export const setIsAuth = (value: boolean) => ({type: "SET-IS-AUTH", value} as const)
 
-export const setIsAuthTC = () => {
-    return (dispatch: Dispatch<ActionsType>) => {
+export const setIsAuthTC = (): AppThunk => {
+    return dispatch => {
         loginApi.getAuth()
             .then((res) => {
                     if (res.data.resultCode === 0) {
-                        dispatch(setIsLogin(true))
+                        dispatch(setIsLogin({isLogin:true}))
                     }
                 dispatch(setIsAuth(true))
                 }
