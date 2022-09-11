@@ -47,13 +47,13 @@ export const AppWithReducer = () => {
     })
 
     const changeFilter = (TodoList_ID: string, filter:FilterType) => {
-        dispatchToDoLists(changeFilterAC(TodoList_ID,filter))
+        dispatchToDoLists(changeFilterAC({TodoList_ID:TodoList_ID,newFilter: filter}))
     }
     const changeTitleTodoList = (TodoList_ID: string, title: string) => {
-        dispatchToDoLists(changeTitleAC(TodoList_ID,title))
+        dispatchToDoLists(changeTitleAC({todolistId:TodoList_ID,title: title}))
     }
     const removeTodoList = (toDoListId: string) =>{
-        dispatchToDoLists(removeToDoAC(toDoListId))
+        dispatchToDoLists(removeToDoAC({todolistId:toDoListId}))
     }
 
     const addTodoList = (titleTodoList: string) => {
@@ -67,7 +67,7 @@ export const AppWithReducer = () => {
     }
 
     const removeTask = (id: string, toDoListId: string) => {
-        dispatchToTask(removeTasksAC(toDoListId,id))
+        dispatchToTask(removeTasksAC({todolistId:toDoListId,id: id}))
     }
     const statusTask = (status: TaskStatues, id: string, toDoListId: string) => {
         // dispatchToTask(changeStatusTasksAC(id,status,toDoListId))

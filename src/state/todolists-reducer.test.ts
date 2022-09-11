@@ -17,7 +17,7 @@ test('correct todolist should be changed filter', () => {
     const TodoList_ID = "toDoListID1";
     const newFilter = "all"
 
-    const endState = todolistsReducer(startState, changeFilterAC(TodoList_ID, newFilter))
+    const endState = todolistsReducer(startState, changeFilterAC({TodoList_ID:TodoList_ID,newFilter: newFilter}))
 
     expect(endState[0].filter).toBe("all")
     expect(endState[1].filter).toBe("all")
@@ -27,7 +27,7 @@ test('correct todolist should be changed filter', () => {
 
 test( 'correct todolist should be removed', ()=>{
 
-    const endState = todolistsReducer(startState, removeToDoAC("toDoListID1"))
+    const endState = todolistsReducer(startState, removeToDoAC({todolistId:"toDoListID1"}))
 
     expect(endState.length).toBe(1)
     expect(endState[0].id).toBe("toDoListID2")
@@ -35,17 +35,15 @@ test( 'correct todolist should be removed', ()=>{
 
 test( 'correct todolist should be changed title', ()=>{
     let newTitle = "What to read"
-    const endState = todolistsReducer(startState, changeTitleAC("toDoListID1", newTitle))
+    const endState = todolistsReducer(startState, changeTitleAC({todolistId: "toDoListID1",title: newTitle}))
 
     expect(endState.length).toBe(2)
     expect(endState[0].title).toBe("What to read")
     expect(endState[1].title).toBe("What to buy")
 })
 test( 'correct todolist should be add', ()=>{
-
-    const endState = todolistsReducer(startState, addToDoAC({
-        id: "toDoListID3", title: 'What to read',addedDate: new Date(), order:0
-    }) )
+    const endTodo = {id: "toDoListID3", title: 'What to read', addedDate: new Date(), order: 0}
+    const endState = todolistsReducer(startState, addToDoAC({todolist:endTodo}) )
 
     expect(endState.length).toBe(3)
     expect(endState[0].id).toBe('toDoListID3')
@@ -54,7 +52,7 @@ test( 'correct todolist should be add', ()=>{
 
 test('correct todolists should be set', () => {
 
-    const endState = todolistsReducer([], setTodolistsAC(startState))
+    const endState = todolistsReducer([], setTodolistsAC({todolists:startState}))
 
     expect(endState.length).toBe(2)
 

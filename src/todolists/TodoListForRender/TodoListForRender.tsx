@@ -26,13 +26,13 @@ export const TodoListForRender =React.memo((props: TodoListPropsType) => {
         dispatch(setTasksTC(props.id))
     },[])
     const changeFilterAllHandler = useCallback(() => {
-        dispatch(changeFilterAC(props.id, 'all'))
+        dispatch(changeFilterAC({TodoList_ID:props.id,newFilter: 'all'}))
     },[props.id])
     const changeFilterActiveHandler = useCallback(() => {
-        dispatch(changeFilterAC(props.id, 'active'))
+        dispatch(changeFilterAC({TodoList_ID:props.id,newFilter: 'active'}))
     },[props.id])
     const changeFilterCompleteHandler = useCallback(() => {
-        dispatch(changeFilterAC(props.id, 'complete'))
+        dispatch(changeFilterAC({TodoList_ID:props.id,newFilter: 'complete'}))
     },[props.id])
 
     const changeTitleTodoList = useCallback((title: string) => {
