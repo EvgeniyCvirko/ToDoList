@@ -44,7 +44,7 @@ export const AppWithRedux = () => {
                 </AppBar>
                 <Container fixed>
                     <Routes>
-                        <Route path={'/'} element={<TodolistRedux/>}/>
+                        <Route path={'/*'} element={<TodolistRedux/>}/>
                         <Route path={'/login'} element={<Login/>}/>
                     </Routes>
                 </Container>
