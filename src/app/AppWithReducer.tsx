@@ -57,7 +57,7 @@ export const AppWithReducer = () => {
     }
 
     const addTodoList = (titleTodoList: string) => {
-
+        console.log(titleTodoList)
         // const action = addToDoAC(titleTodoList)
         // dispatchToDoLists(action)
         // dispatchToTask(action)
@@ -70,7 +70,7 @@ export const AppWithReducer = () => {
         dispatchToTask(removeTasksAC({todolistId:toDoListId,id: id}))
     }
     const statusTask = (status: TaskStatues, id: string, toDoListId: string) => {
-        // dispatchToTask(changeStatusTasksAC(id,status,toDoListId))
+        //dispatchToTask(changeStatusTasksAC(id,status,toDoListId))
     }
     const changeTitleTask = (TodoList_ID: string, id: string, title: string) => {
         // dispatchToTask(changeTitleTasksAC(TodoList_ID,id,title))
