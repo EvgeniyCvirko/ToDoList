@@ -57,7 +57,6 @@ export const AppWithReducer = () => {
     }
 
     const addTodoList = (titleTodoList: string) => {
-        console.log(titleTodoList)
         // const action = addToDoAC(titleTodoList)
         // dispatchToDoLists(action)
         // dispatchToTask(action)
