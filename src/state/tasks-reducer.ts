@@ -7,9 +7,21 @@ import {ModelTaskUpdateType, tasksApi} from "../api/todolists-api";
 import {AppRootStateType, AppThunk} from "./store";
 import {appSetStatusAC} from "./App-reducer";
 import {handelServerAppError, handelServerNetworkError} from "../utils/error-utils";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 //state
 const initialState: taskObjType = {}
+
+export const setTasksTC = createAsyncThunk('tsks/setTasks',(todolistId: string, thunkApi) => {
+    thunkApi.dispatch(appSetStatusAC({status: 'loading'}))
+    tasksApi.getTask(todolistId)
+        .then(res => {
+            thunkApi.dispatch(setTasksAC({todolistId, tasks: res.data.items}))
+            thunkApi.dispatch(appSetStatusAC({status: 'succeeded'}))
+        })
+        .catch((error) => {
+            handelServerNetworkError(error, thunkApi.dispatch)
+        })
+} )
 
 const slice = createSlice({
     name: 'tasks',
@@ -51,8 +63,9 @@ const slice = createSlice({
     }
 })
 export const tasksReducer = slice.reducer
+
 //thunk
-export const setTasksTC = (todolistId: string): AppThunk => {
+export const setTasksTC_ = (todolistId: string): AppThunk => {
     return dispatch => {
         dispatch(appSetStatusAC({status: 'loading'}))
         tasksApi.getTask(todolistId)
