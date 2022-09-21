@@ -13,14 +13,14 @@ const initialState: taskObjType = {}
 
 export const setTasksTC = createAsyncThunk('tsks/setTasks',(todolistId: string, thunkApi) => {
     thunkApi.dispatch(appSetStatusAC({status: 'loading'}))
-    tasksApi.getTask(todolistId)
+    return tasksApi.getTask(todolistId)
         .then(res => {
-            thunkApi.dispatch(setTasksAC({todolistId, tasks: res.data.items}))
             thunkApi.dispatch(appSetStatusAC({status: 'succeeded'}))
+            return {todolistId, tasks: res.data.items}
         })
-        .catch((error) => {
+        /*.catch((error) => {
             handelServerNetworkError(error, thunkApi.dispatch)
-        })
+        })*/
 } )
 
 const slice = createSlice({
@@ -44,9 +44,6 @@ const slice = createSlice({
         addTasksAC(state, action: PayloadAction<{ task: TaskType, todolistId: string }>) {
             state[action.payload.todolistId].unshift(action.payload.task)
         },
-        setTasksAC(state, action: PayloadAction<{ todolistId: string, tasks: Array<TaskType> }>) {
-            state[action.payload.todolistId] = action.payload.tasks
-        },
     },
     extraReducers: (builder) => {
         builder.addCase(addToDoAC, (state, action) => {
@@ -60,24 +57,15 @@ const slice = createSlice({
                 state[e.id] = []
             })
         });
+        builder.addCase(setTasksTC.fulfilled,(state, action)=>{
+            state[action.payload.todolistId] = action.payload.tasks
+        });
     }
 })
 export const tasksReducer = slice.reducer
 
 //thunk
-export const setTasksTC_ = (todolistId: string): AppThunk => {
-    return dispatch => {
-        dispatch(appSetStatusAC({status: 'loading'}))
-        tasksApi.getTask(todolistId)
-            .then(res => {
-                dispatch(setTasksAC({todolistId, tasks: res.data.items}))
-                dispatch(appSetStatusAC({status: 'succeeded'}))
-            })
-            .catch((error) => {
-                handelServerNetworkError(error, dispatch)
-            })
-    }
-}
+
 export const addTasksTC = (newTitle: string, todolistId: string): AppThunk => {
     return dispatch => {
         dispatch(appSetStatusAC({status: 'loading'}))
@@ -142,7 +130,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, model: ModelDom
     }
 }
 //types
-export const {updateTasksAC, removeTasksAC, addTasksAC, setTasksAC} = slice.actions
+export const {updateTasksAC, removeTasksAC, addTasksAC} = slice.actions
 export type taskObjType = {
     [key: string]: TaskType[]
 }

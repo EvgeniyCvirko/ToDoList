@@ -1,7 +1,7 @@
 import {addToDoAC, removeToDoAC, setTodolistsAC,} from './todolists-reducer';
 import {
     addTasksAC, ModelDomainTaskType,
-    removeTasksAC, setTasksAC,
+    removeTasksAC, setTasksTC,
     taskObjType, TaskPriority,
     tasksReducer, TaskStatues, updateTasksAC
 } from "./tasks-reducer";
@@ -167,7 +167,7 @@ const newToDo = {
 
  })
 test('correct tasks should be set', () => {
-    const action = setTasksAC({todolistId:'toDoListID1',tasks: startState['toDoListID1']})
+    const action = setTasksTC.fulfilled({todolistId:'toDoListID1',tasks: startState['toDoListID1']},'','toDoListID1')
     const endState = tasksReducer({
         'toDoListID1': [],
         'toDoListID2': [],
