@@ -11,7 +11,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 //state
 const initialState: taskObjType = {}
 
-export const setTasksTC = createAsyncThunk('tsks/setTasks',(todolistId: string, thunkApi) => {
+export const setTasksTC = createAsyncThunk('tasks/setTasks',(todolistId: string, thunkApi) => {
     thunkApi.dispatch(appSetStatusAC({status: 'loading'}))
     return tasksApi.getTask(todolistId)
         .then(res => {
@@ -22,6 +22,21 @@ export const setTasksTC = createAsyncThunk('tsks/setTasks',(todolistId: string, 
             handelServerNetworkError(error, thunkApi.dispatch)
         })*/
 } )
+export const removeTasksTC = createAsyncThunk('tasks/removeTasks',(param: {todolistId: string, taskId: string},thunkApi) => {
+    return tasksApi.deleteTasks(param.todolistId, param.taskId)
+        .then(res => ({todolistId: param.todolistId, taskId: param.taskId}))
+           /* if (res.data.resultCode === 0) {
+                //thunkApi.dispatch(removeTasksAC({ todolistId: param.todolistId, id: param.taskId}))
+                return { todolistId: param.todolistId, id: param.taskId}
+            } else {
+                handelServerAppError(res.data, thunkApi.dispatch)
+            }*/
+        //})
+        /*.catch(error => {
+            handelServerNetworkError(error, thunkApi.dispatch)
+        })*/
+} )
+
 
 const slice = createSlice({
     name: 'tasks',
@@ -32,13 +47,6 @@ const slice = createSlice({
             const index = tasks.findIndex(ts => ts.id === action.payload.taskId)
             if(index > - 1){
             tasks[index] = {...tasks[index], ...action.payload.model}
-            }
-        },
-        removeTasksAC(state, action: PayloadAction<{ todolistId: string, id: string }>) {
-            const task = state[action.payload.todolistId]
-            const index = task.findIndex(ts => ts.id === action.payload.id)
-            if (index > -1) {
-                task.splice(index,1)
             }
         },
         addTasksAC(state, action: PayloadAction<{ task: TaskType, todolistId: string }>) {
@@ -59,6 +67,13 @@ const slice = createSlice({
         });
         builder.addCase(setTasksTC.fulfilled,(state, action)=>{
             state[action.payload.todolistId] = action.payload.tasks
+        });
+        builder.addCase(removeTasksTC.fulfilled,(state, action)=>{
+            const task = state[action.payload.todolistId]
+            const index = task.findIndex(ts => ts.id === action.payload.taskId)
+            if (index > -1) {
+                task.splice(index,1)
+            }
         });
     }
 })
@@ -83,21 +98,7 @@ export const addTasksTC = (newTitle: string, todolistId: string): AppThunk => {
             })
     }
 }
-export const removeTasksTC = (todolistId: string, taskId: string): AppThunk => {
-    return dispatch => {
-        tasksApi.deleteTasks(todolistId, taskId)
-            .then(res => {
-                if (res.data.resultCode === 0) {
-                    dispatch(removeTasksAC({ todolistId, id: taskId}))
-                } else {
-                    handelServerAppError(res.data, dispatch)
-                }
-            })
-            .catch(error => {
-                handelServerNetworkError(error, dispatch)
-            })
-    }
-}
+
 export const updateTaskTC = (todolistId: string, taskId: string, model: ModelDomainTaskType): AppThunk => {
     return (dispatch, getState: () => AppRootStateType) => {
         const state = getState()
@@ -130,7 +131,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, model: ModelDom
     }
 }
 //types
-export const {updateTasksAC, removeTasksAC, addTasksAC} = slice.actions
+export const {updateTasksAC, addTasksAC} = slice.actions
 export type taskObjType = {
     [key: string]: TaskType[]
 }

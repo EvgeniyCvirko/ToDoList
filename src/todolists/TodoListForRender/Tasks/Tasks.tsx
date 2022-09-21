@@ -25,8 +25,8 @@ export const Tasks = React.memo((props: TasksForRenderType) => {
         newIsDone ? status = 2 : status = 0
         dispatch(updateTaskTC(toDoListId, newId, {status} ))
     }, [])
-    const removeTaskHandler = useCallback((newId: string, toDoListId: string) => {
-        dispatch(removeTasksTC(toDoListId, newId))
+    const removeTaskHandler = useCallback((taskId: string, todolistId: string) => {
+        dispatch(removeTasksTC({todolistId, taskId}))
     }, [])
     return (
         <div key={props.id} className={props.status === TaskStatues.Completed  ? s.isDone : ''}>
