@@ -49,7 +49,7 @@ export const TodoListForRender =React.memo((props: TodoListPropsType) => {
     // Для Input и Button
 
     const addTask = useCallback((titleTask: string) => {
-        dispatch(addTasksTC(titleTask, props.id))
+        dispatch(addTasksTC({newTitle: titleTask, todolistId: props.id}))
     }, [])
 
     let tasksForRender = tasks;

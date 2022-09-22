@@ -18,12 +18,12 @@ type TasksForRenderType = {
 export const Tasks = React.memo((props: TasksForRenderType) => {
     const dispatch = useAppDispatch()
     const changeTitleTask = useCallback((title: string) => {
-        dispatch(updateTaskTC(props.todolistId, props.id, {title}))
+        dispatch(updateTaskTC({todolistId: props.todolistId,taskId:  props.id,model: {title}}))
     },[])
-    const onChangeIsDoneHandler = useCallback((newIsDone: boolean, newId: string, toDoListId: string) => {
+    const onChangeIsDoneHandler = useCallback((newIsDone: boolean, taskId: string, todolistId: string) => {
         let status
         newIsDone ? status = 2 : status = 0
-        dispatch(updateTaskTC(toDoListId, newId, {status} ))
+        dispatch(updateTaskTC({todolistId, taskId, model:{status} } ))
     }, [])
     const removeTaskHandler = useCallback((taskId: string, todolistId: string) => {
         dispatch(removeTasksTC({todolistId, taskId}))
