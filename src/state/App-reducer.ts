@@ -2,50 +2,57 @@ import {loginApi} from "../api/todolists-api";
 import {handelServerNetworkError} from "../utils/error-utils";
 import {setIsLogin} from "./login-reducer";
 import {AppThunk} from "./store";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {AxiosError} from "axios";
 
-//state
-const initialState = {
-    status: 'idle',
-    error: null as string | null,
-    isAuth: false,
+
+export const setIsAuthTC = createAsyncThunk("app/setIsAuth", async (param, {dispatch, rejectWithValue}) => {
+    try {
+        const res = await loginApi.getAuth()
+        if (res.data.resultCode === 0) {
+            dispatch(setIsLogin({isLogin: true}))
+        }
+        //return {isAuth: true}
+    } catch (err) {
+        const error = err as Error | AxiosError
+        handelServerNetworkError(error, dispatch)
+        return rejectWithValue({error: error.message})
+    }
+})
+
+export type InitialStateType = {
+    status: StatusType
+    error: string | null
+    isAuth: boolean,
 }
+//state
 const slice = createSlice({
     name: 'app',
-    initialState:initialState,
-    reducers:{
-        appSetStatusAC(state, action: PayloadAction<{status:StatusType}>){
+    initialState: {
+        status: 'idle',
+        error: null,
+        isAuth: false,
+    } as InitialStateType,
+    reducers: {
+        appSetStatusAC(state, action: PayloadAction<{ status: StatusType }>) {
             state.status = action.payload.status
         },
-        appSetErrorAC(state, action: PayloadAction<{error:string | null}>){
+        appSetErrorAC(state, action: PayloadAction<{ error: string | null }>) {
             state.error = action.payload.error
         },
-        setIsAuth(state, action: PayloadAction<{isAuth:boolean}>){
-            state.isAuth = action.payload.isAuth
-        },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(setIsAuthTC.fulfilled, (state) => {
+            state.isAuth = true
+        });
     }
 })
 
 export const appReducer = slice.reducer
 
-export const setIsAuthTC = (): AppThunk => {
-    return dispatch => {
-        loginApi.getAuth()
-            .then((res) => {
-                    if (res.data.resultCode === 0) {
-                        dispatch(setIsLogin({isLogin:true}))
-                    }
-                dispatch(setIsAuth({isAuth:true}))
-                }
-            )
-            .catch(error => {
-                handelServerNetworkError(error, dispatch)
-            })
 
-    }
-}
 //types
-export const {appSetStatusAC,appSetErrorAC,setIsAuth } = slice.actions
-export type AppSetErrorType = ReturnType <typeof appSetErrorAC>
+export const {appSetStatusAC, appSetErrorAC} = slice.actions
+export type AppSetErrorType = ReturnType<typeof appSetErrorAC>
 export type AppSetStatusType = ReturnType<typeof appSetStatusAC>
-export type StatusType= 'idle' | 'loading' | 'succeeded' | 'failed'
+export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
