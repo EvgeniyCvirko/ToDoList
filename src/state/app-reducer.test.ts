@@ -1,6 +1,6 @@
-import {appReducer, appSetErrorAC, appSetStatusAC} from "./App-reducer";
+import {appReducer, appSetErrorAC, appSetStatusAC, InitialStateType} from "./App-reducer";
 
-const startState={
+const startState: InitialStateType={
     status: 'idle',
     error: null,
     isAuth: false
