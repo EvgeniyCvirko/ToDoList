@@ -1,6 +1,6 @@
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField, Button} from "@mui/material";
 import {useFormik} from "formik";
-import {setLoginTC} from "../state/login-reducer";
+import {loginTC} from "../state/login-reducer";
 import {useAppDispatch, useAppSelector} from "../state/hooks";
 import {Navigate} from "react-router-dom";
 
@@ -28,7 +28,7 @@ export const Login = () => {
                 rememberMe: false
             },
             onSubmit: values => {
-                dispatch(setLoginTC(formik.values))
+                dispatch(loginTC({stateLogin: formik.values}))
             },
         })
     if (isLogin) {

@@ -1,7 +1,6 @@
 import {loginApi} from "../api/todolists-api";
 import {handelServerNetworkError} from "../utils/error-utils";
 import {setIsLogin} from "./login-reducer";
-import {AppThunk} from "./store";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 
@@ -12,7 +11,7 @@ export const setIsAuthTC = createAsyncThunk("app/setIsAuth", async (param, {disp
         if (res.data.resultCode === 0) {
             dispatch(setIsLogin({isLogin: true}))
         }
-        //return {isAuth: true}
+        return {isAuth: true}
     } catch (err) {
         const error = err as Error | AxiosError
         handelServerNetworkError(error, dispatch)
