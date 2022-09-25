@@ -3,8 +3,7 @@ import {appSetErrorAC, appSetStatusAC} from "./App-reducer";
 import {handelServerNetworkError} from "../utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
-
-
+//thunk
 export const loginTC = createAsyncThunk('login/login', async (param: { stateLogin: LoginStateType }, {dispatch, rejectWithValue}) => {
     dispatch(appSetStatusAC({status: 'loading'}))
     try {

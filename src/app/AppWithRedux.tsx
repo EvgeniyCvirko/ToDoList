@@ -24,7 +24,6 @@ export const AppWithRedux = () => {
         dispatch(setLogoutTC())
     },[])
     if (!isAuth) {
-
         return <CircularProgress/>
     }
 

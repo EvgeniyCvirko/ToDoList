@@ -1,4 +1,4 @@
-import {addToDoAC, removeToDoAC, setTodolistsAC,} from './todolists-reducer';
+import {addTodolistsTC, fetchTodolistsTC, removeTodolistsTC} from './todolists-reducer';
 import {
     addTasksTC,
     ModelDomainTaskType, removeTasksTC,
@@ -135,7 +135,7 @@ test('correct tasks should be add', () => {
 const newToDo = {
     id: "toDoListID3", title: 'What to learn', addedDate: new Date(), order: 0
 }
-     const action = addToDoAC({todolist: newToDo})
+     const action = addTodolistsTC.fulfilled({todolist: newToDo}, '',{title: ''} )
      const endState = tasksReducer(startState, action)
      const key = Object.keys(endState)
      const newKey = key.find(k => k !== 'toDoListID2' && k !== 'toDoListID1')
@@ -148,7 +148,7 @@ const newToDo = {
  })
  test('correct tasks should be remove when add Todolist', () => {
 
-     const action = removeToDoAC({todolistId:'toDoListID2'})
+     const action = removeTodolistsTC.fulfilled({todolistId:"toDoListID2"}, '', {todolistId:"toDoListID2"})
      const endState = tasksReducer(startState, action)
      expect(Object.keys(endState).length).toBe(1);
      expect(endState['toDoListID1'].length).toBe(4);
@@ -158,7 +158,7 @@ const newToDo = {
          {id: "1", title: 'title1', addedDate: new Date(), order: 0},
          {id: "2", title: 'title2', addedDate: new Date(), order: 0},
      ]
-     const action = setTodolistsAC({todolists: newToDoLists})
+     const action = fetchTodolistsTC.fulfilled({todolists: newToDoLists}, '')
      const endState = tasksReducer({}, action)
      const key = Object.keys(endState)
      expect(key.length).toBe(2);

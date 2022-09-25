@@ -1,7 +1,7 @@
 import {
-    addToDoAC,
-    removeToDoAC,
-    setTodolistsAC, TodoListType,
+    addTodolistsTC,
+    fetchTodolistsTC, removeTodolistsTC,
+    TodoListType,
 } from "./todolists-reducer";
 import {ModelTaskUpdateType, tasksApi} from "../api/todolists-api";
 import {AppRootStateType} from "./store";
@@ -9,9 +9,7 @@ import {appSetStatusAC} from "./App-reducer";
 import {handelServerAppError, handelServerNetworkError} from "../utils/error-utils";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
-//state
-const initialState: taskObjType = {}
-
+//thunk
 export const setTasksTC = createAsyncThunk('tasks/setTasks', async (todolistId: string, thunkApi) => {
     thunkApi.dispatch(appSetStatusAC({status: 'loading'}))
     try {
@@ -96,19 +94,20 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTasks', async (param: 
     }
 })
 
-
+//state
+const initialState: taskObjType = {}
 const slice = createSlice({
     name: 'tasks',
     initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(addToDoAC, (state, action) => {
+        builder.addCase(addTodolistsTC.fulfilled, (state, action) => {
             state[action.payload.todolist.id] = []
         });
-        builder.addCase(removeToDoAC, (state, action) => {
+        builder.addCase(removeTodolistsTC.fulfilled, (state, action) => {
             delete state[action.payload.todolistId]
         });
-        builder.addCase(setTodolistsAC, (state, action) => {
+        builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
             action.payload.todolists.forEach((e: TodoListType) => {
                 state[e.id] = []
             })
@@ -162,14 +161,12 @@ export type TaskType = {
     order: number
     addedDate: Date
 }
-
 export enum TaskStatues {
     New = 0,
     InProgress = 1,
     Completed = 2,
     Draft = 3,
 }
-
 export enum TaskPriority {
     Low = 0,
     Middle = 1,
@@ -177,7 +174,6 @@ export enum TaskPriority {
     Urgently = 3,
     Later = 4,
 }
-
 export type ModelDomainTaskType = {
     title?: string
     description?: string

@@ -3,8 +3,7 @@ import {handelServerNetworkError} from "../utils/error-utils";
 import {setIsLogin} from "./login-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
-
-
+//thunk
 export const setIsAuthTC = createAsyncThunk("app/setIsAuth", async (param, {dispatch, rejectWithValue}) => {
     try {
         const res = await loginApi.getAuth()
@@ -19,11 +18,6 @@ export const setIsAuthTC = createAsyncThunk("app/setIsAuth", async (param, {disp
     }
 })
 
-export type InitialStateType = {
-    status: StatusType
-    error: string | null
-    isAuth: boolean,
-}
 //state
 const slice = createSlice({
     name: 'app',
@@ -51,6 +45,12 @@ export const appReducer = slice.reducer
 
 
 //types
+
+export type InitialStateType = {
+    status: StatusType
+    error: string | null
+    isAuth: boolean,
+}
 export const {appSetStatusAC, appSetErrorAC} = slice.actions
 export type AppSetErrorType = ReturnType<typeof appSetErrorAC>
 export type AppSetStatusType = ReturnType<typeof appSetStatusAC>

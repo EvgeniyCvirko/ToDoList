@@ -11,7 +11,7 @@ export const TodolistRedux =() =>{
     const toDoLists = useAppSelector(state => state.todolist)
     const isLogin = useAppSelector(state => state.login.isLogin)
     const addTodoList = useCallback((titleTodoList: string) => {
-        const action = addTodolistsTC(titleTodoList)
+        const action = addTodolistsTC({title: titleTodoList})
         dispatch(action)
     },[])
     useEffect(()=>{

@@ -7,8 +7,9 @@ import {AppBar, Button, IconButton, Toolbar, Typography, Container, Grid, Paper}
 import {Menu} from "@material-ui/icons";
 import {
     changeFilterAC,
-    changeTitleAC, FilterType,
-    removeToDoAC,
+    // changeTitleAC,
+     FilterType,
+    //removeToDoAC,
     todolistsReducer
 } from "../state/todolists-reducer";
 import {
@@ -50,10 +51,10 @@ export const AppWithReducer = () => {
         dispatchToDoLists(changeFilterAC({TodoList_ID:TodoList_ID,newFilter: filter}))
     }
     const changeTitleTodoList = (TodoList_ID: string, title: string) => {
-        dispatchToDoLists(changeTitleAC({todolistId:TodoList_ID,title: title}))
+        //dispatchToDoLists(changeTitleAC({todolistId:TodoList_ID,title: title}))
     }
     const removeTodoList = (toDoListId: string) =>{
-        dispatchToDoLists(removeToDoAC({todolistId:toDoListId}))
+        //dispatchToDoLists(removeToDoAC({todolistId:toDoListId}))
     }
 
     const addTodoList = (titleTodoList: string) => {

@@ -36,11 +36,11 @@ export const TodoListForRender =React.memo((props: TodoListPropsType) => {
     },[props.id])
 
     const changeTitleTodoList = useCallback((title: string) => {
-        dispatch(updateTodolistTitleTC(props.id,title))
+        dispatch(updateTodolistTitleTC({todolistId: props.id, title}))
     },[])
 
     const removeTodoListHandler = useCallback( () => {
-        dispatch(removeTodolistsTC(props.id))
+        dispatch(removeTodolistsTC({todolistId: props.id}))
     },[])
 
     const all = props.toDoLists.filter === 'all' ? s.activeFilter : '';
