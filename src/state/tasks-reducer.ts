@@ -1,7 +1,7 @@
 import {
     addToDoAC,
     removeToDoAC,
-    setTodolistsAC,
+    setTodolistsAC, TodoListType,
 } from "./todolists-reducer";
 import {ModelTaskUpdateType, tasksApi} from "../api/todolists-api";
 import {AppRootStateType} from "./store";
@@ -19,9 +19,8 @@ export const setTasksTC = createAsyncThunk('tasks/setTasks', async (todolistId: 
         thunkApi.dispatch(appSetStatusAC({status: 'succeeded'}))
         return {todolistId, tasks: res.data.items}
     } catch (err) {
-        // @ts-ignore
-        const error: AxiosError = err
-        handelServerNetworkError(error?.message, thunkApi.dispatch)
+        const error = err as AxiosError
+            handelServerNetworkError(error?.message, thunkApi.dispatch)
         return thunkApi.rejectWithValue({error: error.message})
     } finally {
         thunkApi.dispatch(appSetStatusAC({status: 'succeeded'}))
@@ -37,8 +36,7 @@ export const removeTasksTC = createAsyncThunk('tasks/removeTasks', async (param:
             handelServerAppError(res.data, thunkApi.dispatch)
         }
     } catch (err) {
-        // @ts-ignore
-        const error: AxiosError = err
+        const error = err as  AxiosError
         handelServerNetworkError(error, thunkApi.dispatch)
         return thunkApi.rejectWithValue({error: error.message})
     } finally {
@@ -111,7 +109,7 @@ const slice = createSlice({
             delete state[action.payload.todolistId]
         });
         builder.addCase(setTodolistsAC, (state, action) => {
-            action.payload.todolists.forEach((e: any) => {
+            action.payload.todolists.forEach((e: TodoListType) => {
                 state[e.id] = []
             })
         });

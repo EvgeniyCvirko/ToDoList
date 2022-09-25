@@ -36,8 +36,8 @@ const slice = createSlice({
         appSetStatusAC(state, action: PayloadAction<{ status: StatusType }>) {
             state.status = action.payload.status
         },
-        appSetErrorAC(state, action: PayloadAction<{ error: string | null }>) {
-            state.error = action.payload.error
+        appSetErrorAC(state, action: PayloadAction< string | null >) {
+            state.error = action.payload
         },
     },
     extraReducers: (builder) => {

@@ -14,7 +14,7 @@ export const loginTC = createAsyncThunk('login/login', async (param: { stateLogi
             return {isLogin: true}
         } else {
             if (res.data.resultCode) {
-                dispatch(appSetErrorAC({error: res.data.messages[0]}))
+                dispatch(appSetErrorAC( res.data.messages[0]))
                 dispatch(appSetStatusAC({status: 'failed'}))
                 return {isLogin: false}
             }
@@ -36,7 +36,7 @@ export const setLogoutTC = createAsyncThunk('login/logout', async (param, {dispa
                 return {isLogin: false}
             } else {
                 if (res.data.resultCode) {
-                    dispatch(appSetErrorAC({error: res.data.messages[0]}))
+                    dispatch(appSetErrorAC( res.data.messages[0]))
                     dispatch(appSetStatusAC({status: 'failed'}))
                     return {isLogin: true}
                 }
