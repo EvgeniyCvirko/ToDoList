@@ -4,8 +4,9 @@ import {
     ModelDomainTaskType, removeTasksTC,
     setTasksTC,
     taskObjType, TaskPriority,
-    tasksReducer, TaskStatues, updateTaskTC,
+    TaskStatues, updateTaskTC,
 } from "./tasks-reducer";
+import {tasksReducer} from "./index";
 
 const startState: taskObjType = {
     'toDoListID1': [
@@ -131,7 +132,7 @@ test('correct tasks should be add', () => {
     expect(endState['toDoListID1'].length).toBe(5)
     expect(endState["toDoListID1"][0].id).toBeDefined();
 })
- test('correct tasks should be add when add Todolist', () => {
+ test('correct tasks should be add when add Todolists', () => {
 const newToDo = {
     id: "toDoListID3", title: 'What to learn', addedDate: new Date(), order: 0
 }
@@ -146,7 +147,7 @@ const newToDo = {
      expect(endState[newKey]).toEqual([]);
 
  })
- test('correct tasks should be remove when add Todolist', () => {
+ test('correct tasks should be remove when add Todolists', () => {
 
      const action = removeTodolistsTC.fulfilled({todolistId:"toDoListID2"}, '', {todolistId:"toDoListID2"})
      const endState = tasksReducer(startState, action)

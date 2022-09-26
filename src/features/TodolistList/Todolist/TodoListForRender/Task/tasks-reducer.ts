@@ -4,7 +4,7 @@ import {
     TodoListType,
 } from "../../todolists-reducer";
 import {ModelTaskUpdateType, tasksApi} from "../../../../../api/todolists-api";
-import {AppRootStateType} from "../../../../../state/store";
+import {AppRootStateType} from "../../../../../app/store";
 import {appSetStatusAC} from "../../../../../state/App-reducer";
 import {handelServerAppError, handelServerNetworkError} from "../../../../../utils/error-utils";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
@@ -93,10 +93,9 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTasks', async (param: 
         dispatch(appSetStatusAC({status: 'succeeded'}))
     }
 })
-
 //state
 const initialState: taskObjType = {}
-const slice = createSlice({
+export const slice = createSlice({
     name: 'tasks',
     initialState: initialState,
     reducers: {},
@@ -141,9 +140,10 @@ const slice = createSlice({
         });
     },
     })
-
-export const tasksReducer = slice.reducer
-
+//action
+export const asyncActions = {
+    setTasksTC, removeTasksTC, addTasksTC, updateTaskTC
+}
 //types
 export type taskObjType = {
     [key: string]: TaskType[]
