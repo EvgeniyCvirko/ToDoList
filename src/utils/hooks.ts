@@ -1,5 +1,5 @@
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
-import type {AppRootStateType, AppDispatch} from '../state/store'
+import type {AppRootStateType, AppDispatch} from '../app/store'
 import {useMemo} from "react";
 import {ActionCreatorsMapObject, bindActionCreators} from "redux";
 

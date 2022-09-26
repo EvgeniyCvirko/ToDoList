@@ -51,7 +51,7 @@ test( 'correct todolist should be add', ()=>{
     expect(endState[2].title).toBe("What to buy")
 })
 
-test('correct todolists should be set', () => {
+test('correct Old should be set', () => {
  const action = fetchTodolistsTC.fulfilled({todolists: startState}, '')
     const endState = todolistsReducer([], action)
 

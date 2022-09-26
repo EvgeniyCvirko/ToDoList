@@ -1,12 +1,12 @@
-import {useAppDispatch, useAppSelector} from "../state/hooks";
+import {useAppDispatch, useAppSelector} from "../../../utils/hooks";
 import React, {useCallback, useEffect} from "react";
-import {addTodolistsTC, fetchTodolistsTC} from "../state/todolists-reducer";
+import {addTodolistsTC, fetchTodolistsTC} from "./todolists-reducer";
 import {Grid, Paper} from "@material-ui/core";
 import {TodoListForRender} from "./TodoListForRender/TodoListForRender";
-import {AddItem} from "../components/AddItem";
+import {AddItem} from "../../../components/AddItem";
 import {Navigate} from "react-router-dom";
 
-export const TodolistRedux =() =>{
+export const Todolists =() =>{
     const dispatch = useAppDispatch()
     const toDoLists = useAppSelector(state => state.todolist)
     const isLogin = useAppSelector(state => state.login.isLogin)

@@ -2,12 +2,12 @@ import React, {useCallback} from "react";
 import {
     removeTasksTC,
     TaskStatues, updateTaskTC
-} from "../../../state/tasks-reducer";
-import s from "../../Todolist.module.css";
+} from "./tasks-reducer";
+import s from "../../Style/Todolist.module.css";
 import {Checkbox, IconButton} from "@material-ui/core";
-import {EditableSpan} from "../../../components/EditableSpan";
+import {EditableSpan} from "../../../../../components/EditableSpan";
 import {Delete} from "@material-ui/icons";
-import {useAppDispatch} from "../../../state/hooks";
+import {useAppDispatch} from "../../../../../utils/hooks";
 
 type TasksForRenderType = {
     todolistId: string

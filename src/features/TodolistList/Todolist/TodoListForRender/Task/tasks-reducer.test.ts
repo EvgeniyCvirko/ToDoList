@@ -1,4 +1,4 @@
-import {addTodolistsTC, fetchTodolistsTC, removeTodolistsTC} from './todolists-reducer';
+import {addTodolistsTC, fetchTodolistsTC, removeTodolistsTC} from '../../todolists-reducer';
 import {
     addTasksTC,
     ModelDomainTaskType, removeTasksTC,
@@ -153,7 +153,7 @@ const newToDo = {
      expect(Object.keys(endState).length).toBe(1);
      expect(endState['toDoListID1'].length).toBe(4);
  })
- test('empty array should be after we set todolists', () => {
+ test('empty array should be after we set Old', () => {
      const newToDoLists = [
          {id: "1", title: 'title1', addedDate: new Date(), order: 0},
          {id: "2", title: 'title2', addedDate: new Date(), order: 0},

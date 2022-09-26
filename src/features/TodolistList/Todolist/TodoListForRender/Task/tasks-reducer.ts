@@ -2,11 +2,11 @@ import {
     addTodolistsTC,
     fetchTodolistsTC, removeTodolistsTC,
     TodoListType,
-} from "./todolists-reducer";
-import {ModelTaskUpdateType, tasksApi} from "../api/todolists-api";
-import {AppRootStateType} from "./store";
-import {appSetStatusAC} from "./App-reducer";
-import {handelServerAppError, handelServerNetworkError} from "../utils/error-utils";
+} from "../../todolists-reducer";
+import {ModelTaskUpdateType, tasksApi} from "../../../../../api/todolists-api";
+import {AppRootStateType} from "../../../../../state/store";
+import {appSetStatusAC} from "../../../../../state/App-reducer";
+import {handelServerAppError, handelServerNetworkError} from "../../../../../utils/error-utils";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 //thunk

@@ -1,6 +1,6 @@
 import {AnyAction, applyMiddleware, combineReducers, legacy_createStore as createStore} from "redux";
-import {tasksReducer} from "./tasks-reducer";
-import {todolistsReducer} from "./todolists-reducer";
+import {tasksReducer} from "../features/TodolistList/Todolist/TodoListForRender/Task/tasks-reducer";
+import {todolistsReducer} from "../features/TodolistList/Todolist/todolists-reducer";
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {appReducer} from "./App-reducer";
 import {loginReducer} from "./login-reducer";

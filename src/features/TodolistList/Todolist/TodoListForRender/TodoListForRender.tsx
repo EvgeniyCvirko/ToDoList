@@ -1,17 +1,17 @@
 import React, {useCallback, useEffect} from 'react';
-import s from '../Todolist.module.css'
-import {EditableSpan} from "../../components/EditableSpan";
-import {AddItem} from "../../components/AddItem";
+import s from '../Style/Todolist.module.css'
+import {EditableSpan} from "../../../../components/EditableSpan";
+import {AddItem} from "../../../../components/AddItem";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import { addTasksTC, setTasksTC, TaskStatues} from "../../state/tasks-reducer";
+import { addTasksTC, setTasksTC, TaskStatues} from "./Task/tasks-reducer";
 import {
     changeFilterAC,
     removeTodolistsTC,
     ToDOListDomainType, updateTodolistTitleTC
-} from "../../state/todolists-reducer";
-import {Tasks} from "./Tasks/Tasks";
-import {useAppDispatch, useAppSelector} from "../../state/hooks";
+} from "../todolists-reducer";
+import {Tasks} from "./Task/Tasks";
+import {useAppDispatch, useAppSelector} from "../../../../utils/hooks";
 
 type TodoListPropsType = {
     id: string,

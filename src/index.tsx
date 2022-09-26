@@ -1,9 +1,9 @@
 import React from 'react';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import {AppWithRedux} from "./app/AppWithRedux";
+import {App} from "./app/App";
 import {Provider} from "react-redux";
-import {store} from "./state/store";
+import {store} from "./app/store";
 // @ts-ignore
 import {createRoot} from "react-dom/client";
 import {BrowserRouter} from "react-router-dom";
@@ -12,7 +12,7 @@ const container = document.getElementById('root');
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
 root.render(<Provider store={store}>
     <BrowserRouter>
-        <AppWithRedux/>
+        <App/>
     </BrowserRouter>
 </Provider>,);
 

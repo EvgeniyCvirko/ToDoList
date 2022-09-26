@@ -1,6 +1,6 @@
 import axios from "axios";
-import {TodoListType} from "../state/todolists-reducer";
-import {TaskType} from "../state/tasks-reducer";
+import {TodoListType} from "../features/TodolistList/Todolist/todolists-reducer";
+import {TaskType} from "../features/TodolistList/Todolist/TodoListForRender/Task/tasks-reducer";
 import {LoginStateType} from "../state/login-reducer";
 
 
