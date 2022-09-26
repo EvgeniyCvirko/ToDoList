@@ -3,8 +3,9 @@ import {
     changeFilterAC,
     fetchTodolistsTC, removeTodolistsTC,
     ToDOListDomainType,
-    todolistsReducer, updateTodolistTitleTC
+    updateTodolistTitleTC
 } from './todolists-reducer';
+import {todolistsReducer} from "./index";
 
 const startState: Array<ToDOListDomainType> = [
     {id: "toDoListID1", title: 'What to learn', filter:'all', addedDate: new Date(), order:0},

@@ -1,24 +1,23 @@
-import {useAppDispatch, useAppSelector} from "../../../utils/hooks";
+import {useActions,useAppSelector} from "../../../utils/hooks";
 import React, {useCallback, useEffect} from "react";
-import {addTodolistsTC, fetchTodolistsTC} from "./todolists-reducer";
 import {Grid, Paper} from "@material-ui/core";
 import {TodoListForRender} from "./TodoListForRender/TodoListForRender";
 import {AddItem} from "../../../components/AddItem";
 import {Navigate} from "react-router-dom";
+import {todolistActions} from "./index";
 
 export const Todolists =() =>{
-    const dispatch = useAppDispatch()
+    const {addTodolistsTC,fetchTodolistsTC} = useActions(todolistActions)
     const toDoLists = useAppSelector(state => state.todolist)
     const isLogin = useAppSelector(state => state.login.isLogin)
     const addTodoList = useCallback((titleTodoList: string) => {
-        const action = addTodolistsTC({title: titleTodoList})
-        dispatch(action)
+        addTodolistsTC({title: titleTodoList})
     },[])
     useEffect(()=>{
         if(!isLogin) {
             return
         }
-        dispatch(fetchTodolistsTC());
+        fetchTodolistsTC();
     },[])
     if (!isLogin){
         return <Navigate to={'/login'}/>

@@ -4,14 +4,14 @@ import {EditableSpan} from "../../../../components/EditableSpan";
 import {AddItem} from "../../../../components/AddItem";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import { addTasksTC, setTasksTC, TaskStatues} from "./Task/tasks-reducer";
+import {TaskStatues} from "./Task/tasks-reducer";
 import {
-    changeFilterAC,
-    removeTodolistsTC,
-    ToDOListDomainType, updateTodolistTitleTC
+    ToDOListDomainType
 } from "../todolists-reducer";
 import {Tasks} from "./Task/Tasks";
-import {useAppDispatch, useAppSelector} from "../../../../utils/hooks";
+import {useActions, useAppSelector} from "../../../../utils/hooks";
+import {todolistActions} from "../index";
+import {tasksAction} from "./Task";
 
 type TodoListPropsType = {
     id: string,
@@ -21,26 +21,27 @@ type TodoListPropsType = {
 export const TodoListForRender =React.memo((props: TodoListPropsType) => {
 
     const tasks = useAppSelector(state => state.task[props.id] )
-    const dispatch = useAppDispatch()
+    const {updateTodolistTitleTC,removeTodolistsTC,changeFilterAC} = useActions(todolistActions)
+    const {setTasksTC,addTasksTC} = useActions(tasksAction)
     useEffect(() =>{
-        dispatch(setTasksTC(props.id))
+        setTasksTC(props.id)
     },[])
     const changeFilterAllHandler = useCallback(() => {
-        dispatch(changeFilterAC({TodoList_ID:props.id,newFilter: 'all'}))
+        changeFilterAC({TodoList_ID:props.id,newFilter: 'all'})
     },[props.id])
     const changeFilterActiveHandler = useCallback(() => {
-        dispatch(changeFilterAC({TodoList_ID:props.id,newFilter: 'active'}))
+        changeFilterAC({TodoList_ID:props.id,newFilter: 'active'})
     },[props.id])
     const changeFilterCompleteHandler = useCallback(() => {
-        dispatch(changeFilterAC({TodoList_ID:props.id,newFilter: 'complete'}))
+        changeFilterAC({TodoList_ID:props.id,newFilter: 'complete'})
     },[props.id])
 
     const changeTitleTodoList = useCallback((title: string) => {
-        dispatch(updateTodolistTitleTC({todolistId: props.id, title}))
+        updateTodolistTitleTC({todolistId: props.id, title})
     },[])
 
     const removeTodoListHandler = useCallback( () => {
-        dispatch(removeTodolistsTC({todolistId: props.id}))
+        removeTodolistsTC({todolistId: props.id})
     },[])
 
     const all = props.toDoLists.filter === 'all' ? s.activeFilter : '';
@@ -49,7 +50,7 @@ export const TodoListForRender =React.memo((props: TodoListPropsType) => {
     // Для Input и Button
 
     const addTask = useCallback((titleTask: string) => {
-        dispatch(addTasksTC({newTitle: titleTask, todolistId: props.id}))
+        addTasksTC({newTitle: titleTask, todolistId: props.id})
     }, [])
 
     let tasksForRender = tasks;

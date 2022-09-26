@@ -18,7 +18,6 @@ export const fetchTodolistsTC = createAsyncThunk('todolist/fetch', async (param,
     dispatch(appSetStatusAC({status: 'succeeded'}))
   }
 })
-
 export const removeTodolistsTC = createAsyncThunk('todolist/remove', async (param: { todolistId: string }, {dispatch, rejectWithValue}) => {
   dispatch(appSetStatusAC({status: 'loading'}))
   try {
@@ -37,7 +36,6 @@ export const removeTodolistsTC = createAsyncThunk('todolist/remove', async (para
     dispatch(appSetStatusAC({status: 'succeeded'}))
   }
 })
-
 export const addTodolistsTC = createAsyncThunk('todolist/add', async (param:{title: string}, {rejectWithValue, dispatch}) => {
   dispatch(appSetStatusAC({status: 'loading'}))
   try {
@@ -57,7 +55,6 @@ export const addTodolistsTC = createAsyncThunk('todolist/add', async (param:{tit
     dispatch(appSetStatusAC({status: 'succeeded'}))
   }
 })
-
 export const updateTodolistTitleTC = createAsyncThunk('todolist/update', async (param:{todolistId: string, title: string}, {rejectWithValue, dispatch}) => {  dispatch(appSetStatusAC({status: 'loading'}))
   try {
     const res = await toDoListsApi.updateTodolist(param.todolistId, param.title)
@@ -72,7 +69,7 @@ export const updateTodolistTitleTC = createAsyncThunk('todolist/update', async (
   }
 })
 //state
-const slice = createSlice({
+export const slice = createSlice({
   name: 'todolist',
   initialState: [] as ToDOListDomainType[],
   reducers: {
@@ -100,9 +97,10 @@ const slice = createSlice({
     });
   }
 })
-export const todolistsReducer = slice.reducer
-//types
+//action
+export const asyncAction = {fetchTodolistsTC, removeTodolistsTC, addTodolistsTC, updateTodolistTitleTC }
 export const {changeFilterAC} = slice.actions
+//types
 export type ToDOListDomainType = TodoListType & {
   filter: FilterType
 }
