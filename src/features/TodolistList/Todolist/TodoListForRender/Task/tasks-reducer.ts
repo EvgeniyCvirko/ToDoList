@@ -41,10 +41,10 @@ export const removeTasksTC = createAsyncThunk('tasks/removeTasks', async (param:
         thunkApi.dispatch(appSetStatusAC({status: 'succeeded'}))
     }
 })
-export const addTasksTC = createAsyncThunk('tasks/addTasks', async (param: { newTitle: string, todolistId: string }, thunkApi) => {
+export const addTasksTC = createAsyncThunk('tasks/addTasks', async (param: { title: string, todolistId: string }, thunkApi) => {
     thunkApi.dispatch(appSetStatusAC({status: 'loading'}))
     try {
-        const res = await tasksApi.createTask(param.newTitle, param.todolistId)
+        const res = await tasksApi.createTask(param.title, param.todolistId)
         if (res.data.resultCode === 0) {
             thunkApi.dispatch(appSetStatusAC({status: 'succeeded'}))
             return {task: res.data.data.item,todolistId: param.todolistId}

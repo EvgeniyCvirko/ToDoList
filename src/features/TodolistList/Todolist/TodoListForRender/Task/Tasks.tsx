@@ -15,18 +15,19 @@ type TasksForRenderType = {
 }
 
 export const Tasks = React.memo((props: TasksForRenderType) => {
+  console.log('render task')
   const {updateTaskTC, removeTasksTC} = useActions(tasksAction)
+
   const changeTitleTask = useCallback((title: string) => {
     updateTaskTC({todolistId: props.todolistId, taskId: props.id, model: {title}})
-  }, [])
+  }, [props.todolistId, props.id])
+
   const onChangeIsDoneHandler = useCallback((newIsDone: boolean, taskId: string, todolistId: string) => {
     let status
     newIsDone ? status = 2 : status = 0
     updateTaskTC({todolistId, taskId, model: {status}})
-  }, [])
-  const removeTaskHandler = useCallback((taskId: string, todolistId: string) => {
-    removeTasksTC({todolistId, taskId})
-  }, [])
+  }, [props.todolistId, props.id])
+
   return (
     <div key={props.id} className={props.status === TaskStatues.Completed ? s.isDone : ''}>
       <Checkbox checked={props.status === TaskStatues.Completed}

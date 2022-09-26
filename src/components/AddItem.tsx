@@ -8,6 +8,7 @@ type AddItemType = {
 }
 
 export const AddItem =React.memo((props: AddItemType) => {
+    console.log('render add')
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 

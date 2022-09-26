@@ -127,7 +127,7 @@ test('correct tasks should be removed', () => {
 })
 test('correct tasks should be add', () => {
 
-    const action = addTasksTC.fulfilled({task:startState['toDoListID1'][0], todolistId:'toDoListID1'},'',{newTitle:'', todolistId:'toDoListID1'} )
+    const action = addTasksTC.fulfilled({task:startState['toDoListID1'][0], todolistId:'toDoListID1'},'',{title:'', todolistId:'toDoListID1'} )
     const endState = tasksReducer(startState, action)
     expect(endState['toDoListID1'].length).toBe(5)
     expect(endState["toDoListID1"][0].id).toBeDefined();
