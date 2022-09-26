@@ -19,39 +19,28 @@ type TodoListPropsType = {
 }
 
 export const TodoListForRender =React.memo((props: TodoListPropsType) => {
-
+    console.log('renderTodoListForRender')
     const tasks = useAppSelector(state => state.task[props.id] )
     const {updateTodolistTitleTC,removeTodolistsTC,changeFilterAC} = useActions(todolistActions)
     const {setTasksTC,addTasksTC} = useActions(tasksAction)
     useEffect(() =>{
         setTasksTC(props.id)
     },[])
-    const changeFilterAllHandler = useCallback(() => {
-        changeFilterAC({TodoList_ID:props.id,newFilter: 'all'})
-    },[props.id])
-    const changeFilterActiveHandler = useCallback(() => {
-        changeFilterAC({TodoList_ID:props.id,newFilter: 'active'})
-    },[props.id])
-    const changeFilterCompleteHandler = useCallback(() => {
-        changeFilterAC({TodoList_ID:props.id,newFilter: 'complete'})
-    },[props.id])
 
     const changeTitleTodoList = useCallback((title: string) => {
         updateTodolistTitleTC({todolistId: props.id, title})
-    },[])
+    },[]);
 
-    const removeTodoListHandler = useCallback( () => {
+    const removeTodoListHandler =  () => {
         removeTodolistsTC({todolistId: props.id})
-    },[])
+    }
 
     const all = props.toDoLists.filter === 'all' ? s.activeFilter : '';
     const active = props.toDoLists.filter === 'active' ? s.activeFilter : '';
     const complete = props.toDoLists.filter === 'complete' ? s.activeFilter : '';
-    // Для Input и Button
-
-    const addTask = useCallback((titleTask: string) => {
-        addTasksTC({newTitle: titleTask, todolistId: props.id})
-    }, [])
+    const addTask = useCallback((title: string) => {
+        addTasksTC({title, todolistId: props.id})
+    }, [addTasksTC,props.id])
 
     let tasksForRender = tasks;
     if (props.toDoLists.filter === 'active') {
@@ -81,10 +70,10 @@ export const TodoListForRender =React.memo((props: TodoListPropsType) => {
             <ul className={s.ul}>
                 {ulList}
             </ul>
-            <Button className={all} onClick={changeFilterAllHandler} variant='contained' color='default'>All</Button>
-            <Button className={active} onClick={changeFilterActiveHandler} variant='contained'
+            <Button className={all} onClick={()=>changeFilterAC({TodoList_ID:props.id,newFilter: 'all'})} variant='contained' color='default'>All</Button>
+            <Button className={active} onClick={()=>changeFilterAC({TodoList_ID:props.id,newFilter: 'active'})} variant='contained'
                     color='primary'>Active</Button>
-            <Button className={complete} onClick={changeFilterCompleteHandler} variant='contained'
+            <Button className={complete} onClick={()=>changeFilterAC({TodoList_ID:props.id,newFilter: 'complete'})} variant='contained'
                     color='secondary'>Complete</Button>
         </div>
     )
