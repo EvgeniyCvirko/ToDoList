@@ -7,14 +7,16 @@ import {useAppDispatch, useAppSelector} from "../utils/hooks";
 import {Login} from "../components/Login";
 import { Route, Routes} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
-import {setIsAuthTC} from "../state/App-reducer";
-import {setLogoutTC} from "../state/login-reducer";
+import {setIsAuthTC} from "./App-reducer";
+import {setLogoutTC} from "../features/Auth/login-reducer";
 import {Todolists} from "../features/TodolistList/Todolist/Todolists";
+import {selectorIsLogin} from "../features/Auth/selectors";
+import {selectorAppStatus, selectorIsInitialized} from "./index";
 
 export const App = () => {
-    const status = useAppSelector(state => state.app.status)
-    const isAuth = useAppSelector<boolean>(state => state.app.isAuth)
-    const isLogin = useAppSelector<boolean>(state => state.login.isLogin)
+    const status = useAppSelector(selectorAppStatus)
+    const isInitialized = useAppSelector(selectorIsInitialized)
+    const isLogin =useAppSelector(selectorIsLogin)
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(setIsAuthTC())
@@ -23,7 +25,7 @@ export const App = () => {
     const logoutHandler = useCallback(() =>{
         dispatch(setLogoutTC())
     },[])
-    if (!isAuth) {
+    if (!isInitialized) {
         return <CircularProgress/>
     }
 

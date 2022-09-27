@@ -24,7 +24,7 @@ const slice = createSlice({
     initialState: {
         status: 'idle',
         error: null,
-        isAuth: false,
+        isInitialized: false,
     } as InitialStateType,
     reducers: {
         appSetStatusAC(state, action: PayloadAction<{ status: StatusType }>) {
@@ -36,7 +36,7 @@ const slice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(setIsAuthTC.fulfilled, (state) => {
-            state.isAuth = true
+            state.isInitialized = true
         });
     }
 })
