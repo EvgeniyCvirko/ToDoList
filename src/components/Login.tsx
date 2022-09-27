@@ -1,13 +1,14 @@
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField, Button} from "@mui/material";
 import {useFormik} from "formik";
-import {loginTC} from "../state/login-reducer";
+import {loginTC} from "../features/Auth/login-reducer";
 import {useAppDispatch, useAppSelector} from "../utils/hooks";
 import {Navigate} from "react-router-dom";
+import {selectorIsLogin} from "../features/Auth/selectors";
 
 
 export const Login = () => {
     const dispatch = useAppDispatch()
-    const isLogin = useAppSelector<boolean>(state => state.login.isLogin)
+    const isLogin = useAppSelector(selectorIsLogin)
 
         const formik = useFormik({
             validate: (values) => {

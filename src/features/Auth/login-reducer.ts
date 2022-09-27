@@ -1,6 +1,6 @@
-import {loginApi} from "../api/todolists-api";
-import {appSetErrorAC, appSetStatusAC} from "./App-reducer";
-import {handelServerNetworkError} from "../utils/error-utils";
+import {loginApi} from "../../api/todolists-api";
+import {appSetErrorAC, appSetStatusAC} from "../../app/App-reducer";
+import {handelServerNetworkError} from "../../utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 //thunk
@@ -53,7 +53,7 @@ const slice = createSlice({
     name: 'login',
     initialState: {
         isLogin: false,
-    },
+    } as InitialStateType,
     reducers: {
         setIsLogin(state, action: PayloadAction<{ isLogin: boolean }>) {
             state.isLogin = action.payload.isLogin
@@ -81,4 +81,7 @@ export type LoginStateType = {
     email: string,
     password: string,
     rememberMe: boolean
+}
+export type InitialStateType = {
+    isLogin: boolean
 }

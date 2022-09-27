@@ -1,5 +1,5 @@
 import {toDoListsApi} from "../../../api/todolists-api";
-import {appSetStatusAC} from "../../../state/App-reducer";
+import {appSetStatusAC} from "../../../app/App-reducer";
 import {handelServerAppError, handelServerNetworkError} from "../../../utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";

@@ -1,6 +1,6 @@
 import {loginApi} from "../api/todolists-api";
 import {handelServerNetworkError} from "../utils/error-utils";
-import {setIsLogin} from "./login-reducer";
+import {setIsLogin} from "../features/Auth/login-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 //thunk
