@@ -1,4 +1,4 @@
-import {loginReducer, loginTC} from "./login-reducer";
+import {loginReducer, setLoginTC} from "./login-reducer";
 
 test("loginState should be after add",()=>{
     const startState = {
@@ -9,7 +9,7 @@ test("loginState should be after add",()=>{
         password: '123',
         rememberMe: true
     }
-    const action = loginTC.fulfilled ({isLogin:true}, '', {stateLogin:newState})
+    const action = setLoginTC.fulfilled ({isLogin:true}, '', {stateLogin:newState})
     const endState = loginReducer(startState, action)
     expect(endState.isLogin).toBe(true)
 })

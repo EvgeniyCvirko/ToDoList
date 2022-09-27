@@ -1,10 +1,9 @@
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField, Button} from "@mui/material";
 import {useFormik} from "formik";
-import {loginTC} from "../features/Auth/login-reducer";
+import {setLoginTC} from "../features/Auth/login-reducer";
 import {useAppDispatch, useAppSelector} from "../utils/hooks";
 import {Navigate} from "react-router-dom";
-import {selectorIsLogin} from "../features/Auth/selectors";
-
+import {selectorIsLogin} from "../features/Auth/index";
 
 export const Login = () => {
     const dispatch = useAppDispatch()
@@ -29,7 +28,7 @@ export const Login = () => {
                 rememberMe: false
             },
             onSubmit: values => {
-                dispatch(loginTC({stateLogin: formik.values}))
+                dispatch(setLoginTC({stateLogin: formik.values}))
             },
         })
     if (isLogin) {

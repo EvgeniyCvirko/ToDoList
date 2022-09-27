@@ -23,6 +23,7 @@ export const TodoListForRender =React.memo((props: TodoListPropsType) => {
     const tasks = useAppSelector(state => state.task[props.id] )
     const {updateTodolistTitleTC,removeTodolistsTC,changeFilterAC} = useActions(todolistActions)
     const {setTasksTC,addTasksTC} = useActions(tasksAction)
+
     useEffect(() =>{
         setTasksTC(props.id)
     },[])

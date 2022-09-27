@@ -5,12 +5,13 @@ import {TodoListForRender} from "./TodoListForRender/TodoListForRender";
 import {AddItem} from "../../../components/AddItem";
 import {Navigate} from "react-router-dom";
 import {todolistActions} from "./index";
-import {selectorIsLogin} from "../../Auth/selectors";
+import {selectorIsLogin} from "../../Auth/index";
 
 export const Todolists =() =>{
     const {addTodolistsTC,fetchTodolistsTC} = useActions(todolistActions)
     const toDoLists = useAppSelector(state => state.todolist)
     const isLogin = useAppSelector(selectorIsLogin)
+
     const addTodoList = useCallback((titleTodoList: string) => {
         addTodolistsTC({title: titleTodoList})
     },[])

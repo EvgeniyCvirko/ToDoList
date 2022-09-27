@@ -3,27 +3,27 @@ import './App.css';
 import {AppBar, Button, IconButton, Toolbar, Typography, Container, LinearProgress} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
-import {useAppDispatch, useAppSelector} from "../utils/hooks";
+import {useActions, useAppSelector} from "../utils/hooks";
 import {Login} from "../components/Login";
 import { Route, Routes} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
-import {setIsAuthTC} from "./App-reducer";
-import {setLogoutTC} from "../features/Auth/login-reducer";
 import {Todolists} from "../features/TodolistList/Todolist/Todolists";
-import {selectorIsLogin} from "../features/Auth/selectors";
-import {selectorAppStatus, selectorIsInitialized} from "./index";
+import {loginActions, selectorIsLogin} from "../features/Auth/index";
+import {appActions, selectorAppStatus, selectorIsInitialized} from "./index";
 
 export const App = () => {
     const status = useAppSelector(selectorAppStatus)
     const isInitialized = useAppSelector(selectorIsInitialized)
     const isLogin =useAppSelector(selectorIsLogin)
-    const dispatch = useAppDispatch()
+    const {setIsInitializedTC} = useActions(appActions)
+    const {setLogoutTC} = useActions(loginActions)
+
     useEffect(() => {
-        dispatch(setIsAuthTC())
+        setIsInitializedTC()
     }, [isLogin])
 
     const logoutHandler = useCallback(() =>{
-        dispatch(setLogoutTC())
+        setLogoutTC()
     },[])
     if (!isInitialized) {
         return <CircularProgress/>

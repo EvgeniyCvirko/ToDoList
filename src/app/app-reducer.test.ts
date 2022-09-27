@@ -1,4 +1,5 @@
-import {appReducer, appSetErrorAC, appSetStatusAC, InitialStateType} from "./App-reducer";
+import {appSetErrorAC, appSetStatusAC, InitialStateType} from "./App-reducer";
+import {appReducer} from "./index";
 
 const startState: InitialStateType={
     status: 'idle',

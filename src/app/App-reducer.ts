@@ -4,7 +4,7 @@ import {setIsLogin} from "../features/Auth/login-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 //thunk
-export const setIsAuthTC = createAsyncThunk("app/setIsAuth", async (param, {dispatch, rejectWithValue}) => {
+export const setIsInitializedTC = createAsyncThunk("app/setIsAuth", async (param, {dispatch, rejectWithValue}) => {
     try {
         const res = await loginApi.getAuth()
         if (res.data.resultCode === 0) {
@@ -19,7 +19,7 @@ export const setIsAuthTC = createAsyncThunk("app/setIsAuth", async (param, {disp
 })
 
 //state
-const slice = createSlice({
+export const slice = createSlice({
     name: 'app',
     initialState: {
         status: 'idle',
@@ -35,23 +35,22 @@ const slice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(setIsAuthTC.fulfilled, (state) => {
+        builder.addCase(setIsInitializedTC.fulfilled, (state) => {
             state.isInitialized = true
         });
     }
 })
 
-export const appReducer = slice.reducer
 
-
+//action
+export const asyncAction = {setIsInitializedTC}
+export const {appSetStatusAC, appSetErrorAC} = slice.actions
 //types
-
 export type InitialStateType = {
     status: StatusType
     error: string | null
-    isAuth: boolean,
+    isInitialized: boolean,
 }
-export const {appSetStatusAC, appSetErrorAC} = slice.actions
 export type AppSetErrorType = ReturnType<typeof appSetErrorAC>
 export type AppSetStatusType = ReturnType<typeof appSetStatusAC>
 export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
