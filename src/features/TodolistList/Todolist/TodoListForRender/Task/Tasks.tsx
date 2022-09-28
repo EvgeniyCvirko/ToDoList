@@ -26,16 +26,17 @@ export const Tasks = React.memo((props: TasksForRenderType) => {
     let status
     newIsDone ? status = 2 : status = 0
     updateTaskTC({todolistId, taskId, model: {status}})
-  },[])
+  }, [])
 
   return (
-    <div key={props.id} className={props.status === TaskStatues.Completed ? s.isDone : ''}>
-      <Checkbox checked={props.status === TaskStatues.Completed}
+    <div key={props.id} className={props.status === TaskStatues.Completed ? s.isDone : s.block}>
+      <Checkbox style={{padding: "0", flexBasis: '10%'}} checked={props.status === TaskStatues.Completed}
                 onChange={(e) => onChangeIsDoneHandler(e.currentTarget.checked, props.id, props.todolistId)}/>
       <EditableSpan title={props.title}
                     status={props.status}
                     changeTitle={changeTitleTask}/>
-      <IconButton onClick={() => removeTasksTC({taskId:props.id, todolistId: props.todolistId})}><Delete/></IconButton>
+      <IconButton style={{padding: "0", flexBasis: '10%'}}
+                  onClick={() => removeTasksTC({taskId: props.id, todolistId: props.todolistId})}><Delete/></IconButton>
     </div>
   )
 })

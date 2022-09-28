@@ -67,10 +67,11 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
     : <span>{'Нет в списке задач'}</span>
   return (
     <div>
-      <div>
+      <div className={s.block}>
         <EditableSpan title={props.toDoLists.title}
-                      changeTitle={changeTitleTodoList}/>
-        <IconButton onClick={removeTodoListHandler}><Delete/></IconButton>
+                      changeTitle={changeTitleTodoList}
+                      style='bold'/>
+        <IconButton style={{padding: "0", flexBasis: '10%'}} onClick={removeTodoListHandler}><Delete/></IconButton>
       </div>
       <AddItem
         addItem={addTask}/>

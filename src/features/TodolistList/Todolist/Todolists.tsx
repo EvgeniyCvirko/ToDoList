@@ -26,7 +26,7 @@ export const Todolists =() =>{
     }
     const todoListForRender = toDoLists.map(tl => {
         return <Grid key={tl.id} item>
-            <Paper  style={{padding: "10px"}}>
+            <Paper  style={{padding: "10px", width: "300px"}}>
                 <TodoListForRender
                     id={tl.id}
                     toDoLists={tl}

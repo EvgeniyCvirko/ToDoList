@@ -2,10 +2,12 @@
   margin: 100px auto;
   display: flex;
 }*/
+
+
 li{
   margin-left: 15px;
 }
- h2{
+ h2, h3 {
    margin: 0;
  }
 

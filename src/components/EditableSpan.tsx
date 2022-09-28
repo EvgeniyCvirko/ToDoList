@@ -1,29 +1,24 @@
 import React from 'react';
-import b from "../features/TodolistList/Todolist/Style/Todolist.module.css";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 import {TaskStatues} from "../features/TodolistList/Todolist/TodoListForRender/Task/tasks-reducer";
-import {appSetErrorAC} from "../app/App-reducer";
-import {useAppDispatch} from "../utils/hooks";
 
 type EditableSpanType = {
     title: string
     status?: TaskStatues
+    style?: string
     changeTitle: (title: string) => void
 }
 
 
 export const EditableSpan = React.memo((props: EditableSpanType) => {
     console.log('render span')
-    const dispatch = useAppDispatch()
     const [title, setTitle] = useState<string>(props.title)
     const [editMode, setEditMode] = useState<boolean>(false)
     const onEditMode = () => setEditMode(true)
 
     const offEditMode = () => {
-        if(title.length < 50) {
-            props.changeTitle(title)
-            setEditMode(false)
-        } else dispatch(appSetErrorAC('Title must be maximum length of \'50\'. '))
+        props.changeTitle(title)
+        setEditMode(false)
     }
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>setTitle (e.currentTarget.value)
 
@@ -37,6 +32,6 @@ export const EditableSpan = React.memo((props: EditableSpanType) => {
                    onChange={onChangeHandler}
                    onKeyPress={onKeyPressHandler}
             />
-            : <span onDoubleClick={onEditMode} className={props.status === TaskStatues.Completed ? b.isDone : ''}>{props.title}</span>
+            : <span style={{marginLeft: "15px", flexBasis: `${props.style ? '90%' : '80%'}  `, fontWeight: `${props.style}`}} onDoubleClick={onEditMode} >{props.title}</span>
     )
 })

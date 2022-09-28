@@ -31,9 +31,7 @@ export const AddItem =React.memo((props: AddItemType) => {
         setTitle(e.currentTarget.value)
         if(error) setError(false)
     }
-
-   // const inputError = error ? s.error : ''
-    return (<>
+    return (<div>
             <TextField variant='outlined'
                        error={error}
                        value={title}
@@ -43,6 +41,6 @@ export const AddItem =React.memo((props: AddItemType) => {
                        onChange={onChangeTitleHandler}/>
         <IconButton  color="primary" onClick={addItem} ><AddBox/></ IconButton>
             {error && <div className={s.errorMessage}>{'Title is required'}</div>}
-        </>
+        </div>
     )
 })

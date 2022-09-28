@@ -7,12 +7,23 @@
 }
 
 .isDone {
+    display: flex;
+    align-items: flex-start;
     opacity: 0.5;
+    margin-bottom: 15px;
 }
-.fullInput{
+
+.fullInput {
     display: flex;
     margin-right: 15px;
 }
-.ul{
+
+.ul {
     padding: 0;
+}
+
+.block {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
 }
