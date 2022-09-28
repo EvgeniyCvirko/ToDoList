@@ -26,7 +26,7 @@ export const Tasks = React.memo((props: TasksForRenderType) => {
     let status
     newIsDone ? status = 2 : status = 0
     updateTaskTC({todolistId, taskId, model: {status}})
-  },[props.todolistId, props.id])
+  },[])
 
   return (
     <div key={props.id} className={props.status === TaskStatues.Completed ? s.isDone : ''}>

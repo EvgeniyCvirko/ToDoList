@@ -2,10 +2,11 @@ import React, {useCallback, useEffect} from 'react';
 import s from '../Style/Todolist.module.css'
 import {EditableSpan} from "../../../../components/EditableSpan";
 import {AddItem} from "../../../../components/AddItem";
-import {Button, IconButton} from "@material-ui/core";
+import {Button, IconButton, PropTypes} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {TaskStatues} from "./Task/tasks-reducer";
 import {
+    FilterType,
     ToDOListDomainType
 } from "../todolists-reducer";
 import {Tasks} from "./Task/Tasks";
@@ -36,12 +37,15 @@ export const TodoListForRender =React.memo((props: TodoListPropsType) => {
         removeTodolistsTC({todolistId: props.id})
     }
 
-    const all = props.toDoLists.filter === 'all' ? s.activeFilter : '';
-    const active = props.toDoLists.filter === 'active' ? s.activeFilter : '';
-    const complete = props.toDoLists.filter === 'complete' ? s.activeFilter : '';
     const addTask = useCallback((title: string) => {
         addTasksTC({title, todolistId: props.id})
     }, [addTasksTC,props.id])
+
+    const buttonRender = (filterButton: FilterType, variant: 'text' | 'outlined' | 'contained', color: PropTypes.Color ) => {
+
+        return (<Button className={filterButton} onClick={() => changeFilterAC({TodoList_ID: props.id, newFilter: filterButton})}
+                       variant={props.toDoLists.filter === filterButton ? 'outlined' : 'text'} color={color}>{filterButton.toUpperCase()}</Button>)
+    }
 
     let tasksForRender = tasks;
     if (props.toDoLists.filter === 'active') {
@@ -71,11 +75,9 @@ export const TodoListForRender =React.memo((props: TodoListPropsType) => {
             <ul className={s.ul}>
                 {ulList}
             </ul>
-            <Button className={all} onClick={()=>changeFilterAC({TodoList_ID:props.id,newFilter: 'all'})} variant='contained' color='default'>All</Button>
-            <Button className={active} onClick={()=>changeFilterAC({TodoList_ID:props.id,newFilter: 'active'})} variant='contained'
-                    color='primary'>Active</Button>
-            <Button className={complete} onClick={()=>changeFilterAC({TodoList_ID:props.id,newFilter: 'complete'})} variant='contained'
-                    color='secondary'>Complete</Button>
+            {buttonRender('all', 'contained', 'default')}
+            {buttonRender('active', 'contained', 'primary')}
+            {buttonRender('complete', 'contained', 'secondary')}
         </div>
     )
 })
