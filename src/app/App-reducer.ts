@@ -1,20 +1,21 @@
 import {loginApi} from "../api/todolists-api";
-import {handelServerNetworkError} from "../utils/error-utils";
 import {setIsLogin} from "../features/Auth/login-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AxiosError} from "axios";
+import axios from "axios";
+import {handleAsyncServerNetworkError} from "../utils/error-utils";
 //thunk
-export const setIsInitializedTC = createAsyncThunk("app/setIsAuth", async (param, {dispatch, rejectWithValue}) => {
+export const setIsInitializedTC = createAsyncThunk("app/setIsAuth", async (param,thunkAPI) => {
     try {
         const res = await loginApi.getAuth()
         if (res.data.resultCode === 0) {
-            dispatch(setIsLogin({isLogin: true}))
+            thunkAPI.dispatch(setIsLogin({isLogin: true}))
         }
         return {isAuth: true}
-    } catch (err) {
-        const error = err as Error | AxiosError
-        handelServerNetworkError(error, dispatch)
-        return rejectWithValue({error: error.message})
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return handleAsyncServerNetworkError(error, thunkAPI, false)
+        }
+
     }
 })
 
@@ -51,6 +52,4 @@ export type InitialStateType = {
     error: string | null
     isInitialized: boolean,
 }
-export type AppSetErrorType = ReturnType<typeof appSetErrorAC>
-export type AppSetStatusType = ReturnType<typeof appSetStatusAC>
 export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
