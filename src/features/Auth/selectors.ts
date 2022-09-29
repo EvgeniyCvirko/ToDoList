@@ -1,4 +1,4 @@
-import {AppRootStateType} from "../../app/store";
+import {AppRootStateType} from "../../utils/types";
 
 export const isLogin = (state: AppRootStateType): boolean =>
   state.login.isLogin;
