@@ -36,7 +36,7 @@ export const Tasks = React.memo((props: TasksForRenderType) => {
                     status={props.status}
                     changeTitle={changeTitleTask}/>
       <IconButton style={{padding: "0", flexBasis: '10%'}}
-                  onClick={() => removeTasksTC({taskId: props.id, todolistId: props.todolistId})}><Delete/></IconButton>
+                  onClick={() => removeTasksTC({taskId: props.id, todolistId: props.todolistId})}><Delete fontSize='small'/></IconButton>
     </div>
   )
 })

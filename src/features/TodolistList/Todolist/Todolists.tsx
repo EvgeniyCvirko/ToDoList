@@ -53,7 +53,7 @@ export const Todolists =() =>{
                 <AddItem
                     addItem={addTodolistCallback}/>
             </Grid>
-            <Grid container spacing={3}>{todoListForRender}</Grid>
+            <Grid container spacing={3} style={{flexWrap:'nowrap', overflowX: 'scroll'}}>{todoListForRender}</Grid>
         </>
     )
 }

@@ -1,8 +1,7 @@
 import axios from "axios";
-import {TodoListType} from "../features/TodolistList/Todolist/todolists-reducer";
 import {TaskType} from "../features/TodolistList/Todolist/TodoListForRender/Task/tasks-reducer";
 import {LoginStateType} from "../features/Auth/login-reducer";
-import {CreateTodolistDataType, GetTaskType, ModelTaskUpdateType, ResponseType} from "./types";
+import {CreateTodolistDataType, GetTaskType, ModelTaskUpdateType, ResponseType, TodolistType} from "./types";
 
 const instance = axios.create({
         withCredentials: true,
@@ -12,9 +11,9 @@ const instance = axios.create({
         baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     }
 )
-export const toDoListsApi = {
+export const todoListsApi = {
     getTodolists() {
-        return instance.get<TodoListType[]>("/todo-lists")
+        return instance.get<TodolistType[]>("/todo-lists")
     },
     createTodolist(title: string) {
         return instance.post<ResponseType<CreateTodolistDataType>>("/todo-lists", {title})
@@ -27,10 +26,10 @@ export const toDoListsApi = {
     },
 }
 export const tasksApi = {
-    getTask(todolistId: string) {
+    getTasks(todolistId: string) {
         return instance.get<GetTaskType>(`/todo-lists/${todolistId}/tasks`,)
     },
-    deleteTasks(todolistId: string, taskId: string){
+    deleteTask(todolistId: string, taskId: string){
         return instance.delete<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
     },
     createTask( title: string, todolistId: string){

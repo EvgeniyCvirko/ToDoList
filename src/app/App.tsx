@@ -26,7 +26,9 @@ export const App = () => {
         setLogoutTC()
     },[])
     if (!isInitialized) {
-        return <CircularProgress/>
+        return <div style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
     }
 
     return (
@@ -37,13 +39,13 @@ export const App = () => {
                         <IconButton edge="start" color="inherit" arial-lable="menu">
                             <Menu/>
                         </IconButton>
-                        <Typography variant='h6'>News
+                        <Typography variant='h6'>Todo Lists
                         </Typography>
                         {isLogin && <Button onClick={logoutHandler} color='inherit'>Logout</Button>}
                     </Toolbar>
                     {status === "loading" && <LinearProgress/>}
                 </AppBar>
-                <Container fixed>
+                <Container fixed style={{maxWidth: '1500px'}}>
                     <Routes>
                         <Route path={'/*'} element={<Todolists/>}/>
                         <Route path={'/login'} element={<Login/>}/>

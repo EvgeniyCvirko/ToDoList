@@ -16,7 +16,7 @@ import {tasksAction} from "./Task";
 
 type TodoListPropsType = {
   id: string,
-  toDoLists: ToDOListDomainType,
+  todoList: TodoListDomainType,
 }
 
 export const TodoListForRender = React.memo((props: TodoListPropsType) => {
@@ -59,15 +59,15 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
 
     return (
       <Button className={filterButton} onClick={() => changeFilterAC({TodoList_ID: props.id, newFilter: filterButton})}
-              variant={props.toDoLists.filter === filterButton ? 'outlined' : 'text'}
+              variant={props.todoList.filter === filterButton ? 'outlined' : 'text'}
               color={color}>{filterButton.toUpperCase()}</Button>)
   }
 
   let tasksForRender = tasks;
-  if (props.toDoLists.filter === 'active') {
+  if (props.todoList.filter === 'active') {
     tasksForRender = tasks.filter(tl => tl.status === TaskStatues.New)
   }
-  if (props.toDoLists.filter === 'complete') {
+  if (props.todoList.filter === 'completed') {
     tasksForRender = tasks.filter(tl => tl.status === TaskStatues.Completed)
   }
   const ulList = tasksForRender.length
@@ -82,7 +82,7 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
   return (
     <div>
       <div className={s.block}>
-        <EditableSpan title={props.toDoLists.title}
+        <EditableSpan title={props.todoList.title}
                       changeTitle={changeTitleTodoList}
                       style='bold'/>
         <IconButton style={{padding: "0", flexBasis: '10%'}} onClick={removeTodoListHandler}><Delete/></IconButton>
@@ -94,7 +94,7 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
       </ul>
       {buttonRender('all', 'contained', 'default')}
       {buttonRender('active', 'contained', 'primary')}
-      {buttonRender('complete', 'contained', 'secondary')}
+      {buttonRender('completed', 'contained', 'secondary')}
     </div>
   )
 })
