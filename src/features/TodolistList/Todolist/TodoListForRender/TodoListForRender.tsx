@@ -1,16 +1,16 @@
 import React, {useCallback, useEffect} from 'react';
 import s from '../Style/Todolist.module.css'
 import {EditableSpan} from "../../../../components/EditableSpan";
-import {AddItem} from "../../../../components/AddItem";
+import {AddItem, AddItemFormSubmitHelperType} from "../../../../components/AddItem";
 import {Button, IconButton, PropTypes} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {TaskStatues} from "./Task/tasks-reducer";
 import {
   FilterType,
-  ToDOListDomainType
+  TodoListDomainType
 } from "../todolists-reducer";
 import {Tasks} from "./Task/Tasks";
-import {useActions, useAppSelector} from "../../../../utils/hooks";
+import {useActions, useAppDispatch, useAppSelector} from "../../../../utils/hooks";
 import {todolistActions} from "../index";
 import {tasksAction} from "./Task";
 
@@ -22,9 +22,9 @@ type TodoListPropsType = {
 export const TodoListForRender = React.memo((props: TodoListPropsType) => {
   console.log('renderTodoListForRender')
   const tasks = useAppSelector(state => state.task[props.id])
-  const {updateTodolistTitleTC, removeTodolistsTC, changeFilterAC} = useActions(todolistActions)
-  const {setTasksTC, addTasksTC} = useActions(tasksAction)
-
+  const {updateTodolistTitleTC, removeTodolistTC, changeFilterAC} = useActions(todolistActions)
+  const {setTasksTC} = useActions(tasksAction)
+  const dispatch = useAppDispatch()
   useEffect(() => {
     setTasksTC(props.id)
   }, [])
@@ -34,12 +34,26 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
   }, []);
 
   const removeTodoListHandler = () => {
-    removeTodolistsTC({todolistId: props.id})
+    removeTodolistTC(props.id)
   }
 
-  const addTask = useCallback((title: string) => {
-    addTasksTC({title, todolistId: props.id})
-  }, [addTasksTC, props.id])
+  const addTaskCallback = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
+
+    let thunk = tasksAction.addTasksTC({title: title, todolistId: props.todoList.id})
+    const resultAction = await dispatch(thunk)
+
+    if (tasksAction.addTasksTC.rejected.match(resultAction)) {
+      if (resultAction.payload?.errors?.length) {
+        const errorMessage = resultAction.payload?.errors[0]
+        helper.setError(errorMessage)
+      } else {
+        helper.setError('Some error occured')
+      }
+    } else {
+      helper.setTitle('')
+    }
+
+  }, [props.todoList.id])
 
   const buttonRender = (filterButton: FilterType, variant: 'text' | 'outlined' | 'contained', color: PropTypes.Color) => {
 
@@ -74,7 +88,7 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
         <IconButton style={{padding: "0", flexBasis: '10%'}} onClick={removeTodoListHandler}><Delete/></IconButton>
       </div>
       <AddItem
-        addItem={addTask}/>
+        addItem={addTaskCallback}/>
       <ul className={s.ul}>
         {ulList}
       </ul>
