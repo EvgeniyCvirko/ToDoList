@@ -1,77 +1,72 @@
-import {toDoListsApi} from "../../../api/todolists-api";
-import {appSetStatusAC} from "../../../app/App-reducer";
-import {handelServerAppError, handelServerNetworkError} from "../../../utils/error-utils";
+import {todoListsApi} from "../../../api/todolists-api";
+import {appSetStatusAC, StatusType} from "../../../app/App-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AxiosError} from "axios";
+import axios from "axios";
+import {ThunkError} from "../../../utils/types";
+import {TodolistType} from "../../../api/types";
+import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../../utils/error-utils";
+import {appErrorStatusActions} from "../../CommonActions/App";
 //thunk
-export const fetchTodolistsTC = createAsyncThunk('todolist/fetch', async (param, {rejectWithValue, dispatch}) => {
-  dispatch(appSetStatusAC({status: 'loading'}))
+export const fetchTodolistsTC = createAsyncThunk<{ todolists: TodolistType[] }, undefined, ThunkError>('todolist/fetch', async (param, thunkAPI) => {
+  thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
   try {
-    const res = await toDoListsApi.getTodolists()
+    const res = await todoListsApi.getTodolists()
     return {todolists: res.data}
-
-  } catch (err) {
-    const error = err as AxiosError
-    handelServerNetworkError(error, dispatch)
-    return rejectWithValue({error: error.message})
-  } finally {
-    dispatch(appSetStatusAC({status: 'succeeded'}))
-  }
-})
-export const removeTodolistsTC = createAsyncThunk('todolist/remove', async (param: { todolistId: string }, {dispatch, rejectWithValue}) => {
-  dispatch(appSetStatusAC({status: 'loading'}))
-  try {
-    const res = await toDoListsApi.deleteTodolist(param.todolistId)
-    if (res.data.resultCode === 0) {
-      return {todolistId: param.todolistId}
-    } else {
-      handelServerAppError(res.data, dispatch)
-      return rejectWithValue(null)
+  } catch (error) {
+    if(axios.isAxiosError(error)) {
+      return handleAsyncServerNetworkError(error, thunkAPI, false)
     }
-  } catch (err) {
-    const error = err as AxiosError
-    handelServerNetworkError(error, dispatch)
-    return rejectWithValue({error: error.message})
-  } finally {
-    dispatch(appSetStatusAC({status: 'succeeded'}))
   }
 })
-export const addTodolistsTC = createAsyncThunk('todolist/add', async (param:{title: string}, {rejectWithValue, dispatch}) => {
-  dispatch(appSetStatusAC({status: 'loading'}))
+export const removeTodolistTC = createAsyncThunk<{ id: string }, string, ThunkError>('todolist/remove', async (todolistId, thunkAPI) => {
+  thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
   try {
-    const res = await toDoListsApi.createTodolist(param.title)
-
+    const res = await todoListsApi.deleteTodolist(todolistId)
     if (res.data.resultCode === 0) {
-      return {todolist: res.data.data.item}
-         } else {
-           handelServerAppError(res.data, dispatch)
-      return rejectWithValue(null)
-         }
-  } catch (err) {
-    const error = err as AxiosError
-    handelServerNetworkError(error, dispatch)
-    return rejectWithValue({error: error.message})
-  } finally {
-    dispatch(appSetStatusAC({status: 'succeeded'}))
+      return todolistId
+    } else {
+      return handleAsyncServerAppError(res.data, thunkAPI, false)
+    }
+  } catch (error) {
+    if(axios.isAxiosError(error)) {
+      return handleAsyncServerNetworkError(error, thunkAPI, false)
+    }
   }
 })
-export const updateTodolistTitleTC = createAsyncThunk('todolist/update', async (param:{todolistId: string, title: string}, {rejectWithValue, dispatch}) => {  dispatch(appSetStatusAC({status: 'loading'}))
+export const addTodolistTC = createAsyncThunk<{ todolist: TodolistType }, string, ThunkError>('todolist/add',
+  async (title, thunkAPI) => {
+    thunkAPI.dispatch(appErrorStatusActions.setAppStatus({status: 'loading'}))
+    try {
+      const res = await todoListsApi.createTodolist(title)
+      if (res.data.resultCode === 0) {
+        thunkAPI.dispatch(appErrorStatusActions.setAppStatus({status: 'succeeded'}))
+        return {todolist: res.data.data.item}
+      } else {
+        return handleAsyncServerAppError(res.data, thunkAPI, false)
+      }
+    } catch (error) {
+      if(axios.isAxiosError(error)) {
+        return handleAsyncServerNetworkError(error, thunkAPI, false)
+      }
+    }
+})
+export const updateTodolistTitleTC = createAsyncThunk('todolist/update',
+  async (param:{todolistId: string, title: string}, thunkAPI) => {
+    thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
   try {
-    const res = await toDoListsApi.updateTodolist(param.todolistId, param.title)
-      return {todolistId: param.todolistId, title: param.title}
+    const res = await todoListsApi.updateTodolist(param.todolistId, param.title)
+      return param
 
-  } catch (err) {
-    const error = err as AxiosError
-    handelServerNetworkError(error, dispatch)
-    return rejectWithValue({error: error.message})
-  } finally {
-    dispatch(appSetStatusAC({status: 'succeeded'}))
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return handleAsyncServerNetworkError(error, thunkAPI, false)
+    }
   }
 })
 //state
 export const slice = createSlice({
   name: 'todolist',
-  initialState: [] as ToDOListDomainType[],
+  initialState: [] as TodoListDomainType[],
   reducers: {
     changeFilterAC(state, action: PayloadAction<{ TodoList_ID: string, newFilter: FilterType }>) {
       const index = state.findIndex(el => el.id === action.payload.TodoList_ID)
@@ -80,16 +75,16 @@ export const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
-      return action.payload.todolists.map(e => ({...e, filter: 'all'}))
+      return action.payload.todolists.map(e => ({...e, filter: 'all',entityStatus: 'idle'}))
     });
-    builder.addCase(removeTodolistsTC.fulfilled, (state, action) => {
-      const index = state.findIndex(el => el.id === action.payload.todolistId)
+    builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
+      const index = state.findIndex(el => el.id === action.payload.id)
          if (index > -1) {
            state.splice(index, 1)
          }
     });
-    builder.addCase(addTodolistsTC.fulfilled, (state, action) => {
-       state.unshift({...action.payload.todolist, filter: 'all'})
+    builder.addCase(addTodolistTC.fulfilled, (state, action) => {
+       state.unshift({...action.payload.todolist, filter: 'all', entityStatus: 'idle'})
     });
     builder.addCase(updateTodolistTitleTC.fulfilled, (state, action) => {
       const index = state.findIndex(el => el.id === action.payload.todolistId)
@@ -98,16 +93,11 @@ export const slice = createSlice({
   }
 })
 //action
-export const asyncAction = {fetchTodolistsTC, removeTodolistsTC, addTodolistsTC, updateTodolistTitleTC }
+export const asyncAction = {fetchTodolistsTC, removeTodolistTC,addTodolistTC, updateTodolistTitleTC }
 export const {changeFilterAC} = slice.actions
 //types
-export type ToDOListDomainType = TodoListType & {
+export type TodoListDomainType = TodolistType & {
   filter: FilterType
+  entityStatus: StatusType
 }
-export type  FilterType = 'all' | 'active' | 'complete'
-export type TodoListType = {
-  id: string,
-  title: string,
-  addedDate: Date,
-  order: number,
-}
+export type  FilterType = 'all' | 'active' | 'completed'
