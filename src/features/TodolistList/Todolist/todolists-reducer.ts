@@ -5,7 +5,6 @@ import axios from "axios";
 import {ThunkError} from "../../../utils/types";
 import {TodolistType} from "../../../api/types";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../../utils/error-utils";
-import {appErrorStatusActions} from "../../CommonActions/App";
 //thunk
 export const fetchTodolistsTC = createAsyncThunk<{ todolists: TodolistType[] }, undefined, ThunkError>('todolist/fetch', async (param, thunkAPI) => {
   thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
@@ -23,6 +22,7 @@ export const removeTodolistTC = createAsyncThunk<{ id: string }, string, ThunkEr
   try {
     const res = await todoListsApi.deleteTodolist(todolistId)
     if (res.data.resultCode === 0) {
+      thunkAPI.dispatch(appSetStatusAC({status: 'succeeded'}))
       return todolistId
     } else {
       return handleAsyncServerAppError(res.data, thunkAPI, false)
@@ -35,11 +35,11 @@ export const removeTodolistTC = createAsyncThunk<{ id: string }, string, ThunkEr
 })
 export const addTodolistTC = createAsyncThunk<{ todolist: TodolistType }, string, ThunkError>('todolist/add',
   async (title, thunkAPI) => {
-    thunkAPI.dispatch(appErrorStatusActions.setAppStatus({status: 'loading'}))
+    thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
     try {
       const res = await todoListsApi.createTodolist(title)
       if (res.data.resultCode === 0) {
-        thunkAPI.dispatch(appErrorStatusActions.setAppStatus({status: 'succeeded'}))
+        thunkAPI.dispatch(appSetStatusAC({status: 'succeeded'}))
         return {todolist: res.data.data.item}
       } else {
         return handleAsyncServerAppError(res.data, thunkAPI, false)
@@ -55,8 +55,12 @@ export const updateTodolistTitleTC = createAsyncThunk('todolist/update',
     thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
   try {
     const res = await todoListsApi.updateTodolist(param.todolistId, param.title)
+    if(res.data.resultCode === 0){
+      thunkAPI.dispatch(appSetStatusAC({status: 'succeeded'}))
       return param
-
+    } else {
+      return handleAsyncServerAppError(res.data, thunkAPI)
+    }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return handleAsyncServerNetworkError(error, thunkAPI, false)

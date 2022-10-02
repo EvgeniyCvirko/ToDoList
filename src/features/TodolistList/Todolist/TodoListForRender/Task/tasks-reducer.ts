@@ -13,8 +13,8 @@ import {AppRootStateType, ThunkError} from "../../../../../utils/types";
 import {appErrorStatusActions} from "../../../../CommonActions/App";
 import {ModelTaskUpdateType, TodolistType} from "../../../../../api/types";
 //thunk
-export const setTasksTC = createAsyncThunk<{ tasks: TaskType[], todolistId: string }, string, ThunkError>('tasks/setTasks', async (todolistId: string, thunkApi) => {
-    thunkApi.dispatch(appErrorStatusActions.setAppStatus({status: 'loading'}))
+export const getTasksTC = createAsyncThunk<{ tasks: TaskType[], todolistId: string }, string, ThunkError>('tasks/setTasks', async (todolistId: string, thunkApi) => {
+    thunkApi.dispatch(appSetStatusAC({status: 'loading'}))
     try {
         const res = await tasksApi.getTasks(todolistId)
         const tasks = res.data.items
@@ -46,7 +46,7 @@ export const removeTasksTC = createAsyncThunk<{ taskId: string, todolistId: stri
     const res = await tasksApi.deleteTask(param.todolistId, param.taskId)
     return {taskId: param.taskId, todolistId: param.todolistId}
 })
-export const addTasksTC = createAsyncThunk<TaskType, { title: string, todolistId: string }, ThunkError>('tasks/addTasks',
+export const addTasksTC = createAsyncThunk<TaskType, { todolistId: string,title: string  }, ThunkError>('tasks/addTasks',
   async (param, thunkAPI) => {
       thunkAPI.dispatch(appErrorStatusActions.setAppStatus({status: 'loading'}))
       try {

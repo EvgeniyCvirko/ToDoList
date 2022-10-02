@@ -15,7 +15,6 @@ export const setIsInitializedTC = createAsyncThunk("app/setIsAuth", async (param
         if (axios.isAxiosError(error)) {
             return handleAsyncServerNetworkError(error, thunkAPI, false)
         }
-
     }
 })
 

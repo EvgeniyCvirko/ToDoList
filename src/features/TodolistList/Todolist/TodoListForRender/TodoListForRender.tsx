@@ -38,10 +38,8 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
   }
 
   const addTaskCallback = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
-
-    let thunk = tasksAction.addTasksTC({title: title, todolistId: props.todoList.id})
+    let thunk = tasksAction.addTasksTC({todolistId: props.todoList.id, title: title, })
     const resultAction = await dispatch(thunk)
-
     if (tasksAction.addTasksTC.rejected.match(resultAction)) {
       if (resultAction.payload?.errors?.length) {
         const errorMessage = resultAction.payload?.errors[0]
@@ -52,7 +50,6 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
     } else {
       helper.setTitle('')
     }
-
   }, [props.todoList.id])
 
   const buttonRender = (filterButton: FilterType, variant: 'text' | 'outlined' | 'contained', color: PropTypes.Color) => {
@@ -70,7 +67,7 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
   if (props.todoList.filter === 'completed') {
     tasksForRender = tasks.filter(tl => tl.status === TaskStatues.Completed)
   }
-  const ulList = tasksForRender.length
+  const todolist = tasksForRender.length
     ? tasksForRender.map(el =>
       <Tasks id={el.id}
              title={el.title}
@@ -90,7 +87,7 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
       <AddItem
         addItem={addTaskCallback}/>
       <ul className={s.ul}>
-        {ulList}
+        {todolist}
       </ul>
       {buttonRender('all', 'contained', 'default')}
       {buttonRender('active', 'contained', 'primary')}

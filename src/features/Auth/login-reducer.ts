@@ -1,20 +1,20 @@
 import {loginApi} from "../../api/todolists-api";
 import {appSetErrorAC, appSetStatusAC} from "../../app/App-reducer";
-import {handelServerNetworkError} from "../../utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AxiosError} from "axios";
+import axios from "axios";
+import {handleAsyncServerNetworkError} from "../../utils/error-utils";
 //thunk
-export const setLoginTC = createAsyncThunk('login/login', async (param: { stateLogin: LoginStateType }, {dispatch, rejectWithValue}) => {
-    dispatch(appSetStatusAC({status: 'loading'}))
+export const setLoginTC = createAsyncThunk('login/login', async (param: { stateLogin: LoginStateType }, thunkAPI) => {
+    thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
     try {
         const res = await loginApi.createLogin(param.stateLogin)
         if (res.data.resultCode === 0) {
-            dispatch(appSetStatusAC({status: 'succeeded'}))
+            thunkAPI.dispatch(appSetStatusAC({status: 'succeeded'}))
             return {isLogin: true}
         } else {
             if (res.data.resultCode) {
-                dispatch(appSetErrorAC( res.data.messages[0]))
-                dispatch(appSetStatusAC({status: 'failed'}))
+                thunkAPI.dispatch(appSetErrorAC( {error:res.data.messages[0]}))
+                thunkAPI.dispatch(appSetStatusAC({status: 'failed'}))
                 return {isLogin: false}
             }
         }
@@ -25,17 +25,17 @@ export const setLoginTC = createAsyncThunk('login/login', async (param: { stateL
         return rejectWithValue({})
     }
 })
-export const setLogoutTC = createAsyncThunk('login/logout', async (param, {dispatch, rejectWithValue}) => {
-        dispatch(appSetStatusAC({status: 'loading'}))
+export const setLogoutTC = createAsyncThunk('login/logout', async (param, thunkAPI) => {
+    thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
         try {
             const res = await loginApi.deleteLogin()
             if (res.data.resultCode === 0) {
-                dispatch(appSetStatusAC({status: 'succeeded'}))
+                thunkAPI.dispatch(appSetStatusAC({status: 'succeeded'}))
                 return {isLogin: false}
             } else {
                 if (res.data.resultCode) {
-                    dispatch(appSetErrorAC( res.data.messages[0]))
-                    dispatch(appSetStatusAC({status: 'failed'}))
+                    thunkAPI.dispatch(appSetErrorAC({error: res.data.messages[0]}))
+                    thunkAPI.dispatch(appSetStatusAC({status: 'failed'}))
                     return {isLogin: true}
                 }
             }
