@@ -18,11 +18,10 @@ export const setLoginTC = createAsyncThunk('login/login', async (param: { stateL
                 return {isLogin: false}
             }
         }
-
-    } catch (err) {
-        const error = err as AxiosError
-        handelServerNetworkError(error, dispatch)
-        return rejectWithValue({})
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            return handleAsyncServerNetworkError(error, thunkAPI, false)
+        }
     }
 })
 export const setLogoutTC = createAsyncThunk('login/logout', async (param, thunkAPI) => {
@@ -39,10 +38,10 @@ export const setLogoutTC = createAsyncThunk('login/logout', async (param, thunkA
                     return {isLogin: true}
                 }
             }
-        } catch (err) {
-            const error = err as AxiosError
-            handelServerNetworkError(error, dispatch)
-            return rejectWithValue({error: error.message})
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return handleAsyncServerNetworkError(error, thunkAPI, false)
+            }
         }
     }
 )
