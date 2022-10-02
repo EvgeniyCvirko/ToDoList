@@ -32,7 +32,7 @@ export const tasksApi = {
     deleteTask(todolistId: string, taskId: string){
         return instance.delete<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
     },
-    createTask( title: string, todolistId: string){
+    createTask( todolistId: string, title: string ){
         return instance.post<ResponseType<{ item: TaskType }>>(`/todo-lists/${todolistId}/tasks`,{title})
     },
     updateTask(todolistId: string, taskId: string, model: ModelTaskUpdateType){
