@@ -14,7 +14,7 @@ const newStatus = 'loading'
 
 test( 'correct error should be changed error', ()=>{
     const newError = 'some error'
-    const endState = appReducer(startState, appSetErrorAC(newError))
+    const endState = appReducer(startState, appSetErrorAC({error: newError}))
     expect(endState.error).toBe('some error')
 })
 

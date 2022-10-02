@@ -7,9 +7,9 @@ test("loginState should be after add",()=>{
     const newState = {
         email: 'EC@mai.ru',
         password: '123',
-        rememberMe: true
+        rememberMe: true,
     }
-    const action = setLoginTC.fulfilled ({isLogin:true}, '', {stateLogin:newState})
+    const action = setLoginTC.fulfilled (undefined, '', {stateLogin:newState})
     const endState = loginReducer(startState, action)
     expect(endState.isLogin).toBe(true)
 })
