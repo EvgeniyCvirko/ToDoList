@@ -23,7 +23,7 @@ export const removeTodolistTC = createAsyncThunk<{ id: string }, string, ThunkEr
     const res = await todoListsApi.deleteTodolist(todolistId)
     if (res.data.resultCode === 0) {
       thunkAPI.dispatch(appSetStatusAC({status: 'succeeded'}))
-      return todolistId
+      return {id: todolistId}
     } else {
       return handleAsyncServerAppError(res.data, thunkAPI, false)
     }
