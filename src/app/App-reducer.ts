@@ -10,7 +10,7 @@ export const setIsInitializedTC = createAsyncThunk("app/setIsAuth", async (param
         if (res.data.resultCode === 0) {
             thunkAPI.dispatch(setIsLogin({isLogin: true}))
         }
-        return {isAuth: true}
+        // return {isAuth: true}
     } catch (error) {
         if (axios.isAxiosError(error)) {
             return handleAsyncServerNetworkError(error, thunkAPI, false)

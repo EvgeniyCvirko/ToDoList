@@ -15,9 +15,7 @@ type TasksForRenderType = {
 }
 
 export const Tasks = React.memo((props: TasksForRenderType) => {
-  console.log('render task')
   const {updateTaskTC, removeTasksTC} = useActions(tasksAction)
-
   const changeTitleTask = useCallback((title: string) => {
     updateTaskTC({todolistId: props.todolistId, taskId: props.id, model: {title}})
   }, [props.todolistId, props.id])
