@@ -9,7 +9,7 @@ import {selectorIsLogin} from "../../Auth/index";
 
 export const Todolists =() =>{
     const {fetchTodolistsTC} = useActions(todolistActions)
-    const toDoLists = useAppSelector(state => state.todolist)
+    const toDoLists = useAppSelector(state => state.todolist.todolists)
     const isLogin = useAppSelector(selectorIsLogin)
     const dispatch = useAppDispatch()
 
