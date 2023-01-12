@@ -20,7 +20,6 @@ type TodoListPropsType = {
 }
 
 export const TodoListForRender = React.memo((props: TodoListPropsType) => {
-  console.log('renderTodoListForRender')
   const tasks = useAppSelector(state => state.task[props.id])
   const {updateTodolistTitleTC, removeTodolistTC, changeFilterAC} = useActions(todolistActions)
   const {setTasksTC} = useActions(tasksAction)

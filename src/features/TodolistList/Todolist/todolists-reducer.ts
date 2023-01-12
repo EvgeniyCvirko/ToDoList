@@ -10,7 +10,9 @@ export const fetchTodolistsTC = createAsyncThunk<{ todolists: TodolistType[] }, 
   thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
   try {
     const res = await todoListsApi.getTodolists()
-    return {todolists: res.data}
+    //const td = res.data.map(e => ({...e, filter: 'all',entityStatus: 'idle'}))
+     return {todolists: res.data}
+    //return res.data
   } catch (error) {
     if(axios.isAxiosError(error)) {
       return handleAsyncServerNetworkError(error, thunkAPI, false)
@@ -78,8 +80,12 @@ export const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
+
     builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
-      return action.payload.todolists.map(e => ({...e, filter: 'all',entityStatus: 'idle'}))
+       return action.payload.todolists.map(e => ({...e, filter: 'all',entityStatus: 'idle'}))
+      //state = action.payload.todolists.map(e => ({...e, filter: 'all',entityStatus: 'idle'}))
+      // @ts-ignore
+      //state = action.payload as TodoListDomainType
     });
     builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
       const index = state.findIndex(el => el.id === action.payload.id)
