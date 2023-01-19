@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import s from '../Style/Todolist.module.css'
 import {EditableSpan} from "../../../../components/EditableSpan";
 import {AddItem, AddItemFormSubmitHelperType} from "../../../../components/AddItem";
@@ -23,11 +23,7 @@ export const TodoListForRender = React.memo((props: TodoListPropsType) => {
   console.log('renderTodoListForRender')
   const tasks = useAppSelector(state => state.task[props.id])
   const {updateTodolistTitleTC, removeTodolistTC, changeFilterAC} = useActions(todolistActions)
-  const {setTasksTC} = useActions(tasksAction)
   const dispatch = useAppDispatch()
-  useEffect(() => {
-    setTasksTC(props.id)
-  }, [])
 
   const changeTitleTodoList = useCallback((title: string) => {
     updateTodolistTitleTC({todolistId: props.id, title})

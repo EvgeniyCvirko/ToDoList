@@ -5,23 +5,15 @@ import axios from "axios";
 import {ThunkError} from "../../../utils/types";
 import {TodolistType} from "../../../api/types";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../../utils/error-utils";
+import {getTasksTC} from './TodoListForRender/Task/tasks-reducer';
 //thunk
-// export const fetchTodolistsTC = createAsyncThunk<{ todolists: TodolistType[] }, undefined, ThunkError>('todolist/fetch', async (param, thunkAPI) => {
-//   thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
-//   try {
-//     const res = await todoListsApi.getTodolists()
-//     return {todolists: res.data}
-//   } catch (error) {
-//     if(axios.isAxiosError(error)) {
-//       return handleAsyncServerNetworkError(error, thunkAPI, false)
-//     }
-//   }
-// })
-
 export const fetchTodolistsTC = createAsyncThunk<TodolistType[], undefined, ThunkError>('todolist/fetch', async (param, thunkAPI) => {
   thunkAPI.dispatch(appSetStatusAC({status: 'loading'}))
   try {
     const res = await todoListsApi.getTodolists()
+    res.data.forEach( td => {
+      thunkAPI.dispatch(getTasksTC(td.id))
+    })
     return res.data
   } catch (error) {
     if(axios.isAxiosError(error)) {

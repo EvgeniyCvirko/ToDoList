@@ -20,7 +20,7 @@ export const App = () => {
 
     useEffect(() => {
         setIsInitializedTC()
-    }, [isLogin])
+    }, [])
 
     const logoutHandler = useCallback(() =>{
         setLogoutTC()

@@ -9,7 +9,7 @@ import {selectorIsLogin} from "../../Auth/index";
 
 export const Todolists =() =>{
     const {fetchTodolistsTC} = useActions(todolistActions)
-    const toDoLists = useAppSelector(state => state.todolist.todolists)
+    const todoLists = useAppSelector(state => state.todolist.todolists)
     const isLogin = useAppSelector(selectorIsLogin)
     const dispatch = useAppDispatch()
 
@@ -34,11 +34,11 @@ export const Todolists =() =>{
             return
         }
         fetchTodolistsTC();
-    },[])
+    },[todoLists.length])
     if (!isLogin){
         return <Navigate to={'/login'}/>
     }
-    const todoListForRender = toDoLists.map(tl => {
+    const todoListForRender = todoLists.map(tl => {
         return <Grid key={tl.id} item>
             <Paper  style={{padding: "10px", width: "300px"}}>
                 <TodoListForRender
