@@ -109,7 +109,7 @@ export const slice = createSlice({
             delete state[action.payload.id]
         });
         builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
-            action.payload.todolists.forEach((e: TodolistType) => {
+            action.payload.forEach((e: TodolistType) => {
                 state[e.id] = []
             })
         });
